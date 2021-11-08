@@ -1,16 +1,9 @@
-const express = require("express");
-const router = express.Router();
+const { Router } = require("express");
 
-const tutorials = require("../controllers/tutorial.contoller");
+const router = Router();
+const tutorials = require("../controllers/tutorial");
 
-router.get("/allData", tutorials.findOne);
-router.post("/upload", tutorials.createFile);
+router.get("/getAll", tutorials.findOne);
+router.post("/add", tutorials.createPost);
+
 module.exports = router;
-
-//easy way to test api
-
-/* const Tutorial = db.tutorials; */
-/* router.get("/all", async (req, res) => {
-  const all = await Tutorial.findAll();
-  res.status(200).send(all);
-}); */

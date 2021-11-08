@@ -1,4 +1,4 @@
-const tutorials = require("../routes/tutorial.routes");
+const tutorials = require("../routes");
 
 module.exports = function (app) {
   app.use("/tutorials", tutorials);

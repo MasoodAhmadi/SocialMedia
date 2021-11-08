@@ -12,9 +12,11 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "mariadb": "^2.5.5",
     "mysql2": "^2.3.3-rc.0",
     "nodemon": "^2.0.14",
+    "path": "^0.12.7",
     "sequelize": "^6.9.0",
     "winston": "^3.3.3"
   }
