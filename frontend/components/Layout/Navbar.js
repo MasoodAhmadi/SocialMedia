@@ -18,7 +18,7 @@ export default function Navbar() {
         <Link href="/signup">
           <Menu.Item header active={isActive("/signup")}>
             <Icon size="large" name="signup" />
-            login
+            sign up
           </Menu.Item>
         </Link>
       </Container>

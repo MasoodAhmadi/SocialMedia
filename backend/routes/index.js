@@ -1,3 +1,3 @@
 const tutorial = require("./tutorial.routes");
-
-module.exports = tutorial;
+const users = require("./users.routes");
+(module.exports = users), tutorial;
