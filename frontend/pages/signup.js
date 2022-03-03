@@ -1,16 +1,14 @@
-import React, { useState } from "react";
-import {
-  Form,
-  Button,
-  Message,
-  Segment,
-  TextArea,
-  Divider,
-} from "semantic-ui-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Segment, TextArea, Divider } from "semantic-ui-react";
+import { Form, Button, Message } from "semantic-ui-react";
 import {
   HeaderMessage,
   FooterMessage,
 } from "../components/common/WelcomeMessage";
+import CommonInputs from "../components/common/commonInputs";
+const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+import { endPoints } from "../components/config/endPoints";
+import ImageDropDiv from "../components/common/ImageDropDiv";
 
 function Signup() {
   const [user, setUser] = useState({
@@ -24,15 +22,24 @@ function Signup() {
     instagram: "",
   });
 
+  const { getallUsers } = endPoints;
+
   const { name, email, password, bio } = user;
   const [showSocialLinks, setShowSocialLinks] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
 
+  const [submitDisable, setSubmitDisable] = useState(true);
   const [username, setUsername] = useState("");
   const [usernameLoading, setUserNameLoading] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(false);
+  const [media, setMedia] = useState(null);
+  const [mediaPreview, setMediaPreview] = useState(null);
+  const [highLight, setHighlight] = useState(false);
+
+  const inputRef = useRef();
+
   const handleSumbit = (e) => {
     e.preventDefault();
   };
@@ -41,6 +48,13 @@ function Signup() {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
   };
+
+  useEffect(() => {
+    const isUser = Object.values({ name, email, password, bio }).every((item) =>
+      Boolean(item)
+    );
+    isUser ? setSubmitDisable(false) : setSubmitDisable(true);
+  }, [user]);
   return (
     <>
       {" "}
@@ -55,6 +69,13 @@ function Signup() {
           header="Oops!"
           content={errorMsg}
           onDismiss={() => setErrorMsg(null)}
+        />
+        <ImageDropDiv
+          mediaPreview={mediaPreview}
+          setMediaPreview={setMediaPreview}
+          setMedia={setMedia}
+          handleChange={handleChange}
+          highlighed={highlighed}
         />
 
         <Segment>
@@ -97,6 +118,40 @@ function Signup() {
             iconPosition="left"
             type={showPassword ? `text` : "password"}
             required
+          />
+
+          <Form.Input
+            loading={usernameLoading}
+            error={!usernameAvailable}
+            label="Username"
+            name="Username"
+            placeholdeR="type your username"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              if (resgexUserName.test(e.target.value)) {
+                setUsernameAvailable(true);
+              } else {
+                setUsernameAvailable(false);
+              }
+            }}
+            fluid
+            icon={usernameAvailable ? "check" : "close"}
+            iconPosition="left"
+            required
+          />
+          <CommonInputs
+            user={user}
+            showSocialLinks={showSocialLinks}
+            setShowSocialLinks={setShowSocialLinks}
+            handleChange={handleChange}
+          />
+          <Divider hidden />
+          <Button
+            content="Signup"
+            type="submit"
+            color="orange"
+            disabled={submitDisable || !usernameAvailable}
           />
         </Segment>
       </Form>
