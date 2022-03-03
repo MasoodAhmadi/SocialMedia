@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Segment, TextArea, Divider } from "semantic-ui-react";
 import { Form, Button, Message } from "semantic-ui-react";
-import {
-  HeaderMessage,
-  FooterMessage,
-} from "../components/common/WelcomeMessage";
+import { HeaderMessage } from "../components/common/WelcomeMessage";
+import { FooterMessage } from "../components/common/WelcomeMessage";
 import CommonInputs from "../components/common/commonInputs";
-const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 import { endPoints } from "../components/config/endPoints";
 import ImageDropDiv from "../components/common/ImageDropDiv";
+
+const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 function Signup() {
   const [user, setUser] = useState({
@@ -36,7 +35,7 @@ function Signup() {
   const [usernameAvailable, setUsernameAvailable] = useState(false);
   const [media, setMedia] = useState(null);
   const [mediaPreview, setMediaPreview] = useState(null);
-  const [highLight, setHighlight] = useState(false);
+  const [highlighed, setHighlighed] = useState(false);
 
   const inputRef = useRef();
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Icon, Segment } from "semantic-ui-react";
+import { Form, Header, Icon, Image, Segment } from "semantic-ui-react";
 
 function ImageDropDiv({
   highlighed,
