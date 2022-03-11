@@ -21,15 +21,15 @@ function Signup() {
     instagram: "",
   });
 
-  const { getallUsers } = endPoints;
+  const { getallUsers, addUsers } = endPoints;
 
   const { name, email, password, bio } = user;
   const [showSocialLinks, setShowSocialLinks] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
-
   const [submitDisable, setSubmitDisable] = useState(true);
+
   const [username, setUsername] = useState("");
   const [usernameLoading, setUserNameLoading] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(false);
@@ -58,6 +58,11 @@ function Signup() {
     );
     isUser ? setSubmitDisable(false) : setSubmitDisable(true);
   }, [user]);
+
+  const handleAdd = () => {
+    const user = axios.post(addUsers);
+  };
+
   return (
     <>
       {" "}
