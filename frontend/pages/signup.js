@@ -44,7 +44,11 @@ function Signup() {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
+    if (name === "media") {
+      setMedia(files[0]);
+      setMediaPreview(URL.createObjectURL(files[0]));
+    }
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -75,6 +79,8 @@ function Signup() {
           setMedia={setMedia}
           handleChange={handleChange}
           highlighed={highlighed}
+          setHighlighed={setHighlighed}
+          inputRef={inputRef}
         />
 
         <Segment>
