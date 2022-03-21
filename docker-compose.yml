@@ -1,0 +1,47 @@
+version: "3.5"
+
+services:
+  # client:
+  #   image: node:17-alpine
+  #   working_dir: /app
+  #   volumes:
+  #     - ./client:/app
+  #   ports:
+  #     - ${CLIENT_PUBLIC_PORT}:${CLIENT_CONTAINER_PORT}
+  #   # command: npm start
+  #   env_file:
+  #     - .env
+
+  server:
+    image: node:17-alpine
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    ports:
+      - ${SERVER_PUBLIC_PORT}:${SERVER_CONTAINER_PORT}
+    command: npm start
+    depends_on:
+      - database
+    env_file:
+      - .env
+
+  database:
+    image: mariadb:10.5
+    volumes:
+      # - ./nextjs.sql:/docker-entrypoint-initdb.d/nextjs.sql
+      - ./database/data:/var/lib/mysql
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+    env_file: .env
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - ${PHPMYADMIN_PUBLIC_PORT}:${PHPMYADMIN_CONTAINER_PORT}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+      - PMA_HOST=database
+    env_file:
+      - .env
+    depends_on:
+      - database

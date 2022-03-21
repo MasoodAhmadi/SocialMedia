@@ -1,23 +1,26 @@
-const database = require("../config/database.config");
-const Sequelize = require("sequelize");
+"use strict";
+
 const fs = require("fs");
 const path = require("path");
+const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || "development";
+const config = require("../config/config");
+console.log("config", config);
 const db = {};
 
 let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config
+  );
+}
 
-sequelize = new Sequelize(database.DB, database.USER, database.PASSWORD, {
-  host: database.HOST,
-  dialect: database.dialect,
-  operatorAliases: false,
-  pool: {
-    max: database.pool.max,
-    min: database.pool.min,
-    acquire: database.pool.acquire,
-    idle: database.pool.idle,
-  },
-});
 fs.readdirSync(__dirname)
   .filter((file) => {
     return (
@@ -40,8 +43,5 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
-db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
-db.users = require("./user.model.js")(sequelize, Sequelize);
 
 module.exports = db;

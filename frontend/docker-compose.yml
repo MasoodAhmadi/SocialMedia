@@ -1,0 +1,54 @@
+version: "3.5"
+
+services:
+  backend:
+    build: ../backend
+    volumes:
+      - ../backend/build:/app/build
+      - ../backend :/app/
+      - ../backend/node_modules:/app/node_modules
+      - ../backend/package.json:/app/package.json
+    ports:
+      - 3101:3100
+    depends_on:
+      - db
+  db:
+    image: mariadb:10.5
+    volumes:
+      - ./db/mariadb:/var/lib/mysql
+
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: nextjs
+
+  adminer:
+    image: adminer
+    restart: always
+    environment:
+      - PMA_HOST=127.0.0.1
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=123456
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    links:
+      - db
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    restart: always
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=123456
+      - MYSQL_ROOT_PASSWORD=123456
+
+    ports:
+      - 2300:80
+    depends_on:
+      - db
+    links:
+      - db

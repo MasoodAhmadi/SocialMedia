@@ -1,10 +1,13 @@
-const { Router } = require("express");
+const router = require("express").Router();
+const db = require("../models");
 
-const router = Router();
-
-const usersController = require("../controllers/users.contoller");
-
-router.get("/getusers", usersController.findOne);
-router.post("/addusers", usersController.createOne);
+router.get("/", async (req, res, next) => {
+  try {
+    const users = await db.User.findAll({});
+    res.status(200).json(users);
+  } catch (error) {
+    console.log("error happened!", error);
+  }
+});
 
 module.exports = router;
