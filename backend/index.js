@@ -3,8 +3,8 @@ const express = require("express");
 const userRouter = require("./routes/users.routes");
 const app = express();
 app.use(express.json());
-const PORT = process.env.SERVER_CONTAINER_PORT;
-//const PORT = 8000;
+//const PORT = process.env.SERVER_CONTAINER_PORT;
+const PORT = 8000;
 
 app.use("/api/users", userRouter);
 // app.use("/api/users/:id", userRouter);
