@@ -15,11 +15,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING(200),
-      allowNull: false,
+      required: true,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING(250),
-      allowNull: false,
+      required: true,
+      select: false,
+    },
+    profilePicUrl: {
+      type: DataTypes.STRING,
     },
     bio: {
       type: DataTypes.STRING(500),

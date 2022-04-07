@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         youtube: { type: DataTypes.STRING },
         instagram: { type: DataTypes.STRING },
         twitter: { type: DataTypes.STRING },
+        facebook: { type: DataTypes.STRING },
       },
     ],
   });
