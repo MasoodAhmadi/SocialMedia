@@ -5,10 +5,16 @@ const user = require("../models/user");
 const userPng = require("../utils/image");
 const router = require("express").Router();
 const follower = require("../models/follower");
-const { username } = require("../config/config");
 const isEmail = require("validator/lib/isEmail");
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 const { User } = db;
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "ahmadimasood",
+  api_key: "483589172997211",
+  api_secret: "qGfb6WbmcaO1GvNUU5lJEVkp1rI",
+});
 
 router.get("/:username", async (req, res, next) => {
   const { username } = req.params;
@@ -45,72 +51,64 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/adduser", async (req, res, next) => {
   console.log("req.body", req.body);
-
-  const {
-    username,
-    firstname,
-    email,
-    password,
-    bio,
-    facebook,
-    twitter,
-    youtube,
-    instagram,
-    profilePicUrl,
-  } = req.body.User;
-  // const valueItem = {
+  const file = req.files.photo;
+  cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+    console.log(result);
+  });
+  // const {
   //   username,
   //   firstname,
   //   email,
   //   password,
   //   bio,
-  //   profilePicUrl,
+  //   facebook,
+  //   twitter,
+  //   youtube,
+  //   instagram,
+  // } = req.body;
+  // const allVal = {
+  //   username,
+  //   firstname,
+  //   email,
+  //   password,
+  //   bio,
+  //   facebook,
+  //   twitter,
+  //   youtube,
+  //   instagram,
   // };
 
-  if (!isEmail(email)) return res.status(400).send("invalid email");
-  if (password.length < 6)
-    return res.status(400).send("password must be 8 charactor");
+  // if (!isEmail(email)) return res.status(401).send("invalid email");
+
+  // if (allVal.password.length < 6)
+  //   return res.status(400).send("password must be 8 charactor");
 
   try {
-    let users;
-    users = await User.find({ email: email.toLowerCase() });
-    if (users) {
-      return res.status(401).send("email already taken");
-    }
-
-    users = new UserModel({
-      firstname,
-      email: email.toLowerCase(),
-      username: username.toLowerCase(),
-      password,
-      profilePicUrl: req.body.profilePicUrl | userPng,
-    });
-    users.password = await bcrypt.hash(password, 10);
-    await users.save();
-
-    let profileField = {};
-
-    profileField.users = users._id;
-    profileField.bio = bio;
-    profileField.social = {};
-
-    if (facebook) profileField.social.facebook = facebook;
-    if (youtube) profileField.social.facebook = youtube;
-    if (twitter) profileField.social.facebook = twitter;
-    if (instagram) profileField.social.facebook = instagram;
-
-    await new ProfileModel(profileField).save();
-
-    await new follower({
-      users: users._id,
-      followers: [],
-      following: [],
-    }).save();
-    const payload = { userId: user._id };
-    jwt.sign(payload, process.env.jwtsecret, { expire: "2d" }, (err, token) => {
-      if (err) throw err;
-      return res.status(201).json(token);
-    });
+    //   let userLocate = await User.findOne({ where: { email } });
+    //   if (userLocate)
+    //     return res.status(401).send({ message: "User already registered" });
+    //   allVal.password = await bcrypt.hash(password, 10);
+    //   await User.create(allVal);
+    //   return res.status(200).json(user);
+    // let profileField = {};
+    // profileField.users = users._id;
+    // profileField.bio = bio;
+    // profileField.social = {};
+    // if (facebook) profileField.social.facebook = facebook;
+    // if (youtube) profileField.social.facebook = youtube;
+    // if (twitter) profileField.social.facebook = twitter;
+    // if (instagram) profileField.social.facebook = instagram;
+    // await new ProfileModel(profileField).save();
+    // await new follower({
+    //   users: user._id,
+    //   followers: [],
+    //   following: [],
+    // }).save();
+    // const payload = { userId: user._id };
+    // jwt.sign(payload, process.env.jwtsecret, { expire: "2d" }, (err, token) => {
+    //   if (err) throw err;
+    //   return res.status(201).json(token);
+    // });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -129,6 +127,20 @@ router.put("/:id", async (req, res, next) => {
   } catch (error) {
     console.log("error: ", error);
   }
+});
+
+console.log(cloudinary.config().cloud_name);
+router.post("/image", async (req, res, next) => {
+  cloudinary.uploader
+    .upload("./assets/IMG-3129.jpg", {
+      resource_type: "image",
+    })
+    .then((result) => {
+      console.log("success");
+    })
+    .catch((error) => {
+      console.log("error");
+    });
 });
 
 module.exports = router;

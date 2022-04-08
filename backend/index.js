@@ -3,9 +3,19 @@ const express = require("express");
 const userRouter = require("./routes/users.routes");
 const app = express();
 app.use(express.json());
+const cors = require("cors");
+
 //const PORT = process.env.SERVER_CONTAINER_PORT;
 const PORT = 8000;
 
+const fileUpload = require("express-fileupload");
+
+app.use(
+  fileUpload({
+    useTempfiles: true,
+  })
+);
+app.use(cors());
 app.use("/api/users", userRouter);
 // app.use("/api/users/:id", userRouter);
 //app.use("/api/updateuser/:id", userRouter);

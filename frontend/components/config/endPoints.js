@@ -1,5 +1,6 @@
-const backend = "http:localhost:3100";
+const backend = "http:localhost:8000";
+const api = "api";
 export const endPoints = {
-  getallUsers: `${backend}/getAllusers`,
+  getallUsers: `${backend}/${api}/getAllusers`,
   addUsers: `${backend}/addusers`,
 };
