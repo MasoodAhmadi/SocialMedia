@@ -50,46 +50,46 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.post("/adduser", async (req, res, next) => {
-  console.log("req.body", req.body);
-  const file = req.files.photo;
-  cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
-    console.log(result);
-  });
-  // const {
-  //   username,
-  //   firstname,
-  //   email,
-  //   password,
-  //   bio,
-  //   facebook,
-  //   twitter,
-  //   youtube,
-  //   instagram,
-  // } = req.body;
-  // const allVal = {
-  //   username,
-  //   firstname,
-  //   email,
-  //   password,
-  //   bio,
-  //   facebook,
-  //   twitter,
-  //   youtube,
-  //   instagram,
-  // };
+  const {
+    username,
+    firstname,
+    email,
+    password,
+    bio,
+    profilePicUrl,
+    facebook,
+    twitter,
+    youtube,
+    instagram,
+  } = req.body;
+  const allVal = {
+    username,
+    firstname,
+    email,
+    profilePicUrl,
+    password,
+    bio,
+    facebook,
+    twitter,
+    youtube,
+    instagram,
+  };
 
-  // if (!isEmail(email)) return res.status(401).send("invalid email");
+  if (!isEmail(email)) return res.status(401).send("invalid email");
 
-  // if (allVal.password.length < 6)
-  //   return res.status(400).send("password must be 8 charactor");
+  if (allVal.password.length < 6)
+    return res.status(400).send("password must be 8 charactor");
 
   try {
-    //   let userLocate = await User.findOne({ where: { email } });
-    //   if (userLocate)
-    //     return res.status(401).send({ message: "User already registered" });
-    //   allVal.password = await bcrypt.hash(password, 10);
-    //   await User.create(allVal);
-    //   return res.status(200).json(user);
+    let userLocate = await User.findOne({ where: { email } });
+    if (userLocate)
+      return res.status(401).send({ message: "Email already registered" });
+    allVal.password = await bcrypt.hash(password, 10);
+
+    await User.create(allVal);
+
+    return res.status(200).json(user);
+
     // let profileField = {};
     // profileField.users = users._id;
     // profileField.bio = bio;
@@ -129,18 +129,13 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
-console.log(cloudinary.config().cloud_name);
-router.post("/image", async (req, res, next) => {
-  cloudinary.uploader
-    .upload("./assets/IMG-3129.jpg", {
-      resource_type: "image",
-    })
-    .then((result) => {
-      console.log("success");
-    })
-    .catch((error) => {
-      console.log("error");
-    });
+router.post("/upload", (req, res, next) => {
+  console.log(req.body);
+
+  const file = req.files.photo;
+  cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+    console.log(result);
+  });
 });
 
 module.exports = router;

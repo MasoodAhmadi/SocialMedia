@@ -12,7 +12,7 @@ const fileUpload = require("express-fileupload");
 
 app.use(
   fileUpload({
-    useTempfiles: true,
+    useTempFiles: true,
   })
 );
 app.use(cors());
