@@ -74,20 +74,15 @@ router.post("/adduser", async (req, res, next) => {
     youtube,
     instagram,
   };
-
   if (!isEmail(email)) return res.status(401).send("invalid email");
-
   if (allVal.password.length < 6)
     return res.status(400).send("password must be 8 charactor");
-
   try {
     let userLocate = await User.findOne({ where: { email } });
     if (userLocate)
       return res.status(401).send({ message: "Email already registered" });
     allVal.password = await bcrypt.hash(password, 10);
-
     await User.create(allVal);
-
     return res.status(200).json(user);
 
     // let profileField = {};
@@ -129,12 +124,56 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
+//image posting
 router.post("/upload", (req, res, next) => {
   console.log(req.body);
+  // const {
+  //   username,
+  //   firstname,
+  //   email,
+  //   password,
+  //   bio,
+  //   profilePicUrl,
+  //   facebook,
+  //   twitter,
+  //   youtube,
+  //   instagram,
+  // } = req.body;
+  // const allVal = {
+  //   username,
+  //   firstname,
+  //   email,
+  //   profilePicUrl,
+  //   password,
+  //   bio,
+  //   facebook,
+  //   twitter,
+  //   youtube,
+  //   instagram,
+  // };
 
   const file = req.files.photo;
   cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
     console.log(result);
+
+    // if (!isEmail(email)) return res.status(401).send("invalid email");
+    // if (allVal.password.length < 6)
+    //   return res.status(400).send("password must be 8 charactor");
+    product = {
+      username: req.body.username,
+      firstname: req.body.firstname,
+      email: req.body.email,
+      password: req.body.password,
+      bio: req.body.bio,
+      profilePicUrl: result.url,
+      // let userLocate = User.findOne({ where: { email: email } });
+      // if (userLocate)
+      //   return res.status(401).send({ message: "Email already registered" });
+      //allVal.password = bcrypt.hash(password, 10);
+    };
+    // product.save();
+    User.create(product);
+    return res.status(200).json(product);
   });
 });
 
