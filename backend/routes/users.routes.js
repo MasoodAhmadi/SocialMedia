@@ -156,4 +156,30 @@ router.post("/upload", (req, res, next) => {
   });
 });
 
+//image posting jannaten method
+router.post("/upload_jannaten", async (req, res, next) => {
+  try {
+    const { username, firstname, email, password, bio } = req.body;
+    if (!isEmail(email)) return res.status(400).send("invalid email");
+    if (password.length < 6)
+      return res.status(400).send("password must be 8 charactor");
+    let product = {
+      username,
+      firstname,
+      email,
+      password,
+      bio,
+    };
+    product.password = await bcrypt.hash(password, 10);
+    const file = req.files.photo;
+    cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+      product.profilePicUrl = result.url;
+      await User.create(product);
+      return res.status(200).json(product);
+    });
+  } catch ({ message }) {
+    res.status(500).send({ message });
+  }
+});
+
 module.exports = router;
