@@ -25,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     profilePicUrl: {
       type: DataTypes.STRING,
+      required: false,
+      allowNull: true,
     },
     bio: {
       type: DataTypes.STRING(500),

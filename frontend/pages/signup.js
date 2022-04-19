@@ -6,8 +6,11 @@ import { FooterMessage } from "../components/common/WelcomeMessage";
 import CommonInputs from "../components/common/commonInputs";
 import { endPoints } from "../components/config/endPoints";
 import ImageDropDiv from "../components/common/ImageDropDiv";
-
+import axios from "axios";
+import { registerUser } from "../utils/authUser";
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+
+let cancel;
 
 function Signup() {
   const [user, setUser] = useState({
@@ -39,10 +42,6 @@ function Signup() {
 
   const inputRef = useRef();
 
-  const handleSumbit = (e) => {
-    e.preventDefault();
-  };
-
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "media") {
@@ -59,13 +58,44 @@ function Signup() {
     isUser ? setSubmitDisable(false) : setSubmitDisable(true);
   }, [user]);
 
-  const handleAdd = () => {
-    const user = axios.post(addUsers);
+  const checkUserName = async () => {
+    setUserNameLoading(true);
+
+    try {
+      cancel && cancel();
+      const CancelToken = axios.CancelToken;
+      const res = axios.get(
+        `http://localhost:8000/api/users/username/${username}`,
+        {
+          cancelToken: new CancelToken((canceler) => {
+            cancel = canceler;
+          }),
+        }
+      );
+      if (res === "Available") {
+        setUsername(true);
+        setUser((prev) => ({ ...prev, username }));
+      }
+    } catch (error) {
+      setErrorMsg("user not available");
+    }
+    setUserNameLoading(false);
   };
 
+  useEffect(() => {
+    username === "" ? setUsernameAvailable(false) : checkUserName();
+  }, [username]);
+
+  const handleSumbit = async (e) => {
+    e.preventDefault();
+    setFormLoading(true);
+    let profilePicUrl;
+    if (media !== null) {
+      profilePicUrl = await uploadPic(media);
+    }
+  };
   return (
     <>
-      {" "}
       <HeaderMessage />
       <Form
         loading={formLoading}
@@ -78,7 +108,7 @@ function Signup() {
           content={errorMsg}
           onDismiss={() => setErrorMsg(null)}
         />
-        <ImageDropDiv
+        {/*  <ImageDropDiv
           mediaPreview={mediaPreview}
           setMediaPreview={setMediaPreview}
           setMedia={setMedia}
@@ -86,12 +116,12 @@ function Signup() {
           highlighed={highlighed}
           setHighlighed={setHighlighed}
           inputRef={inputRef}
-        />
+        /> */}
 
         <Segment>
           <Form.Input
             label="name"
-            placeholdeR="Name"
+            placeholder="type your name"
             name="name"
             value={name}
             onChange={handleChange}
@@ -103,7 +133,7 @@ function Signup() {
           <Form.Input
             label="Email"
             name="email"
-            placeholdeR="type you email"
+            placeholder="type you email"
             value={email}
             onChange={handleChange}
             fluid
@@ -115,7 +145,7 @@ function Signup() {
           <Form.Input
             label="Password"
             name="password"
-            placeholdeR="type you password"
+            placeholder="type you password"
             value={password}
             onChange={handleChange}
             fluid
@@ -135,7 +165,7 @@ function Signup() {
             error={!usernameAvailable}
             label="Username"
             name="Username"
-            placeholdeR="type your username"
+            placeholder="type your username"
             value={username}
             onChange={(e) => {
               setUsername(e.target.value);
