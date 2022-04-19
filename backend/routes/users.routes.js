@@ -11,9 +11,10 @@ require("dotenv").config();
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
-  cloud_name: process.env.CLOUT_NAME,
+  cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
+  secure: true,
 });
 
 router.get("/:username", async (req, res, next) => {
@@ -67,35 +68,32 @@ router.put("/:id", async (req, res, next) => {
 
 //image posting
 router.post("/addprofile", async (req, res, next) => {
-  console.log(req.body);
   try {
     const { username, firstname, email, password, bio } = req.body;
     if (!isEmail(email)) return res.status(401).send("invalid email");
     if (password.length < 6)
       return res.status(400).send("password must be 8 charactor");
-    const allVal = {
+    const product = {
       username,
       firstname,
       email,
-      profilePicUrl,
       password,
       bio,
     };
     product.password = await bcrypt.hash(password, 10);
     const file = req.files.photo;
-
     cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
       product.profilePicUrl = result.url;
-      await User.create(allVal);
-      return res.status(200).json(allVal);
+      await User.create(product);
+      return res.status(200).json(product);
     });
-  } catch (message) {
-    error.status(500).send({ message });
+  } catch ({ message }) {
+    res.status(500).send({ message });
   }
 });
 
 //image posting jannaten method
-router.post("/upload_jannaten", async (req, res, next) => {
+/* router.post("/upload_jannaten", async (req, res, next) => {
   try {
     const { username, firstname, email, password, bio } = req.body;
     if (!isEmail(email)) return res.status(400).send("invalid email");
@@ -119,5 +117,5 @@ router.post("/upload_jannaten", async (req, res, next) => {
     res.status(500).send({ message });
   }
 });
-
+ */
 module.exports = router;
