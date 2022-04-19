@@ -77,23 +77,28 @@ router.post("/addprofile", async (req, res, next) => {
     if (!isEmail(email)) return res.status(401).send("invalid email");
     if (password.length < 6)
       return res.status(400).send("password must be 8 charactor");
-    const userfind = await User.findAll({ where: { username: username } });
-    if (!userfind) return res.status(401).send("user exists");
 
-    const product = {
-      username,
-      firstname,
-      email,
-      password,
-      bio,
-    };
-    product.password = await bcrypt.hash(password, 10);
-    const file = req.files.photo;
-    cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
-      product.profilePicUrl = result.url;
+    const userfind = await User.findAll({
+      where: { username: username },
     });
-    await User.create(product);
-    return res.status(200).json(product);
+    if (userfind[0]) {
+      return res.status(401).send("user exists");
+    } else {
+      const product = {
+        username,
+        firstname,
+        email,
+        password,
+        bio,
+      };
+      product.password = await bcrypt.hash(password, 10);
+      const file = req.files.photo;
+      cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+        product.profilePicUrl = result.url;
+      });
+      await User.create(product);
+      return res.status(200).json(product);
+    }
   } catch ({ message }) {
     res.status(500).send({ message });
   }
