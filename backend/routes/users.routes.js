@@ -1,8 +1,6 @@
 const db = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const user = require("../models/user");
-const userPng = require("../utils/image");
 const router = require("express").Router();
 const follower = require("../models/follower");
 const isEmail = require("validator/lib/isEmail");
@@ -29,6 +27,7 @@ router.get("/:username", async (req, res, next) => {
     return res.status(500).send("server error");
   }
 });
+
 router.get("/", async (req, res, next) => {
   try {
     if (User.length < 0) return res.status(400).send("invalid");
@@ -49,66 +48,6 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/adduser", async (req, res, next) => {
-  const {
-    username,
-    firstname,
-    email,
-    password,
-    bio,
-    profilePicUrl,
-    facebook,
-    twitter,
-    youtube,
-    instagram,
-  } = req.body;
-  const allVal = {
-    username,
-    firstname,
-    email,
-    profilePicUrl,
-    password,
-    bio,
-    facebook,
-    twitter,
-    youtube,
-    instagram,
-  };
-  if (!isEmail(email)) return res.status(401).send("invalid email");
-  if (allVal.password.length < 6)
-    return res.status(400).send("password must be 8 charactor");
-  try {
-    let userLocate = await User.findOne({ where: { email } });
-    if (userLocate)
-      return res.status(401).send({ message: "Email already registered" });
-    allVal.password = await bcrypt.hash(password, 10);
-    await User.create(allVal);
-    return res.status(200).json(User);
-
-    // let profileField = {};
-    // profileField.users = users._id;
-    // profileField.bio = bio;
-    // profileField.social = {};
-    // if (facebook) profileField.social.facebook = facebook;
-    // if (youtube) profileField.social.facebook = youtube;
-    // if (twitter) profileField.social.facebook = twitter;
-    // if (instagram) profileField.social.facebook = instagram;
-    // await new ProfileModel(profileField).save();
-    // await new follower({
-    //   users: user._id,
-    //   followers: [],
-    //   following: [],
-    // }).save();
-    // const payload = { userId: user._id };
-    // jwt.sign(payload, process.env.jwtsecret, { expire: "2d" }, (err, token) => {
-    //   if (err) throw err;
-    //   return res.status(201).json(token);
-    // });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
-
 router.put("/:id", async (req, res, next) => {
   console.log("req.body", req.body);
 
@@ -125,35 +64,32 @@ router.put("/:id", async (req, res, next) => {
 });
 
 //image posting
-router.post("/upload", (req, res, next) => {
+router.post("/addprofile", async (req, res, next) => {
   console.log(req.body);
-  const { username, firstname, email, password, bio, profilePicUrl } = req.body;
-  const allVal = {
-    username,
-    firstname,
-    email,
-    profilePicUrl,
-    password,
-    bio,
-  };
-  if (!isEmail(email)) return res.status(401).send("invalid email");
-  if (allVal.password.length < 6)
-    return res.status(400).send("password must be 8 charactor");
-
-  const file = req.files.photo;
-  cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
-    console.log(result);
-    product = {
-      username: req.body.username,
-      firstname: req.body.firstname,
-      email: req.body.email,
-      password: req.body.password,
-      bio: req.body.bio,
-      profilePicUrl: result.url,
+  try {
+    const { username, firstname, email, password, bio } = req.body;
+    if (!isEmail(email)) return res.status(401).send("invalid email");
+    if (password.length < 6)
+      return res.status(400).send("password must be 8 charactor");
+    const allVal = {
+      username,
+      firstname,
+      email,
+      profilePicUrl,
+      password,
+      bio,
     };
-    res.status(200).json(User);
-    return User.create(product, allVal);
-  });
+    product.password = await bcrypt.hash(password, 10);
+    const file = req.files.photo;
+
+    cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+      product.profilePicUrl = result.url;
+      await User.create(allVal);
+      return res.status(200).json(allVal);
+    });
+  } catch (message) {
+    error.status(500).send({ message });
+  }
 });
 
 //image posting jannaten method
