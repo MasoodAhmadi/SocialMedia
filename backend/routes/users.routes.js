@@ -98,9 +98,10 @@ router.post("/addprofile", async (req, res, next) => {
         await User.create(product);
         return res.status(200).json(product);
       });
+    } else {
+      await User.create(product);
+      return res.status(200).json(product);
     }
-    await User.create(product);
-    return res.status(200).json(product);
   } catch ({ message }) {
     res.status(500).send({ message });
   }
