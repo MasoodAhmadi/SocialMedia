@@ -6,8 +6,9 @@ import { FooterMessage } from "../components/common/WelcomeMessage";
 import CommonInputs from "../components/common/commonInputs";
 import { endPoints } from "../components/config/endPoints";
 import ImageDropDiv from "../components/common/ImageDropDiv";
-import axios from "axios";
 import { registerUser } from "../utils/authUser";
+import axios from "axios";
+import uploadPic from "../utils/uploadpicCloudinary";
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 let cancel;
@@ -93,6 +94,12 @@ function Signup() {
     if (media !== null) {
       profilePicUrl = await uploadPic(media);
     }
+
+    if (media !== null && profilePicUrl) {
+      setFormLoading(false);
+      return setErrorMsg("Error uploading Image");
+    }
+    await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
   };
   return (
     <>

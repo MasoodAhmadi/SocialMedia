@@ -5,24 +5,24 @@ import catchErrors from "./catchErrors";
 
 export const registerUser = async (
   user,
-  username,
-  firstname,
-  bio,
-  email,
-  password,
   profilePicUrl,
-  setError,
-  setLoading
+  setLoading,
+  setError
+  // username,
+  // firstname,
+  // bio,
+  // email,
+  // password
 ) => {
-  setLoading(true);
   try {
     const res = await axios.post(`http://localhost:8000/api/users/addprofile`, {
-      username,
-      firstname,
-      bio,
-      email,
-      password,
+      user,
       profilePicUrl,
+      // username,
+      // firstname,
+      // bio,
+      // email,
+      // password,
     });
     setToken(res.data);
   } catch (error) {
@@ -30,8 +30,10 @@ export const registerUser = async (
     setError(errorMsg);
   }
 };
+
 export const LoginUser = async (
   username,
+  user,
   email,
   password,
   setError,
@@ -42,6 +44,7 @@ export const LoginUser = async (
     const res = await axios.post(`http://localhost:8000/api/users/auth`, {
       username,
       email,
+      user,
       password,
     });
     setToken(res.data);
@@ -53,5 +56,5 @@ export const LoginUser = async (
 
 const setToken = (token) => {
   cookie.set("token", token);
-  Router.push("/addprofile");
+  Router.push("/");
 };
