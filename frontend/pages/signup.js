@@ -14,21 +14,31 @@ const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 let cancel;
 
 function Signup() {
-  // const [user, setUser] = useState({
-  //   username: "",
-  //   firstname: "",
-  //   email: "",
-  //   password: "",
-  //   bio: "",
-  //   profilePicUrl: null,
-  //   facebook: "",
-  //   youtube: "",
-  //   twitter: "",
-  //   instagram: "",
-  // });
-  const [allUser, setAllUser] = useState([]);
-
+  const [user, setUser] = useState({
+    name: "",
+    firstname: "",
+    email: "",
+    password: "",
+    bio: "",
+    profilePicUrl: null,
+    facebook: "",
+    youtube: "",
+    twitter: "",
+    instagram: "",
+  });
   const { getallUsers, addUsers } = endPoints;
+
+  const {
+    name,
+    firstname,
+    email,
+    password,
+    bio,
+    facebook,
+    instagram,
+    youtube,
+    twitter,
+  } = user;
 
   const [showSocialLinks, setShowSocialLinks] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -62,7 +72,6 @@ function Signup() {
       email,
       password,
       bio,
-      profilePicUrl,
     }).every((item) => Boolean(item));
     isUser ? setSubmitDisable(false) : setSubmitDisable(true);
   }, [user]);
@@ -86,33 +95,33 @@ function Signup() {
     }
   };
 
-  // const checkUserName = async () => {
-  //   setUserNameLoading(true);
+  const checkUserName = async () => {
+    setUserNameLoading(true);
 
-  //   try {
-  //     cancel && cancel();
-  //     const CancelToken = axios.CancelToken;
-  //     const res = axios.get(
-  //       `http://localhost:8000/api/users/username/${username}`,
-  //       {
-  //         cancelToken: new CancelToken((canceler) => {
-  //           cancel = canceler;
-  //         }),
-  //       }
-  //     );
-  //     if (res === "Available") {
-  //       setUsername(true);
-  //       setUser((prev) => ({ ...prev, username }));
-  //     }
-  //   } catch (error) {
-  //     setErrorMsg("user not available");
-  //   }
-  //   setUserNameLoading(false);
-  // };
+    try {
+      cancel && cancel();
+      const CancelToken = axios.CancelToken;
+      const res = axios.get(
+        `http://localhost:8000/api/users/username/${username}`,
+        {
+          cancelToken: new CancelToken((canceler) => {
+            cancel = canceler;
+          }),
+        }
+      );
+      if (res === "Available") {
+        setUsername(true);
+        setUser((prev) => ({ ...prev, username }));
+      }
+    } catch (error) {
+      setErrorMsg("user not available");
+    }
+    setUserNameLoading(false);
+  };
 
-  // useEffect(() => {
-  //   username === "" ? setUsernameAvailable(false) : checkUserName();
-  // }, [username]);
+  useEffect(() => {
+    username === "" ? setUsernameAvailable(false) : checkUserName();
+  }, [username]);
 
   const handleSumbit = async (value) => {
     setFormLoading(true);
@@ -169,7 +178,7 @@ function Signup() {
             label="name"
             placeholder="type your name"
             name="name"
-            value={username}
+            value={name}
             onChange={handleChange}
             fluid
             icon="user"
@@ -226,12 +235,70 @@ function Signup() {
             iconPosition="left"
             required
           />
-          <CommonInputs
+          {/* <CommonInputs
             user={user}
             showSocialLinks={showSocialLinks}
             setShowSocialLinks={setShowSocialLinks}
             handleChange={handleChange}
-          />
+          /> */}
+          <>
+            <Form.Field
+              reguired
+              control={TextArea}
+              name="bio"
+              value={bio}
+              onChange={handleChange}
+              placeholder="bio"
+            />
+            <Button
+              content="Add social link"
+              color="red"
+              icon="at"
+              type="button"
+              onClick={() => {
+                setShowSocialLinks(!showSocialLinks);
+              }}
+            />
+            {showSocialLinks && (
+              <>
+                <Divider />
+                <Form.Input
+                  icon="facebook"
+                  iconPosition="left"
+                  name="facebook"
+                  value={facebook}
+                  onChange={handleChange}
+                />
+                <Form.Input
+                  icon="twitter"
+                  iconPosition="left"
+                  name="twitter"
+                  value={twitter}
+                  onChange={handleChange}
+                />
+                <Form.Input
+                  icon="instagram"
+                  iconPosition="left"
+                  name="instagram"
+                  value={instagram}
+                  onChange={handleChange}
+                />
+                <Form.Input
+                  icon="youtube"
+                  iconPosition="left"
+                  name="youtube"
+                  value={youtube}
+                  onChange={handleChange}
+                />
+                <Message
+                  icon="attention"
+                  info
+                  size="small"
+                  header="Social Media Links are optional"
+                />
+              </>
+            )}
+          </>
           <Divider hidden />
           <Button
             content="Signup"
