@@ -4,25 +4,22 @@ import cookie from "js-cookie";
 import catchErrors from "./catchErrors";
 
 export const registerUser = async (
-  user,
   profilePicUrl,
-  setLoading,
-  setError
-  // username,
-  // firstname,
-  // bio,
-  // email,
-  // password
+  setError,
+  username,
+  firstname,
+  bio,
+  email,
+  password
 ) => {
   try {
     const res = await axios.post(`http://localhost:8000/api/users/addprofile`, {
-      user,
       profilePicUrl,
-      // username,
-      // firstname,
-      // bio,
-      // email,
-      // password,
+      username,
+      firstname,
+      bio,
+      email,
+      password,
     });
     setToken(res.data);
   } catch (error) {

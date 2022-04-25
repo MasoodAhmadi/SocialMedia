@@ -14,20 +14,22 @@ const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 let cancel;
 
 function Signup() {
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-    bio: "",
-    facebook: "",
-    youtube: "",
-    twitter: "",
-    instagram: "",
-  });
+  // const [user, setUser] = useState({
+  //   username: "",
+  //   firstname: "",
+  //   email: "",
+  //   password: "",
+  //   bio: "",
+  //   profilePicUrl: null,
+  //   facebook: "",
+  //   youtube: "",
+  //   twitter: "",
+  //   instagram: "",
+  // });
+  const [allUser, setAllUser] = useState([]);
 
   const { getallUsers, addUsers } = endPoints;
 
-  const { name, email, password, bio } = user;
   const [showSocialLinks, setShowSocialLinks] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
@@ -40,6 +42,7 @@ function Signup() {
   const [media, setMedia] = useState(null);
   const [mediaPreview, setMediaPreview] = useState(null);
   const [highlighed, setHighlighed] = useState(false);
+  const [fileOne, setFileOne] = useState(null);
 
   const inputRef = useRef();
 
@@ -53,54 +56,90 @@ function Signup() {
   };
 
   useEffect(() => {
-    const isUser = Object.values({ name, email, password, bio }).every((item) =>
-      Boolean(item)
-    );
+    const isUser = Object.values({
+      username,
+      firstname,
+      email,
+      password,
+      bio,
+      profilePicUrl,
+    }).every((item) => Boolean(item));
     isUser ? setSubmitDisable(false) : setSubmitDisable(true);
   }, [user]);
 
-  const checkUserName = async () => {
-    setUserNameLoading(true);
-
+  const uploadPic = async (media) => {
+    const cloudinaryConfig = cloudinary.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET,
+      secure: true,
+    });
     try {
-      cancel && cancel();
-      const CancelToken = axios.CancelToken;
-      const res = axios.get(
-        `http://localhost:8000/api/users/username/${username}`,
-        {
-          cancelToken: new CancelToken((canceler) => {
-            cancel = canceler;
-          }),
-        }
-      );
-      if (res === "Available") {
-        setUsername(true);
-        setUser((prev) => ({ ...prev, username }));
-      }
+      const form = new FormData();
+      form.append("file", media);
+      form.append("upload_preset", "maso");
+      form.append("cloud_name", "masoodahmadi");
+      const res = await axios.post(cloudinaryConfig, form);
+      return res.data.url;
     } catch (error) {
-      setErrorMsg("user not available");
+      return;
     }
-    setUserNameLoading(false);
   };
 
-  useEffect(() => {
-    username === "" ? setUsernameAvailable(false) : checkUserName();
-  }, [username]);
+  // const checkUserName = async () => {
+  //   setUserNameLoading(true);
 
-  const handleSumbit = async (e) => {
-    e.preventDefault();
+  //   try {
+  //     cancel && cancel();
+  //     const CancelToken = axios.CancelToken;
+  //     const res = axios.get(
+  //       `http://localhost:8000/api/users/username/${username}`,
+  //       {
+  //         cancelToken: new CancelToken((canceler) => {
+  //           cancel = canceler;
+  //         }),
+  //       }
+  //     );
+  //     if (res === "Available") {
+  //       setUsername(true);
+  //       setUser((prev) => ({ ...prev, username }));
+  //     }
+  //   } catch (error) {
+  //     setErrorMsg("user not available");
+  //   }
+  //   setUserNameLoading(false);
+  // };
+
+  // useEffect(() => {
+  //   username === "" ? setUsernameAvailable(false) : checkUserName();
+  // }, [username]);
+
+  const handleSumbit = async (value) => {
     setFormLoading(true);
-    let profilePicUrl;
-    if (media !== null) {
-      profilePicUrl = await uploadPic(media);
-    }
+    // let profilePicUrl;
+    // if (media !== null) {
+    //   profilePicUrl = await uploadPic(media);
+    // }
 
-    if (media !== null && profilePicUrl) {
-      setFormLoading(false);
-      return setErrorMsg("Error uploading Image");
+    // if (media !== null && profilePicUrl) {
+    //   setFormLoading(false);
+    //   return setErrorMsg("Error uploading Image");
+    // }
+    try {
+      // const userCreate = value;
+      // userCreate.username = user.username;
+      // userCreate.firstname = user.firstname;
+      // userCreate.email = user.email;
+      // userCreate.bio = user.bio;
+      // userCreate.password = user.password;
+      await axios.post(`http://localhost:8000/api/users/addprofile`, user);
+    } catch (error) {
+      console.log(error);
     }
-    await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
+    //await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
   };
+
+  console.log(user, "user");
   return (
     <>
       <HeaderMessage />
@@ -115,7 +154,7 @@ function Signup() {
           content={errorMsg}
           onDismiss={() => setErrorMsg(null)}
         />
-        {/*  <ImageDropDiv
+        <ImageDropDiv
           mediaPreview={mediaPreview}
           setMediaPreview={setMediaPreview}
           setMedia={setMedia}
@@ -123,14 +162,14 @@ function Signup() {
           highlighed={highlighed}
           setHighlighed={setHighlighed}
           inputRef={inputRef}
-        /> */}
+        />
 
         <Segment>
           <Form.Input
             label="name"
             placeholder="type your name"
             name="name"
-            value={name}
+            value={username}
             onChange={handleChange}
             fluid
             icon="user"
