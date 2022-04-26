@@ -73,7 +73,6 @@ router.put("/updateuser/:id", async (req, res, next) => {
 //image posting
 router.post("/addprofile", async (req, res, next) => {
   console.log("/addprofile");
-  // res.writeHead(200, { "content-type": "text/plain" });
   try {
     const { username, name, email, password, bio } = req.body;
     if (!isEmail(email)) return res.status(401).send("invalid email");
@@ -97,30 +96,11 @@ router.post("/addprofile", async (req, res, next) => {
       const file = req.files.photo;
       cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
         product.profilePicUrl = result.url;
-        //const payload = { userid: User.id };
-        // jwt.sign(
-        //   payload,
-        //   process.env.JWT_SECRET,
-        //   { expires: "2d" },
-        //   (err, token) => {
-        //     if (err) throw err;
-        //     res.status(200).json(token);
-        //   }
-        // );
+
         await User.create(product);
         return res.status(200).json(product);
       });
     } else {
-      //const payload = { userid: User.id };
-      // jwt.sign(
-      //   payload,
-      //   process.env.JWT_SECRET,
-      //   { expires: "2d" },
-      //   (err, token) => {
-      //     if (err) throw err;
-      //     res.status(200).json(token);
-      //   }
-      // );
       await User.create(product);
       return res.status(200).json(product);
     }

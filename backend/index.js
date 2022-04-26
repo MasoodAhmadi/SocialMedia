@@ -6,12 +6,12 @@ require("dotenv").config();
 const cors = require("cors");
 const app = express();
 
-//const PORT = process.env.SERVER_CONTAINER_PORT;
-const PORT = 8000;
+const PORT = process.env.SERVER_CONTAINER_PORT || 8000;
 
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
+
 app.use(
   fileUpload({
     useTempFiles: true,

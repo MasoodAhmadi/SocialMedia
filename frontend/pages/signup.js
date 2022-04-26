@@ -134,7 +134,7 @@ function Signup() {
           content={errorMsg}
           onDismiss={() => setErrorMsg(null)}
         />
-        <ImageDropDiv
+        {/* <ImageDropDiv
           mediaPreview={mediaPreview}
           setMediaPreview={setMediaPreview}
           setMedia={setMedia}
@@ -142,7 +142,7 @@ function Signup() {
           highlighted={highlighted}
           setHighlighted={setHighlighted}
           inputRef={inputRef}
-        />
+        /> */}
 
         <Segment>
           <Form.Input
