@@ -32,3 +32,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+COMPOSE_PROJECT_NAME=example_app
+TZ=Europe/Helsinki
+
+CLIENT_PUBLIC_PORT=3000
+CLIENT_CONTAINER_PORT=3000
+
+SERVER_PUBLIC_PORT=8000
+SERVER_CONTAINER_PORT=8003
+
+PHPMYADMIN_PUBLIC_PORT=8001
+PHPMYADMIN_CONTAINER_PORT=80
+DATABASE_ROOT_PASSWORD=123456
+DATABASE_NAME=nextjs
+
+CLOUD_NAME=ahmadimasood
+API_KEY=483589172997211
+API_SECRET=qGfb6WbmcaO1GvNUU5lJEVkp1rI
