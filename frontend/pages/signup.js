@@ -16,88 +16,51 @@ let cancel;
 function Signup() {
   const [user, setUser] = useState({
     name: "",
-    firstname: "",
     email: "",
     password: "",
     bio: "",
-    profilePicUrl: null,
     facebook: "",
     youtube: "",
     twitter: "",
     instagram: "",
   });
   const { getallUsers, addUsers } = endPoints;
-
-  const {
-    name,
-    firstname,
-    email,
-    password,
-    bio,
-    facebook,
-    instagram,
-    youtube,
-    twitter,
-  } = user;
-
-  const [showSocialLinks, setShowSocialLinks] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(false);
-  const [formLoading, setFormLoading] = useState(false);
-  const [submitDisable, setSubmitDisable] = useState(true);
-
-  const [username, setUsername] = useState("");
-  const [usernameLoading, setUserNameLoading] = useState(false);
-  const [usernameAvailable, setUsernameAvailable] = useState(false);
-  const [media, setMedia] = useState(null);
-  const [mediaPreview, setMediaPreview] = useState(null);
-  const [highlighed, setHighlighed] = useState(false);
-  const [fileOne, setFileOne] = useState(null);
-
-  const inputRef = useRef();
-
+  const { name, email, password, bio } = user;
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
     if (name === "media") {
       setMedia(files[0]);
       setMediaPreview(URL.createObjectURL(files[0]));
     }
+
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
+  const [showSocialLinks, setShowSocialLinks] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [formLoading, setFormLoading] = useState(false);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
+
+  const [username, setUsername] = useState("");
+  const [usernameLoading, setUsernameLoading] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState(false);
+
+  const [media, setMedia] = useState(null);
+  const [mediaPreview, setMediaPreview] = useState(null);
+  const [highlighted, setHighlighted] = useState(false);
+  const inputRef = useRef();
+
   useEffect(() => {
-    const isUser = Object.values({
-      username,
-      firstname,
-      email,
-      password,
-      bio,
-    }).every((item) => Boolean(item));
-    isUser ? setSubmitDisable(false) : setSubmitDisable(true);
+    const isUser = Object.values({ name, email, password, bio }).every((item) =>
+      Boolean(item)
+    );
+    isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
   }, [user]);
 
-  const uploadPic = async (media) => {
-    const cloudinaryConfig = cloudinary.config({
-      cloud_name: process.env.CLOUD_NAME,
-      api_key: process.env.API_KEY,
-      api_secret: process.env.API_SECRET,
-      secure: true,
-    });
-    try {
-      const form = new FormData();
-      form.append("file", media);
-      form.append("upload_preset", "maso");
-      form.append("cloud_name", "masoodahmadi");
-      const res = await axios.post(cloudinaryConfig, form);
-      return res.data.url;
-    } catch (error) {
-      return;
-    }
-  };
-
   const checkUserName = async () => {
-    setUserNameLoading(true);
-
+    setUsernameLoading(true);
     try {
       cancel && cancel();
       const CancelToken = axios.CancelToken;
@@ -116,46 +79,22 @@ function Signup() {
     } catch (error) {
       setErrorMsg("user not available");
     }
-    setUserNameLoading(false);
+    setUsernameLoading(false);
   };
 
   useEffect(() => {
     username === "" ? setUsernameAvailable(false) : checkUserName();
   }, [username]);
 
-  const handleSumbit = async (value) => {
-    setFormLoading(true);
-    // let profilePicUrl;
-    // if (media !== null) {
-    //   profilePicUrl = await uploadPic(media);
-    // }
+  const handleSubmit = async (value) => {};
 
-    // if (media !== null && profilePicUrl) {
-    //   setFormLoading(false);
-    //   return setErrorMsg("Error uploading Image");
-    // }
-    try {
-      // const userCreate = value;
-      // userCreate.username = user.username;
-      // userCreate.firstname = user.firstname;
-      // userCreate.email = user.email;
-      // userCreate.bio = user.bio;
-      // userCreate.password = user.password;
-      await axios.post(`http://localhost:8000/api/users/addprofile`, user);
-    } catch (error) {
-      console.log(error);
-    }
-    //await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
-  };
-
-  console.log(user, "user");
   return (
     <>
       <HeaderMessage />
       <Form
         loading={formLoading}
         error={errorMsg !== null}
-        onSubmit={handleSumbit}
+        onSubmit={handleSubmit}
       >
         <Message
           error
@@ -168,8 +107,8 @@ function Signup() {
           setMediaPreview={setMediaPreview}
           setMedia={setMedia}
           handleChange={handleChange}
-          highlighed={highlighed}
-          setHighlighed={setHighlighed}
+          highlighted={highlighted}
+          setHighlighted={setHighlighted}
           inputRef={inputRef}
         />
 
@@ -235,76 +174,19 @@ function Signup() {
             iconPosition="left"
             required
           />
-          {/* <CommonInputs
+          <CommonInputs
             user={user}
             showSocialLinks={showSocialLinks}
             setShowSocialLinks={setShowSocialLinks}
             handleChange={handleChange}
-          /> */}
-          <>
-            <Form.Field
-              reguired
-              control={TextArea}
-              name="bio"
-              value={bio}
-              onChange={handleChange}
-              placeholder="bio"
-            />
-            <Button
-              content="Add social link"
-              color="red"
-              icon="at"
-              type="button"
-              onClick={() => {
-                setShowSocialLinks(!showSocialLinks);
-              }}
-            />
-            {showSocialLinks && (
-              <>
-                <Divider />
-                <Form.Input
-                  icon="facebook"
-                  iconPosition="left"
-                  name="facebook"
-                  value={facebook}
-                  onChange={handleChange}
-                />
-                <Form.Input
-                  icon="twitter"
-                  iconPosition="left"
-                  name="twitter"
-                  value={twitter}
-                  onChange={handleChange}
-                />
-                <Form.Input
-                  icon="instagram"
-                  iconPosition="left"
-                  name="instagram"
-                  value={instagram}
-                  onChange={handleChange}
-                />
-                <Form.Input
-                  icon="youtube"
-                  iconPosition="left"
-                  name="youtube"
-                  value={youtube}
-                  onChange={handleChange}
-                />
-                <Message
-                  icon="attention"
-                  info
-                  size="small"
-                  header="Social Media Links are optional"
-                />
-              </>
-            )}
-          </>
+          />
+
           <Divider hidden />
           <Button
             content="Signup"
             type="submit"
             color="orange"
-            disabled={submitDisable || !usernameAvailable}
+            disabled={submitDisabled || !usernameAvailable}
           />
         </Segment>
       </Form>
