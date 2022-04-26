@@ -28,7 +28,7 @@ router.get("/username/:username", async (req, res, next) => {
     if (user) {
       return res.status(401).send("Username already taken");
     } else {
-      return res.status(200).send("Available!");
+      return res.status(200).send("Available");
     }
   } catch ({ message }) {
     res.status(500).send({ message });
@@ -73,8 +73,9 @@ router.put("/updateuser/:id", async (req, res, next) => {
 //image posting
 router.post("/addprofile", async (req, res, next) => {
   console.log("/addprofile");
+  // res.writeHead(200, { "content-type": "text/plain" });
   try {
-    const { username, firstname, email, password, bio } = req.body;
+    const { username, name, email, password, bio } = req.body;
     if (!isEmail(email)) return res.status(401).send("invalid email");
     if (password.length < 6)
       return res.status(400).send("password must be 8 charactor");
@@ -86,7 +87,7 @@ router.post("/addprofile", async (req, res, next) => {
     }
     let product = {
       username,
-      firstname,
+      name,
       email,
       password,
       bio,
@@ -110,7 +111,7 @@ router.post("/addprofile", async (req, res, next) => {
         return res.status(200).json(product);
       });
     } else {
-      const payload = { userid: User.id };
+      //const payload = { userid: User.id };
       // jwt.sign(
       //   payload,
       //   process.env.JWT_SECRET,

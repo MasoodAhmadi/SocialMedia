@@ -1,30 +1,28 @@
-require("dotenv").config();
 const express = require("express");
+const fileUpload = require("express-fileupload");
 const userRouter = require("./routes/users.routes");
-const app = express();
-app.use(express.json());
-const cors = require("cors");
 const bodyParser = require("body-parser");
+require("dotenv").config();
+const cors = require("cors");
+const app = express();
 
 //const PORT = process.env.SERVER_CONTAINER_PORT;
 const PORT = 8000;
 
-const fileUpload = require("express-fileupload");
-
+app.use(bodyParser.json());
+app.use(express.json());
+app.use(cors());
 app.use(
   fileUpload({
     useTempFiles: true,
   })
 );
-app.use(cors());
-app.use(bodyParser.json());
+
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", userRouter);
-// app.use("/api/users/:id", userRouter);
-//app.use("/api/updateuser/:id", userRouter);
-// app.use("/api/adduser", userRouter);
 
 app.get("/", (req, res) => {
-  res.send("welcome!");
+  res.send("chat application api!");
 });
 
 app.listen(PORT, () => {
