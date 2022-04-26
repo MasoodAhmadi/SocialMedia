@@ -4,27 +4,35 @@ import cookie from "js-cookie";
 import catchErrors from "./catchErrors";
 
 export const registerUser = async (
-  profilePicUrl,
   setError,
   username,
   firstname,
   bio,
   email,
-  password
+  password,
+  profilePicUrl
 ) => {
   try {
-    const res = await axios.post(`http://localhost:8000/api/users/addprofile`, {
-      profilePicUrl,
-      username,
-      firstname,
-      bio,
-      email,
-      password,
-    });
+    const res = await axios.post(
+      `http://localhost:8000/api/users/addprofile`,
+      {
+        username,
+        firstname,
+        bio,
+        email,
+        password,
+        profilePicUrl,
+      },
+      {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+        form: true,
+      }
+    );
     setToken(res.data);
   } catch (error) {
-    const errorMsg = catchErrors(error);
-    setError(errorMsg);
+    console.log("something happened!");
   }
 };
 
@@ -44,6 +52,7 @@ export const LoginUser = async (
       user,
       password,
     });
+
     setToken(res.data);
   } catch (error) {
     const errorMsg = catchErrors(error);

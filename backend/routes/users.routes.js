@@ -72,6 +72,7 @@ router.put("/updateuser/:id", async (req, res, next) => {
 
 //image posting
 router.post("/addprofile", async (req, res, next) => {
+  console.log("/addprofile");
   try {
     const { username, firstname, email, password, bio } = req.body;
     if (!isEmail(email)) return res.status(401).send("invalid email");
@@ -123,6 +124,7 @@ router.post("/addprofile", async (req, res, next) => {
       return res.status(200).json(product);
     }
   } catch ({ message }) {
+    console.log("/addprofile failed " + message);
     res.status(500).send({ message });
   }
 });

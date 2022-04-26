@@ -15,6 +15,7 @@ let cancel;
 
 function Signup() {
   const [user, setUser] = useState({
+    username: "",
     name: "",
     email: "",
     password: "",
@@ -25,7 +26,7 @@ function Signup() {
     instagram: "",
   });
   const { getallUsers, addUsers } = endPoints;
-  const { name, email, password, bio } = user;
+  const { username, name, email, password, bio } = user;
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -43,7 +44,7 @@ function Signup() {
   const [formLoading, setFormLoading] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  const [username, setUsername] = useState("");
+  const [checkusername, setCheckUsername] = useState("");
   const [usernameLoading, setUsernameLoading] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(false);
 
@@ -86,7 +87,26 @@ function Signup() {
     username === "" ? setUsernameAvailable(false) : checkUserName();
   }, [username]);
 
-  const handleSubmit = async (value) => {};
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+    // let profilePicUrl;
+    // if (media !== null) {
+    //   profilePicUrl = await uploadPic(media);
+    // }
+    // if (media !== null && !profilePicUrl) {
+    //   setFormLoading(false);
+    //   return setErrorMsg("Error Uploading Image");
+    // }
+    // await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
+    await axios({
+      method: "POST",
+      url: "http://localhost:8000/api/users/addprofile",
+      data: user,
+      headers: { "Content-Type": "application/json" },
+    }).then((response) => {
+      console.log(response);
+    });
+  };
 
   return (
     <>
@@ -160,9 +180,9 @@ function Signup() {
             label="Username"
             name="Username"
             placeholder="type your username"
-            value={username}
+            value={checkusername}
             onChange={(e) => {
-              setUsername(e.target.value);
+              setCheckUsername(e.target.value);
               if (resgexUserName.test(e.target.value)) {
                 setUsernameAvailable(true);
               } else {
