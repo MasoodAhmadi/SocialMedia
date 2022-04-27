@@ -39,6 +39,8 @@ function Signup() {
 
     setUser((prev) => ({ ...prev, [name]: value }));
   };
+  const [image, setImage] = useState(null);
+  const [createObjectURL, setCreateObjectURL] = useState(null);
 
   const [showSocialLinks, setShowSocialLinks] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -89,6 +91,28 @@ function Signup() {
     checkUsername === "" ? setUsernameAvailable(false) : checkUser();
   }, [checkUsername]);
 
+  const uploadToClient = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+
+      setImage(i);
+      setCreateObjectURL(URL.createObjectURL(i));
+    }
+  };
+
+  const uploadToServer = async (event) => {
+    try {
+      const formData = new FormData();
+      formData.append("photo", data.file);
+      const response = await fetch(
+        "http://localhost:8000/api/users/addprofile",
+        {
+          method: "POST",
+          formData,
+        }
+      );
+    } catch (error) {}
+  };
   const handleSubmit = async (data) => {
     // e.preventDefault();
     // let profilePicUrl;
@@ -100,24 +124,17 @@ function Signup() {
     //   return setErrorMsg("Error Uploading Image");
     // }
     // await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
-    const formData = new FormData();
-    formData.append("photo", data.file);
-    const res = await fetch("http://localhost:8000/api/users/addprofile", {
-      method: "POST",
-      body: { user },
-    }).then((res) => res.json());
-
-    console.log(user);
-    alert(JSON.stringify(`${res.message}, status: ${res.status}`));
-
-    // await axios({
-    //   method: "POST",
-    //   url: "http://localhost:8000/api/users/addprofile",
-    //   data: user,
-    //   headers: { "Content-Type": "application/json" },
-    // }).then((response) => {
-    //   console.log(response);
-    // });
+    try {
+      const formData = new FormData();
+      formData.append("photo", data.file);
+      await fetch("http://localhost:8000/api/users/addprofile", {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: { "Content-Type": "application/json" },
+      }).then((res) => res.json());
+    } catch (error) {
+      console.log("error");
+    }
   };
 
   return (
@@ -143,6 +160,20 @@ function Signup() {
           setHighlighted={setHighlighted}
           inputRef={inputRef}
         /> */}
+        <div>
+          <div>
+            <img src={createObjectURL} />
+            <h4>Select Image</h4>
+            <input type="file" name="myImage" onChange={uploadToClient} />
+            <button
+              className="btn btn-primary"
+              type="submit"
+              onClick={uploadToServer}
+            >
+              Send to server
+            </button>
+          </div>
+        </div>
 
         <Segment>
           <Form.Input

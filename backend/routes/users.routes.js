@@ -79,9 +79,11 @@ router.post("/addprofile", async (req, res, next) => {
     if (password.length < 6)
       return res.status(400).send("password must be 8 charactor");
     const userfind = await User.findAll({
-      where: { username: username },
+      where: { email },
     });
     if (userfind[0]) {
+      console.log("i am here");
+      console.log(userfind[0]);
       return res.status(401).send("user exists");
     }
     let product = {
@@ -96,7 +98,6 @@ router.post("/addprofile", async (req, res, next) => {
       const file = req.files.photo;
       cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
         product.profilePicUrl = result.url;
-
         await User.create(product);
         return res.status(200).json(product);
       });
@@ -104,6 +105,8 @@ router.post("/addprofile", async (req, res, next) => {
       await User.create(product);
       return res.status(200).json(product);
     }
+    // await User.create(product);
+    // return res.status(200).json(product);
   } catch ({ message }) {
     console.log("/addprofile failed " + message);
     res.status(500).send({ message });
