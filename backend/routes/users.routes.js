@@ -71,7 +71,6 @@ router.put("/updateuser/:id", async (req, res, next) => {
 });
 
 router.post("/signup", async (req, res, next) => {
-  console.log("/signup");
   try {
     const { username, name, email, password, bio } = req.body;
     if (!isEmail(email)) return res.status(401).send("invalid email");
@@ -81,7 +80,6 @@ router.post("/signup", async (req, res, next) => {
       where: { email },
     });
     if (userfind[0]) {
-      console.log(userfind[0]);
       return res.status(401).send("email already exists");
     }
     let product = {
@@ -103,8 +101,6 @@ router.post("/signup", async (req, res, next) => {
             email: product.email,
             password: product.password,
             bio: product.bio,
-
-            //save to DB mysql
             profilePicUrl: result.url,
           });
           console.log(myUser);
@@ -121,7 +117,7 @@ router.post("/signup", async (req, res, next) => {
       return res.status(200).json(product);
     }
   } catch ({ message }) {
-    console.log("/signup failed " + message);
+    console.log(message);
     res.status(500).send({ message });
   }
 });
