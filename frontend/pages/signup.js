@@ -10,6 +10,7 @@ import ImageDropDiv from "../components/common/ImageDropDiv";
 import axios from "axios";
 //import uploadPic from "../utils/uploadpicCloudinary";
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+import Router from "next/router";
 
 let cancel;
 
@@ -99,19 +100,20 @@ function Signup() {
       setCreateObjectURL(URL.createObjectURL(i));
     }
   };
+  console.log("this is an image", image);
 
   const uploadToServer = async (event) => {
     try {
       const formData = new FormData();
       formData.append("photo", data.file);
-      await fetch("http://localhost:8000/api/users/addprofile", {
+      await fetch("http://localhost:8000/api/users/signup", {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify(user),
         headers: { "Content-Type": "application/json" },
       }).then((res) => res.json());
     } catch (error) {}
   };
-  const handleSubmit = async (data) => {
+  const handleSubmit = async (event) => {
     // e.preventDefault();
     // let profilePicUrl;
     // if (media !== null) {
@@ -123,18 +125,32 @@ function Signup() {
     // }
     // await registerUser(user, profilePicUrl, setErrorMsg, setFormLoading);
     try {
-      const formData = new FormData();
-      formData.append("photo", data.file);
-      await fetch("http://localhost:8000/api/users/addprofile", {
+      const data = new FormData();
+      const { files } = event.target;
+      data.append("photo", files[0]);
+      data.append("upload_preset", "maso");
+
+      await fetch("http://localhost:8000/api/users/signup", {
         method: "POST",
         body: JSON.stringify(user),
         headers: { "Content-Type": "application/json" },
-      }).then((res) => res.json());
+      })
+        .then((res) => res.json())
+        .then((data) =>
+          setUser({
+            username: data.username,
+            password: data.password,
+            profilePicUrl: data.url,
+            bio: data.bio,
+            email: data.email,
+            name: data.name,
+          })
+        );
     } catch (error) {
       console.log("error");
     }
   };
-
+  console.log("users", user);
   return (
     <>
       <HeaderMessage />
@@ -218,18 +234,19 @@ function Signup() {
           <Form.Input
             loading={usernameLoading}
             error={!usernameAvailable}
-            label="Username"
-            name="Username"
+            label="username"
+            name="username"
             placeholder="type your username"
-            value={checkUsername}
-            onChange={(e) => {
-              setCheckUsername(e.target.value);
-              if (resgexUserName.test(e.target.value)) {
-                setUsernameAvailable(true);
-              } else {
-                setUsernameAvailable(false);
-              }
-            }}
+            value={username}
+            onChange={handleChange}
+            // onChange={(e) => {
+            //   setCheckUsername(e.target.value);
+            //   if (resgexUserName.test(e.target.value)) {
+            //     setUsernameAvailable(true);
+            //   } else {
+            //     setUsernameAvailable(false);
+            //   }
+            // }}
             fluid
             icon={usernameAvailable ? "check" : "close"}
             iconPosition="left"
@@ -247,7 +264,7 @@ function Signup() {
             content="Signup"
             type="submit"
             color="orange"
-            disabled={submitDisabled || !usernameAvailable}
+            // disabled={submitDisabled || !usernameAvailable}
           />
         </Segment>
       </Form>

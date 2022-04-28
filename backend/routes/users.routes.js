@@ -8,9 +8,6 @@ const follower = require("../models/follower");
 const isEmail = require("validator/lib/isEmail");
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
-const multer = require("multer");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-
 const { User } = db;
 
 cloudinary.config({
@@ -19,15 +16,6 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
   secure: true,
 });
-
-// const storage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   folder: "demo",
-//   allowedFormats: ["jpg", "png"],
-//   transformation: [{ width: 500, height: 500, crop: "limit" }],
-// });
-
-// const parser = multer({ storage: storage });
 
 router.get("/username/:username", async (req, res, next) => {
   try {

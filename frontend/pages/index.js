@@ -1,11 +1,11 @@
-import WelcomePage from "../components/common/welcomePage";
+// import WelcomePage from "../components/common/welcomePage";
 
-function HomePage() {
-  return (
-    <div>
-      <WelcomePage />
-    </div>
-  );
-}
+// function HomePage() {
+//   return (
+//     <div>
+//       <WelcomePage />
+//     </div>
+//   );
+// }
 
-export default HomePage;
+// export default HomePage;
