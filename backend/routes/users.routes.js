@@ -8,6 +8,9 @@ const follower = require("../models/follower");
 const isEmail = require("validator/lib/isEmail");
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
 const { User } = db;
 
 cloudinary.config({
@@ -16,6 +19,15 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
   secure: true,
 });
+
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   folder: "demo",
+//   allowedFormats: ["jpg", "png"],
+//   transformation: [{ width: 500, height: 500, crop: "limit" }],
+// });
+
+// const parser = multer({ storage: storage });
 
 router.get("/username/:username", async (req, res, next) => {
   try {
@@ -70,9 +82,8 @@ router.put("/updateuser/:id", async (req, res, next) => {
   }
 });
 
-//image posting
-router.post("/addprofile", async (req, res, next) => {
-  console.log("/addprofile");
+router.post("/signup", async (req, res, next) => {
+  console.log("/signup");
   try {
     const { username, name, email, password, bio } = req.body;
     if (!isEmail(email)) return res.status(401).send("invalid email");
@@ -82,9 +93,8 @@ router.post("/addprofile", async (req, res, next) => {
       where: { email },
     });
     if (userfind[0]) {
-      console.log("i am here");
       console.log(userfind[0]);
-      return res.status(401).send("user exists");
+      return res.status(401).send("email already exists");
     }
     let product = {
       username,
@@ -97,21 +107,80 @@ router.post("/addprofile", async (req, res, next) => {
     if (req.files !== null) {
       const file = req.files.photo;
       cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
-        product.profilePicUrl = result.url;
-        await User.create(product);
-        return res.status(200).json(product);
+        if (!err) {
+          const myUser = new User({
+            username: product.username,
+            name: product.name,
+            created_at: new Date(),
+            email: product.email,
+            password: product.password,
+            bio: product.bio,
+
+            //save to DB mysql
+            profilePicUrl: result.url,
+          });
+          console.log(myUser);
+          myUser.save(function (err, res) {
+            if (err) {
+              res.send(err);
+            }
+            return res.status(200).json(myUser);
+          });
+        }
       });
     } else {
       await User.create(product);
       return res.status(200).json(product);
     }
-    // await User.create(product);
-    // return res.status(200).json(product);
   } catch ({ message }) {
-    console.log("/addprofile failed " + message);
+    console.log("/signup failed " + message);
     res.status(500).send({ message });
   }
 });
+
+module.exports = router;
+
+//image posting
+// router.post("/addprofile", async (req, res, next) => {
+//   console.log("/addprofile");
+//   try {
+//     const { username, name, email, password, bio } = req.body;
+//     if (!isEmail(email)) return res.status(401).send("invalid email");
+//     if (password.length < 6)
+//       return res.status(400).send("password must be 8 charactor");
+//     const userfind = await User.findAll({
+//       where: { email },
+//     });
+//     if (userfind[0]) {
+//       console.log("i am here");
+//       console.log(userfind[0]);
+//       return res.status(401).send("user exists");
+//     }
+//     let product = {
+//       username,
+//       name,
+//       email,
+//       password,
+//       bio,
+//     };
+//     product.password = await bcrypt.hash(password, 10);
+//     if (req.files !== null) {
+//       const file = req.files.photo;
+//       cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+//         product.profilePicUrl = result.url;
+//         console.log(result);
+//         await User.create(product);
+//         return res.status(200).json(product);
+//       });
+//     } else {
+//       await User.create(product);
+//       return res.status(200).json(product);
+//     }
+//   } catch ({ message }) {
+//     console.log("/addprofile failed " + message);
+//     res.status(500).send({ message });
+//   }
+// });
 
 //image posting jannaten method
 /* router.post("/upload_jannaten", async (req, res, next) => {
@@ -138,5 +207,3 @@ router.post("/addprofile", async (req, res, next) => {
     res.status(500).send({ message });
   }
 }); */
-
-module.exports = router;

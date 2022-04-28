@@ -58,7 +58,7 @@ function Signup() {
 
   useEffect(() => {
     const isUser = Object.values({
-      user,
+      email,
     }).every((item) => Boolean(item));
     isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
   }, [user]);
@@ -69,7 +69,7 @@ function Signup() {
       cancel && cancel();
       const CancelToken = axios.CancelToken;
       const res = await axios.get(
-        `http://localhost:8000/api/users/username/${checkUsername}`,
+        `http://localhost:8000/api/users/username/${email}`,
         {
           cancelToken: new CancelToken((canceler) => {
             cancel = canceler;
@@ -78,9 +78,9 @@ function Signup() {
       );
       if (res === "Available") {
         setCheckUsername(true);
-        setUser((prev) => ({ ...prev, checkUsername }));
+        setUser((prev) => ({ ...prev, email }));
       }
-      console.log("username is", username);
+      console.log("username is", email);
     } catch (error) {
       setErrorMsg("user not available");
     }
@@ -104,13 +104,11 @@ function Signup() {
     try {
       const formData = new FormData();
       formData.append("photo", data.file);
-      const response = await fetch(
-        "http://localhost:8000/api/users/addprofile",
-        {
-          method: "POST",
-          formData,
-        }
-      );
+      await fetch("http://localhost:8000/api/users/addprofile", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+      }).then((res) => res.json());
     } catch (error) {}
   };
   const handleSubmit = async (data) => {
