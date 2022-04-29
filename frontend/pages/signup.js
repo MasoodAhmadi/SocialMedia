@@ -1,39 +1,32 @@
-import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useRef, useState } from "react";
+import { Button, Divider, Form } from "semantic-ui-react";
+import CommonInputs from "../components/common/commonInputs";
+import ImageDropDiv from "../components/common/ImageDropDiv";
+import { Header, Icon, Image, Message, Segment } from "semantic-ui-react";
 import {
   FooterMessage,
   HeaderMessage,
 } from "../components/common/WelcomeMessage";
-import {
-  Button,
-  Divider,
-  Form,
-  Header,
-  Icon,
-  Image,
-  Message,
-  Segment,
-} from "semantic-ui-react";
-import ImageDropDiv from "../components/common/ImageDropDiv";
-import CommonInputs from "../components/common/commonInputs";
 
 function Signup() {
+  const inputRef = useRef();
   const router = useRouter();
-  const [image, setImage] = useState(null);
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
-  const [createObjectURL, setCreateObjectURL] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [image, setImage] = useState(null);
   const [media, setMedia] = useState(null);
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [formLoading, setFormLoading] = useState(false);
+  const [highlighted, setHighlighted] = useState(false);
   const [mediaPreview, setMediaPreview] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const inputRef = useRef();
   const [showSocialLinks, setShowSocialLinks] = useState(false);
-  const [formLoading, setFormLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [highlighted, setHighlighted] = useState(false);
+  const [createObjectURL, setCreateObjectURL] = useState(null);
+
   const [allsocialState, setAllSocialState] = useState({
     facebook: "",
     youtube: "",
@@ -97,8 +90,6 @@ function Signup() {
         />
 
         <ImageDropDiv
-          // mediaPreview={mediaPreview}
-          // setMediaPreview={setMediaPreview}
           setMedia={setMedia}
           handleChange={uploadToClient}
           highlighted={highlighted}
@@ -107,6 +98,7 @@ function Signup() {
           createObjectURL={createObjectURL}
           setCreateObjectURL={setCreateObjectURL}
         />
+
         <Segment>
           <Form.Input
             label="name"
@@ -172,7 +164,6 @@ function Signup() {
           />
 
           <CommonInputs
-            // user={user}
             showSocialLinks={showSocialLinks}
             setShowSocialLinks={setShowSocialLinks}
             handleChange={handleChange}
