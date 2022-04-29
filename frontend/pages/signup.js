@@ -26,12 +26,14 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [createObjectURL, setCreateObjectURL] = useState(null);
-  const [highlighted, setHighlighted] = useState(false);
   const [media, setMedia] = useState(null);
   const [mediaPreview, setMediaPreview] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const inputRef = useRef();
   const [showSocialLinks, setShowSocialLinks] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [highlighted, setHighlighted] = useState(false);
   const [allsocialState, setAllSocialState] = useState({
     facebook: "",
     youtube: "",
@@ -75,17 +77,13 @@ function Signup() {
     }
   };
 
-  const onButtonClick = () => {
-    // `current` points to the mounted text input element
-    inputRef.current.focus();
-  };
-
   return (
     <>
       <HeaderMessage />
+      <Divider hidden />
       <Form
-        // loading={formLoading}
-        // error={errorMsg !== null}
+        loading={formLoading}
+        error={errorMsg !== null}
         onSubmit={async () => {
           await router.push("/home");
           await onSubmit();
@@ -94,7 +92,7 @@ function Signup() {
         <Message
           error
           header="Oops!"
-          // content={errorMsg}
+          content={errorMsg}
           onDismiss={() => setErrorMsg(null)}
         />
 
@@ -185,71 +183,6 @@ function Signup() {
           />
           <Divider hidden />
 
-          {/* <div>
-          <h4>name</h4>
-          <input
-            type="text"
-            name="name"
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div> */}
-          {/* <div>
-          <h4>username</h4>
-          <input
-            type="text"
-            name="username"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div> */}
-          {/* <div>
-          <h4>password</h4>
-          <input
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div> */}
-          {/* <div>
-          <h4>email</h4>
-          <input
-            type="email"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div> */}
-          {/* <div>
-          <h4>bio</h4>
-          <input
-            type="text"
-            name="bio"
-            onChange={(e) => setBio(e.target.value)}
-          />
-        </div> */}
-          {/* <button
-          className="btn btn-primary"
-          type="submit"
-          onClick={async () => {
-            await router.push("/home");
-            await onSubmit();
-          }}
-        >
-          Create User
-        </button> */}
-          {/* <div>
-          <img src={createObjectURL} />
-          <h4>Select Image</h4>
-          <input type="file" name="myImage" onChange={uploadToClient} />
-          <button
-            className="btn btn-primary"
-            type="submit"
-            onClick={async () => {
-              await router.push("/home");
-              await onSubmit();
-            }}
-          >
-            Create User
-          </button>
-        </div> */}
           <Divider hidden />
           <Button
             content="Signup"
@@ -264,6 +197,7 @@ function Signup() {
   );
 }
 export default Signup;
+
 // import React, { useEffect, useRef, useState } from "react";
 // import { Segment, TextArea, Divider } from "semantic-ui-react";
 // import { Form, Button, Message } from "semantic-ui-react";
@@ -538,3 +472,83 @@ export default Signup;
 //   );
 // }
 // export default Signup;
+
+{
+  /* <div>
+          <h4>name</h4>
+          <input
+            type="text"
+            name="name"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div> */
+}
+{
+  /* <div>
+          <h4>username</h4>
+          <input
+            type="text"
+            name="username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div> */
+}
+{
+  /* <div>
+          <h4>password</h4>
+          <input
+            type="password"
+            name="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div> */
+}
+{
+  /* <div>
+          <h4>email</h4>
+          <input
+            type="email"
+            name="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div> */
+}
+{
+  /* <div>
+          <h4>bio</h4>
+          <input
+            type="text"
+            name="bio"
+            onChange={(e) => setBio(e.target.value)}
+          />
+        </div> */
+}
+{
+  /* <button
+          className="btn btn-primary"
+          type="submit"
+          onClick={async () => {
+            await router.push("/home");
+            await onSubmit();
+          }}
+        >
+          Create User
+        </button> */
+}
+{
+  /* <div>
+          <img src={createObjectURL} />
+          <h4>Select Image</h4>
+          <input type="file" name="myImage" onChange={uploadToClient} />
+          <button
+            className="btn btn-primary"
+            type="submit"
+            onClick={async () => {
+              await router.push("/home");
+              await onSubmit();
+            }}
+          >
+            Create User
+          </button>
+        </div> */
+}
