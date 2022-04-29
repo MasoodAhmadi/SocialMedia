@@ -1,5 +1,21 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
+import {
+  FooterMessage,
+  HeaderMessage,
+} from "../components/common/WelcomeMessage";
+import {
+  Button,
+  Divider,
+  Form,
+  Header,
+  Icon,
+  Image,
+  Message,
+  Segment,
+} from "semantic-ui-react";
+import ImageDropDiv from "../components/common/ImageDropDiv";
+import CommonInputs from "../components/common/commonInputs";
 
 function Signup() {
   const router = useRouter();
@@ -10,6 +26,23 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [createObjectURL, setCreateObjectURL] = useState(null);
+  const [highlighted, setHighlighted] = useState(false);
+  const [media, setMedia] = useState(null);
+  const [mediaPreview, setMediaPreview] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const inputRef = useRef();
+  const [showSocialLinks, setShowSocialLinks] = useState(false);
+  const [allsocialState, setAllSocialState] = useState({
+    facebook: "",
+    youtube: "",
+    instagram: "",
+    twitter: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setAllSocialState((prev) => ({ ...prev, [name]: value }));
+  };
 
   const uploadToClient = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -42,53 +75,157 @@ function Signup() {
     }
   };
 
+  const onButtonClick = () => {
+    // `current` points to the mounted text input element
+    inputRef.current.focus();
+  };
+
   return (
-    <div>
-      <div>
-        <h4>name</h4>
-        <input
-          type="text"
-          name="name"
-          onChange={(e) => setName(e.target.value)}
+    <>
+      <HeaderMessage />
+      <Form
+        // loading={formLoading}
+        // error={errorMsg !== null}
+        onSubmit={async () => {
+          await router.push("/home");
+          await onSubmit();
+        }}
+      >
+        <Message
+          error
+          header="Oops!"
+          // content={errorMsg}
+          onDismiss={() => setErrorMsg(null)}
         />
-      </div>
-      <div>
-        <h4>username</h4>
-        <input
-          type="text"
-          name="username"
-          onChange={(e) => setUsername(e.target.value)}
+
+        <ImageDropDiv
+          // mediaPreview={mediaPreview}
+          // setMediaPreview={setMediaPreview}
+          setMedia={setMedia}
+          handleChange={uploadToClient}
+          highlighted={highlighted}
+          setHighlighted={setHighlighted}
+          inputRef={inputRef}
+          createObjectURL={createObjectURL}
+          setCreateObjectURL={setCreateObjectURL}
         />
-      </div>
-      <div>
-        <h4>password</h4>
-        <input
-          type="password"
-          name="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div>
-        <h4>email</h4>
-        <input
-          type="email"
-          name="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div>
-        <h4>bio</h4>
-        <input
-          type="text"
-          name="bio"
-          onChange={(e) => setBio(e.target.value)}
-        />
-      </div>
-      <div>
-        <img src={createObjectURL} />
-        <h4>Select Image</h4>
-        <input type="file" name="myImage" onChange={uploadToClient} />
-        <button
+        <Segment>
+          <Form.Input
+            label="name"
+            placeholder="type your name"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            fluid
+            icon="user"
+            iconPosition="left"
+            required
+          />
+          <Form.Input
+            label="Email"
+            name="email"
+            placeholder="type you email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            fluid
+            icon="envelope"
+            iconPosition="left"
+            type="email"
+            required
+          />
+          <Form.Input
+            label="Password"
+            name="password"
+            placeholder="type you password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            fluid
+            icon={{
+              name: "eye",
+              circular: true,
+              link: true,
+              onClick: () => setShowPassword(!showPassword),
+            }}
+            iconPosition="left"
+            type={showPassword ? `text` : "password"}
+            required
+          />
+          <Form.Input
+            // loading={usernameLoading}
+            // error={!usernameAvailable}
+            label="username"
+            name="username"
+            placeholder="type your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            // onChange={(e) => {
+            //   setCheckUsername(e.target.value);
+            //   if (resgexUserName.test(e.target.value)) {
+            //     setUsernameAvailable(true);
+            //   } else {
+            //     setUsernameAvailable(false);
+            //   }
+            // }}
+            fluid
+            // icon={usernameAvailable ? "check" : "close"}
+            icon={"check"}
+            iconPosition="left"
+            required
+          />
+
+          <CommonInputs
+            // user={user}
+            showSocialLinks={showSocialLinks}
+            setShowSocialLinks={setShowSocialLinks}
+            handleChange={handleChange}
+            setAllSocialState={setAllSocialState}
+            bio={bio}
+            setBio={setBio}
+            allsocialState={allsocialState}
+          />
+          <Divider hidden />
+
+          {/* <div>
+          <h4>name</h4>
+          <input
+            type="text"
+            name="name"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div> */}
+          {/* <div>
+          <h4>username</h4>
+          <input
+            type="text"
+            name="username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div> */}
+          {/* <div>
+          <h4>password</h4>
+          <input
+            type="password"
+            name="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div> */}
+          {/* <div>
+          <h4>email</h4>
+          <input
+            type="email"
+            name="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div> */}
+          {/* <div>
+          <h4>bio</h4>
+          <input
+            type="text"
+            name="bio"
+            onChange={(e) => setBio(e.target.value)}
+          />
+        </div> */}
+          {/* <button
           className="btn btn-primary"
           type="submit"
           onClick={async () => {
@@ -97,9 +234,33 @@ function Signup() {
           }}
         >
           Create User
-        </button>
-      </div>
-    </div>
+        </button> */}
+          {/* <div>
+          <img src={createObjectURL} />
+          <h4>Select Image</h4>
+          <input type="file" name="myImage" onChange={uploadToClient} />
+          <button
+            className="btn btn-primary"
+            type="submit"
+            onClick={async () => {
+              await router.push("/home");
+              await onSubmit();
+            }}
+          >
+            Create User
+          </button>
+        </div> */}
+          <Divider hidden />
+          <Button
+            content="Signup"
+            type="submit"
+            color="orange"
+            // disabled={submitDisabled || !usernameAvailable}
+          />
+        </Segment>
+      </Form>
+      <FooterMessage />
+    </>
   );
 }
 export default Signup;

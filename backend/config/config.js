@@ -1,7 +1,7 @@
 module.exports = {
   database: "nextjs",
   username: "root",
-  password: "nayem",
+  password: "123456",
   dialect: "mariadb",
   host: "localhost",
   port: "3306",

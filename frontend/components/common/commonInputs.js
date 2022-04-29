@@ -2,8 +2,10 @@ import React from "react";
 import { Divider, Form, Message, TextArea, Button } from "semantic-ui-react";
 
 function CommonInputs({
-  user: { bio, facebook, instagram, youtube, twitter },
+  allsocialState: { facebook, instagram, youtube, twitter },
   handleChange,
+  bio,
+  setBio,
   showSocialLinks,
   setShowSocialLinks,
 }) {
@@ -14,7 +16,7 @@ function CommonInputs({
         control={TextArea}
         name="bio"
         value={bio}
-        onChange={handleChange}
+        onChange={(e) => setBio(e.target.value)}
         placeholder="bio"
       />
       <Button

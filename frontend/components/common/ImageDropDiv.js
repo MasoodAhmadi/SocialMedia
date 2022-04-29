@@ -1,19 +1,20 @@
 import React from "react";
-import { Form, Header, Icon, Image, Segment, Input } from "semantic-ui-react";
+import { Form, Header, Icon, Image, Segment } from "semantic-ui-react";
 
 function ImageDropDiv({
   highlighed,
   inputRef,
   handleChange,
-  mediaPreview,
-  setMediaPreview,
   setMedia,
   setHighlighed,
+  createObjectURL,
+  setCreateObjectURL,
 }) {
   return (
     <>
       <Form.Field>
-        <Segment>
+        <Segment placeholder basic secondary>
+          {" "}
           <input
             style={{ display: "none" }}
             type="file"
@@ -36,11 +37,11 @@ function ImageDropDiv({
               setHighlighed(true);
               const droppedFile = Array.from(e.dataTransfer.files);
               setMedia(droppedFile[0]);
-              setMediaPreview(URL.createObjectURL(droppedFile[0]));
+              setCreateObjectURL(URL.createObjectURL(droppedFile[0]));
               console.log(e.dataTransfer.files);
             }}
           >
-            {mediaPreview === null ? (
+            {createObjectURL === null ? (
               <>
                 <Segment color={highlighed ? "green" : ""} placeholder basic>
                   <Header icon>
@@ -57,7 +58,7 @@ function ImageDropDiv({
               <>
                 <Segment color="green" placeholder basic>
                   <Image
-                    src={mediaPreview}
+                    src={createObjectURL}
                     size="mediam"
                     centerd
                     style={{ cursor: "pointer" }}
