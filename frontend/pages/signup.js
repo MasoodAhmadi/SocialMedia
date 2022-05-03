@@ -22,7 +22,7 @@ function Signup() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
   const [highlighted, setHighlighted] = useState(false);
-  const [mediaPreview, setMediaPreview] = useState(null);
+  const [loading, setLoading] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showSocialLinks, setShowSocialLinks] = useState(false);
   const [createObjectURL, setCreateObjectURL] = useState(null);
@@ -78,7 +78,7 @@ function Signup() {
         loading={formLoading}
         error={errorMsg !== null}
         onSubmit={async () => {
-          await router.push("/home");
+          if (!loading === null) await router.push("/home");
           await onSubmit();
         }}
       >
