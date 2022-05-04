@@ -38,7 +38,7 @@ function Login() {
 
   const login = (username, password) => {
     return fetchWrapper
-      .post(`${baseUrl}/authenticate`, { username, password })
+      .post(`${baseUrl}/signin`, { username, password })
       .then((user) => {
         // publish user to subscribers and store in local storage to stay logged in between page refreshes
         userSubject.next(user);
