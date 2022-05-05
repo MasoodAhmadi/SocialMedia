@@ -26,7 +26,7 @@ services:
       - .env
 
   database:
-    image: mariadb:10.5
+    image: mariadb:10.5.13
     volumes:
       # - ./nextjs.sql:/docker-entrypoint-initdb.d/nextjs.sql
       - ./database/data:/var/lib/mysql
