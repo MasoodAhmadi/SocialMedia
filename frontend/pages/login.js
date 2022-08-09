@@ -8,7 +8,7 @@ import { Form, Button, Message } from "semantic-ui-react";
 import { Segment, TextArea, Divider } from "semantic-ui-react";
 import { HeaderMessage } from "../components/common/WelcomeMessage";
 import { FooterMessage } from "../components/common/WelcomeMessage";
-
+import { rerender } from "../utils/rerender";
 function Login() {
   const router = useRouter();
   /*  const [user, setUser] = useState({
@@ -30,22 +30,23 @@ function Login() {
   const [password, setPassword] = useState("");
   /*  */
 
-  const handleChange = (e) => {
+  /* const handleChange = (e) => {
     const { name, value } = e.target;
 
     setUser((prev) => ({ ...prev, [name]: value }));
-  };
+  }; */
+
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
+    email: Yup.string().required("email is required"),
     password: Yup.string().required("Password is required"),
   });
 
-  useEffect(() => {
+  /*  useEffect(() => {
     // redirect to home if already logged in
     if (userService.userValue) {
       router.push("/");
     }
-  }, []);
+  }, []); */
 
   const getUser = async () => {
     try {
@@ -90,7 +91,7 @@ function Login() {
       error.response && setError(error.response.data.error);
     }
   };
-
+  /* 
   useEffect(() => {
     const isUser = Object.values({ email, password }).every((item) =>
       Boolean(item)
@@ -100,15 +101,15 @@ function Login() {
 
   const userSubject = new BehaviorSubject(
     process.browser && JSON.parse(localStorage.getItem("user"))
-  );
+  ); */
 
   const login = (username, password) => {
     axios
-      .post("http://localhost:8000/api/users/signin", { username, password })
+      .post("http://localhost:8000/api/users/signin", { email, password })
       .then((user) => {
         // publish user to subscribers and store in local storage to stay logged in between page refreshes
         userSubject.next(user);
-        localStorage.setItem("user", JSON.stnpmringify(user));
+        localStorage.setItem("user", JSON.stringify(user));
 
         return user;
       });
@@ -136,7 +137,7 @@ function Login() {
             name="email"
             placeholder="type you email"
             value={email}
-            onChange={handleChange}
+            onChange={(e) => setEmail(e.target.value)}
             fluid
             icon="envelope"
             iconPosition="left"
@@ -148,7 +149,7 @@ function Login() {
             name="password"
             placeholder="type you password"
             value={password}
-            onChange={handleChange}
+            onChange={(e) => setPassword(e.target.value)}
             fluid
             icon={{
               name: "eye",
@@ -165,7 +166,7 @@ function Login() {
             content="login"
             type="submit"
             color="orange"
-            disabled={submitDisable}
+            /*  disabled={submitDisable} */
           />
         </Form>
       </Segment>

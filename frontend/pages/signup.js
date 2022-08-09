@@ -78,7 +78,7 @@ function Signup() {
         loading={formLoading}
         error={errorMsg !== null}
         onSubmit={async () => {
-          if (!loading === null) await router.push("/home");
+          await router.push("/home");
           await onSubmit();
         }}
       >

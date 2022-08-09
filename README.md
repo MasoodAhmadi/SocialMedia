@@ -48,7 +48,7 @@ port: "3306",
 };
 ```
 
-- Create models (example:`User`-model `npx sequelize-cli model:generate --name User --attributes username:string,name:string,email:string,password:string,bio:string`)
+- Create models (example:`User`-model `npx sequelize-cli model:generate --name User --attributes username:string,name:string,email:string,password:string,bio:string,profilePicUrl:string`)
 - Run migrations for models (`npx sequelize-cli db:migrate`)
 - [Optional] Create seed data for models (example: `npx sequelize-cli seed:generate --name user`)
 - [Optional] Insert seed data to database (`npx sequelize-cli db:seed:all`)

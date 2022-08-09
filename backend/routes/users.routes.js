@@ -143,7 +143,7 @@ router.post("/signin", async (req, res) => {
   try {
     User.findOne({
       where: {
-        username: req.body.username,
+        email: req.body.email,
       },
     }).then((user) => {
       if (!user) {
