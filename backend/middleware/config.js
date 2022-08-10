@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 module.exports = {
-  secret: "masood$key",
+  secret: process.env.MASOOD_SECUREKEY,
 };
