@@ -2,12 +2,12 @@ import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { Button, Divider, Form } from "semantic-ui-react";
 import CommonInputs from "../components/common/commonInputs";
-import ImageDropDiv from "../components/common/ImageDropDiv";
+import ImageDropDiv from "../components/common/imageDropDiv";
 import { Header, Icon, Image, Message, Segment } from "semantic-ui-react";
 import {
   FooterMessage,
   HeaderMessage,
-} from "../components/common/WelcomeMessage";
+} from "../components/common/welcomeMessage";
 
 function Signup() {
   const inputRef = useRef();

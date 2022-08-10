@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "semantic-ui-react";
-import HeadTags from "./HeadTags";
-import Navbar from "./Navbar";
+import HeadTags from "./headTags";
+import Navbar from "./navbar";
 import nprogress from "nprogress";
 import Router from "next/router";
 export default function Layout({ children }) {

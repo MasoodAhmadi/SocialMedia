@@ -1,7 +1,7 @@
 import React from "react";
 import App from "next/app";
-import Layout from "../components/Layout/Layout";
 import "semantic-ui-css/semantic.min.css";
+import Layout from "../components/Layout/layout";
 
 class MyApp extends App {
   render() {

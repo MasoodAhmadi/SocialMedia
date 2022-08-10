@@ -1,30 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { Form, Button, Message } from "semantic-ui-react";
-import { Segment, TextArea, Divider } from "semantic-ui-react";
+import axios from "axios";
 import * as Yup from "yup";
-
-//import axios from "axios";
-import { HeaderMessage } from "../components/common/WelcomeMessage";
-import { FooterMessage } from "../components/common/WelcomeMessage";
+// import { BehaviorSubject } from "rxjs";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+// import { userService } from "../services/user.services";
+import { Form, Button, Message } from "semantic-ui-react";
+import { Segment, Divider } from "semantic-ui-react";
 import { rerender } from "../utils/rerender";
+import {
+  HeaderMessage,
+  FooterMessage,
+} from "../components/common/welcomeMessage";
 function Login() {
-  const [user, setUser] = useState({
+  const router = useRouter();
+  /*  const [user, setUser] = useState({
     email: "",
     password: "",
-  });
+  }); */
 
-  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [submitDisable, setSubmitDisable] = useState(true);
+  //const { email, password } = user;
 
-  const { email, password } = user;
+  /* */
+  const [email, setEmail] = useState("");
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
+  const [render, setRender] = useState(0);
+  const [password, setPassword] = useState("");
+  /*  */
 
   /* const handleChange = (e) => {
     const { name, value } = e.target;
 
     setUser((prev) => ({ ...prev, [name]: value }));
-<<<<<<< HEAD
   }; */
 
   const validationSchema = Yup.object().shape({
@@ -82,10 +93,21 @@ function Login() {
       error.response && setError(error.response.data.error);
     }
   };
+  /* 
+  useEffect(() => {
+    const isUser = Object.values({ email, password }).every((item) =>
+      Boolean(item)
+    );
+    isUser ? setSubmitDisable(false) : setSubmitDisable(true);
+  }, [user]);
+
+  const userSubject = new BehaviorSubject(
+    process.browser && JSON.parse(localStorage.getItem("user"))
+  ); */
 
   const login = (username, password) => {
-    return fetchWrapper
-      .post(`${baseUrl}/signin`, { username, password })
+    axios
+      .post("http://localhost:8000/api/users/signin", { email, password })
       .then((user) => {
         // publish user to subscribers and store in local storage to stay logged in between page refreshes
         userSubject.next(user);
@@ -115,7 +137,7 @@ function Login() {
           <Form.Input
             label="Email"
             name="email"
-            placeholdeR="type you email"
+            placeholder="type you email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             fluid
@@ -127,7 +149,7 @@ function Login() {
           <Form.Input
             label="Password"
             name="password"
-            placeholdeR="type you password"
+            placeholder="type you password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             fluid
