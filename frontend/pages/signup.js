@@ -48,6 +48,7 @@ function Signup() {
   };
 
   const onSubmit = async (event) => {
+    // event.preventDefault();
     if (
       name.length > 3 &&
       username.length > 3 &&
@@ -78,8 +79,8 @@ function Signup() {
         loading={formLoading}
         error={errorMsg !== null}
         onSubmit={async () => {
-          await router.push("/home");
           await onSubmit();
+          await router.push("/home");
         }}
       >
         <Message
