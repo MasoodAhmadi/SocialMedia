@@ -1,17 +1,24 @@
-import App from "next/app";
-import Layout from "../components/Layout/Layout";
+import React from "react";
+// import App from "next/app";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "semantic-ui-css/semantic.min.css";
+import { IntlProvider } from "react-intl";
+import { useSelector } from "react-redux";
 
-class MyApp extends App {
-  render() {
-    const { Component } = this.props;
+import Layout from "../components/layout/layout";
 
-    return (
+export default function MyApp(props) {
+  const localizationsState = useSelector((state) => state.localizations);
+  const { Component } = props;
+
+  return (
+    <IntlProvider
+    // locale={localizationsState.locale}
+    // messages={localizationsState.data}
+    >
       <Layout>
         <Component />
       </Layout>
-    );
-  }
+    </IntlProvider>
+  );
 }
-
-export default MyApp;

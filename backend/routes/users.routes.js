@@ -1,49 +1,244 @@
-const router = require("express").Router();
+require("dotenv").config();
 const db = require("../models");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const router = require("express").Router();
+const cloudinary = require("cloudinary").v2;
+const follower = require("../models/follower");
+const isEmail = require("validator/lib/isEmail");
+const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+
+const { User } = db;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+  secure: true,
+});
 
 router.get("/", async (req, res, next) => {
   try {
-    const users = await db.User.findAll({});
+    if (User.length < 0) return res.status(400).send("invalid");
+
+    const users = await User.findAll({});
     res.status(200).json(users);
   } catch (error) {
     console.log("error happened!", error);
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/username/:username", async (req, res, next) => {
   try {
-    const user = await db.User.findOne({ where: { id: req.params.id } });
+    const { username } = req.params;
+    if (username.length < 0) return res.status(401).send("invalid");
+    if (!resgexUserName.test(username)) return res.status(400).send("invalid");
+    const user = await User.findOne({
+      where: { username: username.toLowerCase() },
+    });
+    if (user) {
+      return res.status(401).send("Username already taken");
+    } else {
+      return res.status(200).send("Available");
+    }
+  } catch ({ message }) {
+    res.status(500).send({ message });
+  }
+});
+
+router.get("/finduser/:id", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.id } });
     res.status(200).json(user);
-  } catch (error) {
-    console.log("error: ", error);
+  } catch ({ message }) {
+    err.status(500).send(message);
   }
 });
 
-router.post("/adduser", async (req, res, next) => {
-  console.log("req.body", req.body);
-
-  const { username, firstname, email, password, bio } = req.body;
-  const valueItem = { username, firstname, email, password, bio };
-  try {
-    const users = await db.User.create(valueItem);
-    return res.status(201).send(users);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
-
-router.put("/:id", async (req, res, next) => {
+router.put("/updateuser/:id", async (req, res, next) => {
   console.log("req.body", req.body);
 
   try {
-    await db.User.update(req.body, {
+    await User.update(req.body, {
       where: { id: req.params.id },
     });
-    const user = await db.User.findOne({ where: { id: req.params.id } });
+    const user = await User.findOne({ where: { id: req.params.id } });
+
     res.status(200).json(user);
   } catch (error) {
     console.log("error: ", error);
+  }
+});
+
+router.post("/signup", async (req, res, next) => {
+  try {
+    const { username, name, email, password, bio } = req.body;
+    if (!isEmail(email)) return res.status(401).send("invalid email");
+    if (password.length < 6)
+      return res.status(400).send("password must be 8 charactor");
+    const userfind = await User.findAll({
+      where: { email },
+    });
+    if (userfind[0]) {
+      return res.status(401).send("email already exists");
+    }
+    let product = {
+      username,
+      name,
+      email,
+      password,
+      bio,
+    };
+    product.password = await bcrypt.hash(password, 10);
+    if (req.files !== null) {
+      const file = req.files.photo;
+      cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+        if (!err) {
+          const myUser = new User({
+            username: product.username,
+            name: product.name,
+            created_at: new Date(),
+            email: product.email,
+            password: product.password,
+            bio: product.bio,
+            profilePicUrl: result.url,
+          });
+          console.log(myUser);
+          myUser.save(function (err, res) {
+            if (err) {
+              res.send(err);
+            }
+            return res.status(200).json(myUser);
+          });
+        }
+      });
+    } else {
+      await User.create(product);
+      return res.status(200).json(product);
+    }
+  } catch ({ message }) {
+    console.log(message);
+    res.status(500).send({ message });
+  }
+});
+
+// router.post("/signin", async (req, res) => {
+//   const { email } = req.body;
+//   const userFind = await User.findAll({
+//     where: { email },
+//   });
+//   if (!userFind[0])
+//     return res.status(400).send({ error: "Invalid email or password" });
+//   const validedPassword = await bcrypt.compare(userFind[0].password);
+//   if (!validedPassword)
+//     return res.status(400).send({ error: "Invalid email or password" });
+//   const token = User.generateAuthToken(userFind[0].id);
+//   res.status(200).send({ token });
+// });
+
+router.post("/signin", async (req, res) => {
+  console.log("/signin");
+  console.log(req.body);
+  const { username, email, password } = req.body;
+  try {
+    User.findOne({
+      where: {
+        email: req.body.email,
+      },
+    }).then((user) => {
+      if (!user) {
+        return res.status(404).send({ message: "User Not found." });
+      }
+      const passwordIsValid = bcrypt.compareSync(password, user.password);
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: null,
+          message: "Invalid Password!",
+        });
+      }
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+        expiresIn: 86400, // 24 hours
+      });
+
+      res.status(200).send({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        accessToken: token,
+      });
+    });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
   }
 });
 
 module.exports = router;
+
+//image posting
+// router.post("/addprofile", async (req, res, next) => {
+//   console.log("/addprofile");
+//   try {
+//     const { username, name, email, password, bio } = req.body;
+//     if (!isEmail(email)) return res.status(401).send("invalid email");
+//     if (password.length < 6)
+//       return res.status(400).send("password must be 8 charactor");
+//     const userfind = await User.findAll({
+//       where: { email },
+//     });
+//     if (userfind[0]) {
+//       console.log("i am here");
+//       console.log(userfind[0]);
+//       return res.status(401).send("user exists");
+//     }
+//     let product = {
+//       username,
+//       name,
+//       email,
+//       password,
+//       bio,
+//     };
+//     product.password = await bcrypt.hash(password, 10);
+//     if (req.files !== null) {
+//       const file = req.files.photo;
+//       cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+//         product.profilePicUrl = result.url;
+//         console.log(result);
+//         await User.create(product);
+//         return res.status(200).json(product);
+//       });
+//     } else {
+//       await User.create(product);
+//       return res.status(200).json(product);
+//     }
+//   } catch ({ message }) {
+//     console.log("/addprofile failed " + message);
+//     res.status(500).send({ message });
+//   }
+// });
+
+//image posting jannaten method
+/* router.post("/upload_jannaten", async (req, res, next) => {
+  try {
+    const { username, firstname, email, password, bio } = req.body;
+    if (!isEmail(email)) return res.status(400).send("invalid email");
+    if (password.length < 6)
+      return res.status(400).send("password must be 8 charactor");
+    let product = {
+      username,
+      firstname,
+      email,
+      password,
+      bio,
+    };
+    product.password = await bcrypt.hash(password, 10);
+    const file = req.files.photo;
+    cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+      product.profilePicUrl = result.url;
+      await User.create(product);
+      return res.status(200).json(product);
+    });
+  } catch ({ message }) {
+    res.status(500).send({ message });
+  }
+}); */

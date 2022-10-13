@@ -1,14 +1,47 @@
-import React from "react";
-import { Menu, Container, Icon } from "semantic-ui-react";
+// import { Container, Icon } from "semantic-ui-react";
 import { useRouter } from "next/router";
-import Link from "next/link";
+// import Link from "next/link";
+import React from "react";
+import { Button, Dropdown, Menu } from "semantic-ui-react";
+//import { useIntl } from "react-intl";
+
 export default function Navbar() {
   const router = useRouter();
 
   const isActive = (route) => router.pathname === route;
+
   return (
-    <Menu fluid>
-      <Container text>
+    <Menu size="huge">
+      <Menu.Item
+        name="Home"
+        // active={isActive === "home"}
+        onClick={() => router.push("/home")}
+      />
+      <Menu.Item
+        name="messages"
+        // active={activeItem === "messages"}
+        // onClick={this.handleItemClick}
+      />
+
+      <Menu.Menu position="right">
+        <Dropdown item text="Language">
+          <Dropdown.Menu>
+            <Dropdown.Item>English</Dropdown.Item>
+            <Dropdown.Item>Finnish</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Menu.Item>
+          <Button primary onClick={() => router.push("/signup")}>
+            Sign Up
+          </Button>
+        </Menu.Item>
+      </Menu.Menu>
+    </Menu>
+  );
+}
+/*
+   <Container text>
         <Link href="/login">
           <Menu.Item header active={isActive("/login")}>
             <Icon size="large" name="sign in" />
@@ -21,7 +54,5 @@ export default function Navbar() {
             sign up
           </Menu.Item>
         </Link>
-      </Container>
-    </Menu>
-  );
-}
+      </Container> *
+*/

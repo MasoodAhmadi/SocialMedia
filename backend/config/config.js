@@ -1,8 +1,8 @@
 module.exports = {
-  database: process.env.DATABASE_NAME,
+  database: "nextjs",
   username: "root",
-  password: process.env.DATABASE_ROOT_PASSWORD,
+  password: "123456",
   dialect: "mariadb",
-  host: "database",
+  host: "localhost",
   port: "3306",
 };

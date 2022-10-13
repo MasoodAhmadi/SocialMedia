@@ -25,7 +25,6 @@ export const FooterMessage = () => {
     <>
       {signupRoute ? (
         <>
-          {" "}
           <Message attached="bottom" warning>
             <Icon name="help" />
             Existing User ? <Link href="/login">Login here Instead</Link>
