@@ -10,6 +10,7 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
+import Layout from "./components/Layout/layout";
 import homePage from "./pages/home.page";
 
 export default function App() {
@@ -49,28 +50,30 @@ export default function App() {
       // locale={localizationsState.locale}
       // messages={localizationsState.data}
       >
-        <div>
-          <Container
-            fluid
-            style={{
-              minHeight: "calc(100vh - 4rem)",
-            }}
-          >
-            <Row style={{ paddingTop: "5rem", paddingBottom: "0" }}></Row>
-            <main
+        <Layout>
+          <div>
+            <Container
+              fluid
               style={{
-                paddingBottom: "5rem",
-                paddingTop: "1rem",
+                minHeight: "calc(100vh - 4rem)",
               }}
             >
-              <Switch>
-                <Route exact path="/" component={homePage} />
-                {/* <Route component={NotFoundPage} /> */}
-                {/* <Redirect to={configState.organizationUrl || "/"} /> */}
-              </Switch>
-            </main>
-          </Container>
-        </div>
+              <Row style={{ paddingTop: "0rem", paddingBottom: "0" }}></Row>
+              <main
+                style={{
+                  paddingBottom: "5rem",
+                  paddingTop: "1rem",
+                }}
+              >
+                <Switch>
+                  <Route exact path="/" component={homePage} />
+                  {/* <Route component={NotFoundPage} /> */}
+                  {/* <Redirect to={configState.organizationUrl || "/"} /> */}
+                </Switch>
+              </main>
+            </Container>
+          </div>
+        </Layout>
       </IntlProvider>
     </>
   );
