@@ -1,44 +1,12 @@
-// import { unwrapResult } from "@reduxjs/toolkit";
 import React from "react";
 import { Container, Row } from "react-bootstrap";
 import { IntlProvider } from "react-intl";
-// import { useDispatch } from "react-redux";
-import { Route, Switch } from "react-router-dom";
 import Layout from "./components/Layout/layout";
-import homePage from "./pages/home.page";
 import Links from "./pages/link.page";
+import { Switch, Route } from "react-router-dom";
+import homePage from "./pages/home.page";
 
 export default function App() {
-  // const dispatch = useDispatch();
-  // const location = useLocation();
-  // const configState = useSelector((state) => state.config);
-  // const localizationsState = useSelector((state) => state.localizations);
-  // const history = useHistory();
-
-  // const isRootPage = location.pathname === "/";
-
-  // useEffect(() => {
-  //   if (!isRootPage) {
-  //     dispatch(loadTags());
-  //     dispatch(loadDegrees());
-  //     dispatch(loadTypes());
-  //     loadUser();
-  //   }
-
-  //   const unListenHistory = history.listen((location) => {
-  //     if (
-  //       localStorage.getItem("access-token") &&
-  //       location.pathname.includes("/admin")
-  //     ) {
-  //       unwrapResult(dispatch(getUserInfo()));
-  //     }
-  //   });
-
-  //   return () => {
-  //     unListenHistory();
-  //   };
-  // }, []);
-
   return (
     <>
       <IntlProvider
@@ -62,8 +30,8 @@ export default function App() {
               >
                 <Switch>
                   <Route exact path="/" component={homePage} />
-                  <Route exact path="/link" component={Links} />
-                  {/* <Route component={NotFoundPage} /> */}
+                  <Route path="/link" component={Links} />
+                  {/* <Routes component={NotFoundPage} /> */}
                   {/* <Redirect to={configState.organizationUrl || "/"} /> */}
                 </Switch>
               </main>

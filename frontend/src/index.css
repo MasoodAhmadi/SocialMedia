@@ -12,7 +12,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.motionCard {
+/* .motionCard {
   font-size: 164px;
   width: 300px;
   height: 430px;
@@ -46,4 +46,4 @@ body {
   position: relative;
   padding-top: 20px;
   margin-bottom: -120px;
-}
+} */

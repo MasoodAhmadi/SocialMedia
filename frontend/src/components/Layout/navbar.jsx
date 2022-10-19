@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 export default function Navbars() {
   // const router = useRouter();
   const history = useHistory();
+  // const navigate = useHistory();
 
   // const isActive = (route) => router.pathname === route;
 
