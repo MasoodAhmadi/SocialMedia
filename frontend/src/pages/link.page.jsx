@@ -1,6 +1,6 @@
 import React from "react";
-import { Container } from "react-bootstrap";
 import { motion } from "framer-motion";
+import { Container } from "react-bootstrap";
 const cardVariants = {
   offscreen: {
     y: 300,
@@ -89,11 +89,10 @@ const Links = () => {
       style={{
         // margin: " 100px auto",
         maxWidth: "500px",
-        paddingBottom: "100px",
+        // paddingBottom: "100px",
       }}
     >
       <Cards emoji={emoji} hueA={hueA} hueB={hueB} key={emoji} />
-      adsfasdf
     </Container>
   ));
 };

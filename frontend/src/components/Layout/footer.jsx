@@ -19,19 +19,3 @@ export default function Footer() {
     </Card>
   );
 }
-/*
-   <Container text>
-        <Link href="/login">
-          <Menu.Item header active={isActive("/login")}>
-            <Icon size="large" name="sign in" />
-            login
-          </Menu.Item>
-        </Link>
-        <Link href="/signup">
-          <Menu.Item header active={isActive("/signup")}>
-            <Icon size="large" name="signup" />
-            sign up
-          </Menu.Item>
-        </Link>
-      </Container> *
-*/

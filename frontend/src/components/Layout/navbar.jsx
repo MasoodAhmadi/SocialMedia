@@ -1,14 +1,11 @@
 // import { useRouter } from "next/router";
-// import Link from "next/link";
 import React from "react";
 //import { useIntl } from "react-intl";
 import Container from "react-bootstrap/Container";
 import { Button, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 export default function Navbars() {
-  // const router = useRouter();
   const history = useHistory();
-  // const navigate = useHistory();
 
   // const isActive = (route) => router.pathname === route;
 
@@ -40,43 +37,7 @@ export default function Navbars() {
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
-        {/* <Menu.Item
-          name="messages"
-          // active={activeItem === "messages"}
-          // onClick={this.handleItemClick}
-        />
-
-        <Menu.Menu position="right">
-          <Dropdown item text="Language">
-            <Dropdown.Menu>
-              <Dropdown.Item>English</Dropdown.Item>
-              <Dropdown.Item>Finnish</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
-          <Menu.Item>
-            <Button primary onClick={() => router.push("/signup")}>
-              Sign Up
-            </Button>
-          </Menu.Item>
-        </Menu.Menu> */}
       </Container>
     </Navbar>
   );
 }
-/*
-   <Container text>
-        <Link href="/login">
-          <Menu.Item header active={isActive("/login")}>
-            <Icon size="large" name="sign in" />
-            login
-          </Menu.Item>
-        </Link>
-        <Link href="/signup">
-          <Menu.Item header active={isActive("/signup")}>
-            <Icon size="large" name="signup" />
-            sign up
-          </Menu.Item>
-        </Link>
-      </Container> *
-*/
