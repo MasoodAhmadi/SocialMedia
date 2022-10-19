@@ -2,16 +2,11 @@
 import React from "react";
 import { Container, Row } from "react-bootstrap";
 import { IntlProvider } from "react-intl";
-import { useDispatch } from "react-redux";
-import {
-  Redirect,
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
+// import { useDispatch } from "react-redux";
+import { Route, Switch } from "react-router-dom";
 import Layout from "./components/Layout/layout";
 import homePage from "./pages/home.page";
+import Links from "./pages/link.page";
 
 export default function App() {
   // const dispatch = useDispatch();
@@ -67,6 +62,7 @@ export default function App() {
               >
                 <Switch>
                   <Route exact path="/" component={homePage} />
+                  <Route exact path="/link" component={Links} />
                   {/* <Route component={NotFoundPage} /> */}
                   {/* <Redirect to={configState.organizationUrl || "/"} /> */}
                 </Switch>
