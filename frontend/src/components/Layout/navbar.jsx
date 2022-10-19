@@ -1,17 +1,15 @@
-// import { Container, Icon } from "semantic-ui-react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 // import Link from "next/link";
 import React from "react";
 //import { useIntl } from "react-intl";
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-
+import { Button, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 export default function Navbars() {
-  const router = useRouter();
+  // const router = useRouter();
+  const history = useHistory();
 
-  const isActive = (route) => router.pathname === route;
+  // const isActive = (route) => router.pathname === route;
 
   return (
     <Navbar bg="light" expand="lg">
@@ -19,15 +17,15 @@ export default function Navbars() {
         <Navbar.Brand
           // name="Home"
           // active={isActive === "home"}
-          onClick={() => router.push("/home")}
+          onClick={() => history.push("/")}
         >
-          sss
+          <Button variant="none">sssddd</Button>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
+            <Nav.Link onClick={() => history.push("/")}>Home</Nav.Link>
+            <Nav.Link onClick={() => history.push("/link")}>Link</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
