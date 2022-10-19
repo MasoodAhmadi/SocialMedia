@@ -1,15 +1,9 @@
 import React from "react";
-// import nprogress from "nprogress";
-// import Router from "next/router";
+import Footer from "./footer";
+import Navbars from "./navbar";
 import HeadTags from "./headerTag";
 import { Container } from "react-bootstrap";
-import Navbars from "./navbar";
-import Footer from "./footer";
 export default function Layout({ children }) {
-  // Router.onRouterChangeStart = () => nprogress.start();
-  // Router.onRouterChangeComplete = () => nprogress.done();
-  // Router.onRouterChangeError = () => nprogress.done();
-
   return (
     <>
       <HeadTags />
