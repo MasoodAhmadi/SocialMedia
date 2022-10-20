@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { IntlProvider } from "react-intl";
 import Layout from "./components/Layout/layout";
 import Links from "./pages/link.page";
@@ -14,29 +14,24 @@ export default function App() {
       // messages={localizationsState.data}
       >
         <Layout>
-          <div>
-            <Container
-              fluid
+          {/* <div> */}
+          <Container fluid>
+            {/* <Row style={{ paddingTop: "0rem", paddingBottom: "0" }}></Row> */}
+            <main
               style={{
-                minHeight: "calc(100vh - 4rem)",
+                paddingBottom: "2rem",
+                paddingTop: "1rem",
               }}
             >
-              <Row style={{ paddingTop: "0rem", paddingBottom: "0" }}></Row>
-              <main
-                style={{
-                  paddingBottom: "5rem",
-                  paddingTop: "1rem",
-                }}
-              >
-                <Switch>
-                  <Route exact path="/" component={homePage} />
-                  <Route path="/link" component={Links} />
-                  {/* <Routes component={NotFoundPage} /> */}
-                  {/* <Redirect to={configState.organizationUrl || "/"} /> */}
-                </Switch>
-              </main>
-            </Container>
-          </div>
+              <Switch>
+                <Route exact path="/" component={homePage} />
+                <Route path="/link" component={Links} />
+                {/* <Routes component={NotFoundPage} /> */}
+                {/* <Redirect to={configState.organizationUrl || "/"} /> */}
+              </Switch>
+            </main>
+          </Container>
+          {/* </div> */}
         </Layout>
       </IntlProvider>
     </>
