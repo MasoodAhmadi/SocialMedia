@@ -13,7 +13,7 @@ export default function Layout({ children }) {
       <Container
         style={{
           paddingTop: "1rem",
-          background: "",
+          background: "black",
           width: "100%",
           // height: "100vh",
         }}

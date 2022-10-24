@@ -69,19 +69,19 @@ const Cards = ({ emoji, hueA, hueB, Label }) => {
           }}
           variants={cardVariants}
         >
-          {/* <div className="d-flex justify-items-center">
-            <Card
-              className="text-center"
-              style={{ width: "", height: "", paddingBottom: "0rem" }}
-            >
-              <Card.Header as="h5">{Label}</Card.Header>
-              <Card.Img
-                style={{ width: "", height: "" }}
-                variant="top"
-                src={emoji}
-              />
-            </Card>
-          </div> */}
+          {/* <div className="d-flex justify-items-center"> */}
+          {/* <Card
+            className="text-center"
+            style={{ width: "", height: "", paddingBottom: "0rem" }}
+          >
+            <Card.Header as="h5">{Label}</Card.Header>
+            <Card.Img
+              style={{ width: "", height: "" }}
+              variant="top"
+              src={emoji}
+            />
+          </Card> */}
+          {/* </div> */}
           <Card style={{}}>
             <Card.Body>
               <Card.Title className="mb-2 d-flex justify-content-center">
@@ -94,11 +94,17 @@ const Cards = ({ emoji, hueA, hueB, Label }) => {
                 Some quick example text to build on the card title and make up
                 the bulk of the card's content.
               </Card.Text>
-              <ListGroup variant="flush">
+              <Card.Img
+                style={{ width: "", height: "" }}
+                variant="top"
+                src={emoji}
+                onClick={() => console.log("click me")}
+              />
+              {/* <ListGroup variant="flush">
                 <ListGroup.Item>Cras justo odio</ListGroup.Item>
                 <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                 <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
-              </ListGroup>
+              </ListGroup> */}
               <br />
             </Card.Body>
           </Card>
@@ -129,7 +135,7 @@ const Links = () => {
   }, []);
 
   console.log("data", allItem.data);
-  return allItem?.data?.map((el) => {
+  return allItem?.data?.slice(0, 3).map((el) => {
     return (
       <Row>
         <Col>
