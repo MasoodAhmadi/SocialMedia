@@ -5,7 +5,7 @@ export default function Layout({ children }) {
   return (
     <div
       style={{
-        background: "black",
+        background: "gray",
         width: "100%",
         // height: "100vh",
       }}
@@ -13,7 +13,7 @@ export default function Layout({ children }) {
       <Container
         style={{
           paddingTop: "1rem",
-          background: "blue",
+          background: "",
           width: "100%",
           // height: "100vh",
         }}
