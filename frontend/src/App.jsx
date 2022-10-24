@@ -1,5 +1,4 @@
 import React from "react";
-import { Container } from "react-bootstrap";
 import { IntlProvider } from "react-intl";
 import Layout from "./components/Layout/layout";
 import Links from "./pages/link.page";
@@ -22,10 +21,10 @@ export default function App() {
           <Navbars />
           <Layout>
             <main
-            // style={{
-            //   paddingBottom: "2rem",
-            //   paddingTop: "1rem",
-            // }}
+              style={{
+                paddingBottom: "2rem",
+                paddingTop: "1rem",
+              }}
             >
               <Switch>
                 <Route exact path="/" component={homePage} />
