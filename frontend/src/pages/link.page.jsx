@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
-import {
-  Card,
-  Container,
-  Form,
-  Row,
-  Col,
-  Button,
-  Modal,
-} from "react-bootstrap";
+import { Col, Button, Modal } from "react-bootstrap";
+import { Card, Container, Form, Row } from "react-bootstrap";
 import { endPoints } from "../config/endPoints";
 import axios from "axios";
+import Loader from "../components/loader";
+
 const cardVariants = {
   offscreen: {
     y: 300,
@@ -130,12 +124,15 @@ const Links = () => {
   const handleClose = () => setShow(false);
   const [allItem, setAllItems] = useState([]);
   const { allData } = endPoints;
+  const [spinner, setSpinner] = useState(false);
 
   const getAllItems = async () => {
+    setSpinner(true);
     try {
       const respond = await axios.get(allData);
 
       setAllItems(respond);
+      setSpinner(false);
     } catch (error) {
       console.error(error);
     }
@@ -143,124 +140,143 @@ const Links = () => {
 
   useEffect(() => {
     getAllItems();
-    // window.addEventListener("resize", () => setSize(window.innerWidth));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log("data", allItem.data);
-  return allItem?.data?.slice(0, 3).map((el) => {
-    return (
-      <Row>
-        <Col>
-          <Container
-            style={{
-              // margin: " 100px auto",
-              maxWidth: "500px",
-              // paddingBottom: "100px",
-              background: "",
-            }}
-          >
-            <Cards
-              emoji={el.image}
-              hueA={el.hueA}
-              hueB={el.hueB}
-              key={el.id}
-              Label={el.item}
-            />
-            <div
-              className="mb-3 mt-5"
-              style={{
-                color: "white",
-                transform: "scale(2)",
-                paddingLeft: "12rem",
-              }}
-            >
-              <Button variant="primary" onClick={handleShow}>
-                Click me{" "}
-              </Button>
-              <>
-                <Modal
-                  show={show}
-                  onHide={handleClose}
-                  size="lg"
-                  aria-labelledby="contained-modal-title-vcenter"
-                  centered
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Form>
-                      <Row className="mb-3">
-                        <Form.Group as={Col} controlId="formGridEmail">
-                          <Form.Label>Email</Form.Label>
-                          <Form.Control
-                            type="email"
-                            placeholder="Enter email"
-                          />
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="formGridPassword">
-                          <Form.Label>Password</Form.Label>
-                          <Form.Control
-                            type="password"
-                            placeholder="Password"
-                          />
-                        </Form.Group>
-                      </Row>
-
-                      <Form.Group className="mb-3" controlId="formGridAddress1">
-                        <Form.Label>Address</Form.Label>
-                        <Form.Control placeholder="1234 Main St" />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3" controlId="formGridAddress2">
-                        <Form.Label>Address 2</Form.Label>
-                        <Form.Control placeholder="Apartment, studio, or floor" />
-                      </Form.Group>
-
-                      <Row className="mb-3">
-                        <Form.Group as={Col} controlId="formGridCity">
-                          <Form.Label>City</Form.Label>
-                          <Form.Control />
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="formGridState">
-                          <Form.Label>State</Form.Label>
-                          <Form.Select defaultValue="Choose...">
-                            <option>Choose...</option>
-                            <option>...</option>
-                          </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="formGridZip">
-                          <Form.Label>Zip</Form.Label>
-                          <Form.Control />
-                        </Form.Group>
-                      </Row>
-                    </Form>{" "}
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                      Close
-                    </Button>
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      onClick={handleClose}
+  // };
+  return (
+    <>
+      {spinner ? (
+        <div>
+          <Loader />
+        </div>
+      ) : (
+        <div>
+          {allItem?.data?.slice(0, 3).map((el) => {
+            return (
+              <Row>
+                <Col>
+                  <Container
+                    style={{
+                      // margin: " 100px auto",
+                      maxWidth: "500px",
+                      // paddingBottom: "100px",
+                      background: "",
+                    }}
+                  >
+                    {" "}
+                    <Cards
+                      emoji={el.image}
+                      hueA={el.hueA}
+                      hueB={el.hueB}
+                      key={el.id}
+                      Label={el.item}
+                    />
+                    <div
+                      className="mb-3 mt-5"
+                      style={{
+                        color: "white",
+                        transform: "scale(2)",
+                        paddingLeft: "12rem",
+                      }}
                     >
-                      Submit
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
-              </>
-            </div>
-          </Container>
-        </Col>
-      </Row>
-    );
-  });
-  // );
-};
+                      <Button variant="primary" onClick={handleShow}>
+                        Click me{" "}
+                      </Button>
+                      <>
+                        <Modal
+                          show={show}
+                          onHide={handleClose}
+                          size="lg"
+                          aria-labelledby="contained-modal-title-vcenter"
+                          centered
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title>Modal heading</Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            <Form>
+                              <Row className="mb-3">
+                                <Form.Group as={Col} controlId="formGridEmail">
+                                  <Form.Label>Email</Form.Label>
+                                  <Form.Control
+                                    type="email"
+                                    placeholder="Enter email"
+                                  />
+                                </Form.Group>
 
+                                <Form.Group
+                                  as={Col}
+                                  controlId="formGridPassword"
+                                >
+                                  <Form.Label>Password</Form.Label>
+                                  <Form.Control
+                                    type="password"
+                                    placeholder="Password"
+                                  />
+                                </Form.Group>
+                              </Row>
+
+                              <Form.Group
+                                className="mb-3"
+                                controlId="formGridAddress1"
+                              >
+                                <Form.Label>Address</Form.Label>
+                                <Form.Control placeholder="1234 Main St" />
+                              </Form.Group>
+
+                              <Form.Group
+                                className="mb-3"
+                                controlId="formGridAddress2"
+                              >
+                                <Form.Label>Address 2</Form.Label>
+                                <Form.Control placeholder="Apartment, studio, or floor" />
+                              </Form.Group>
+
+                              <Row className="mb-3">
+                                <Form.Group as={Col} controlId="formGridCity">
+                                  <Form.Label>City</Form.Label>
+                                  <Form.Control />
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="formGridState">
+                                  <Form.Label>State</Form.Label>
+                                  <Form.Select defaultValue="Choose...">
+                                    <option>Choose...</option>
+                                    <option>...</option>
+                                  </Form.Select>
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="formGridZip">
+                                  <Form.Label>Zip</Form.Label>
+                                  <Form.Control />
+                                </Form.Group>
+                              </Row>
+                            </Form>{" "}
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                              Close
+                            </Button>
+                            <Button
+                              variant="primary"
+                              type="submit"
+                              onClick={handleClose}
+                            >
+                              Submit
+                            </Button>
+                          </Modal.Footer>
+                        </Modal>
+                      </>
+                    </div>
+                  </Container>
+                </Col>
+              </Row>
+            );
+          })}
+        </div>
+      )}
+    </>
+  );
+};
 export default Links;
