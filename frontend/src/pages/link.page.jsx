@@ -61,7 +61,6 @@ const Cards = ({ emoji, hueA, hueB, Label }) => {
             width: "280px",
             height: "400px",
             display: "flex",
-            // paddingLeft: "1.5rem",
             alignItems: "center",
             justifycontent: "center",
             background: "white",
@@ -98,7 +97,6 @@ const Cards = ({ emoji, hueA, hueB, Label }) => {
                 the bulk of the card's content.
               </Card.Text>
               <Card.Img
-                style={{ width: "", height: "" }}
                 variant="top"
                 src={emoji}
                 onClick={() => console.log("click me")}
@@ -145,7 +143,7 @@ const Links = () => {
 
   // };
   return (
-    <>
+    <Container fluid>
       {spinner ? (
         <div>
           <Loader />
@@ -176,8 +174,8 @@ const Links = () => {
                       className="mb-3 mt-5"
                       style={{
                         color: "white",
-                        transform: "scale(2)",
-                        paddingLeft: "12rem",
+                        // transform: "scale(2)",
+                        // paddingLeft: "12rem",
                       }}
                     >
                       <Button variant="primary" onClick={handleShow}>
@@ -276,7 +274,7 @@ const Links = () => {
           })}
         </div>
       )}
-    </>
+    </Container>
   );
 };
 export default Links;

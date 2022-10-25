@@ -1,179 +1,111 @@
-// import axios from "axios";
-// import * as Yup from "yup";
-// // import { BehaviorSubject } from "rxjs";
-// import { useRouter } from "next/router";
-// import React, { useEffect, useState } from "react";
-// // import { userService } from "../services/user.services";
-// import { Form, Button, Message } from "semantic-ui-react";
-// import { Segment, Divider } from "semantic-ui-react";
-// import { rerender } from "../utils/rerender";
-// import {
-//   HeaderMessage,
-//   FooterMessage,
-// } from "../components/common/welcomeMessage";
-// function Login() {
-//   const router = useRouter();
-//   /*  const [user, setUser] = useState({
-//     email: "",
-//     password: "",
-//   }); */
+import axios from "axios";
+import * as Yup from "yup";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Alert, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
+import {
+  FooterMessage,
+  HeaderMessage,
+} from "../components/common/WelcomeMessage";
 
-//   const [errorMsg, setErrorMsg] = useState(false);
-//   const [formLoading, setFormLoading] = useState(false);
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [submitDisable, setSubmitDisable] = useState(true);
-//   //const { email, password } = user;
+export default function Login() {
+  const history = useHistory();
+  const [errorMsg, setErrorMsg] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [submitDisable, setSubmitDisable] = useState(true);
+  const [email, setEmail] = useState("");
+  // const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
+  // const [render, setRender] = useState(0);
+  const [password, setPassword] = useState("");
 
-//   /* */
-//   const [email, setEmail] = useState("");
-//   const [user, setUser] = useState(null);
-//   const [error, setError] = useState("");
-//   const [render, setRender] = useState(0);
-//   const [password, setPassword] = useState("");
-//   /*  */
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required("email is required"),
+    password: Yup.string().required("Password is required"),
+  });
 
-//   /* const handleChange = (e) => {
-//     const { name, value } = e.target;
+  const handleSumbit = async (e) => {
+    e.preventDefault();
+    const { value, error: err } = validationSchema.validate({
+      email,
+      password,
+    });
+    if (err) return setError(err.details[0].message);
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8000/api/users/signin",
+        value
+      );
+      localStorage.setItem("token", data.token);
+      if (!err) setError("");
+      data && history.push("/signin");
+      //   getUser();
+    } catch (error) {
+      error.response && setError(error.response.data.error);
+    }
+  };
 
-//     setUser((prev) => ({ ...prev, [name]: value }));
-//   }; */
+  return (
+    <Container className="mt-4 mb-4" style={{ background: "red" }}>
+      <Row>
+        <Col xs={8}>
+          <HeaderMessage />
+          <Form
+            loading={formLoading}
+            error={errorMsg !== null}
+            onSubmit={handleSumbit}
+          >
+            <Alert
+              error
+              header="Oops!"
+              content={errorMsg}
+              onDismiss={() => {
+                setErrorMsg(null);
+              }}
+            />
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+              <Form.Control
+                placeholder="Username"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+              />
+            </InputGroup>
 
-//   const validationSchema = Yup.object().shape({
-//     email: Yup.string().required("email is required"),
-//     password: Yup.string().required("Password is required"),
-//   });
+            <InputGroup className="mb-3">
+              <Form.Control
+                placeholder="Recipient's username"
+                aria-label="Recipient's username"
+                aria-describedby="basic-addon2"
+              />
+              <InputGroup.Text id="basic-addon2">
+                @example.comdddd
+              </InputGroup.Text>
+            </InputGroup>
 
-//   /*  useEffect(() => {
-//     // redirect to home if already logged in
-//     if (userService.userValue) {
-//       router.push("/");
-//     }
-//   }, []); */
+            <Form.Label htmlFor="basic-url">Your vanity URL</Form.Label>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon3">
+                https://example.com/users/
+              </InputGroup.Text>
+              <Form.Control id="basic-url" aria-describedby="basic-addon3" />
+            </InputGroup>
 
-//   const getUser = async () => {
-//     try {
-//       const { data } = await axios.get(getUserByTokenUrl, {
-//         headers: {
-//           "x-auth-token": localStorage.token,
-//         },
-//       });
-//       setUser(data);
-//     } catch (error) {
-//       localStorage.removeItem("token");
-//       user && errorToast("Session expired");
-//       setUser(null);
-//     }
-//   };
+            <InputGroup className="mb-3">
+              <InputGroup.Text>$</InputGroup.Text>
+              <Form.Control aria-label="Amount (to the nearest dollar)" />
+              <InputGroup.Text>.00</InputGroup.Text>
+            </InputGroup>
 
-//   useEffect(() => {
-//     if (localStorage.token) {
-//       getUser();
-//     }
-//     rerender(render, setRender);
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [render]);
-
-//   const handleSumbit = async (e) => {
-//     e.preventDefault();
-//     const { value, error: err } = validationSchema.validate({
-//       email,
-//       password,
-//     });
-//     if (err) return setError(err.details[0].message);
-//     try {
-//       const { data } = await axios.post(
-//         "http://localhost:8000/api/users/signin",
-//         value
-//       );
-//       localStorage.setItem("token", data.token);
-//       if (!err) setError("");
-//       data && router.push("/signin");
-//       getUser();
-//     } catch (error) {
-//       error.response && setError(error.response.data.error);
-//     }
-//   };
-//   /*
-//   useEffect(() => {
-//     const isUser = Object.values({ email, password }).every((item) =>
-//       Boolean(item)
-//     );
-//     isUser ? setSubmitDisable(false) : setSubmitDisable(true);
-//   }, [user]);
-
-//   const userSubject = new BehaviorSubject(
-//     process.browser && JSON.parse(localStorage.getItem("user"))
-//   ); */
-
-//   const login = (username, password) => {
-//     axios
-//       .post("http://localhost:8000/api/users/signin", { email, password })
-//       .then((user) => {
-//         // publish user to subscribers and store in local storage to stay logged in between page refreshes
-//         userSubject.next(user);
-//         localStorage.setItem("user", JSON.stringify(user));
-
-//         return user;
-//       });
-//   };
-
-//   return (
-//     <>
-//       <HeaderMessage />
-//       <Segment>
-//         <Form
-//           loading={formLoading}
-//           error={errorMsg !== null}
-//           onSubmit={handleSumbit}
-//         >
-//           <Message
-//             error
-//             header="Oops!"
-//             content={errorMsg}
-//             onDismiss={() => {
-//               setErrorMsg(null);
-//             }}
-//           />
-//           <Form.Input
-//             label="Email"
-//             name="email"
-//             placeholder="type you email"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//             fluid
-//             icon="envelope"
-//             iconPosition="left"
-//             type="email"
-//             required
-//           />
-//           <Form.Input
-//             label="Password"
-//             name="password"
-//             placeholder="type you password"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//             fluid
-//             icon={{
-//               name: "eye",
-//               circular: true,
-//               link: true,
-//               onClick: () => setShowPassword(!showPassword),
-//             }}
-//             iconPosition="left"
-//             type={showPassword ? `text` : "password"}
-//             required
-//           />
-//           <Divider hidden />
-//           <Button
-//             content="login"
-//             type="submit"
-//             color="orange"
-//             /*  disabled={submitDisable} */
-//           />
-//         </Form>
-//       </Segment>
-//       <FooterMessage />
-//     </>
-//   );
-// }
-// export default Login;
+            <InputGroup>
+              <InputGroup.Text>With textarea</InputGroup.Text>
+              <Form.Control as="textarea" aria-label="With textarea" />
+            </InputGroup>
+            <FooterMessage />
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+  );
+}

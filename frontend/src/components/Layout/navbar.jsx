@@ -7,22 +7,21 @@ import { useHistory } from "react-router-dom";
 export default function Navbars() {
   const history = useHistory();
 
-  // const isActive = (route) => router.pathname === route;
+  const isActive = (route) => window.location.pathname === route;
 
   return (
     <Navbar bg="light" expand="lg">
       <Container>
         <Navbar.Brand
-          // name="Home"
-          // active={isActive === "home"}
+          active={isActive === "/"}
           onClick={() => history.push("/")}
         >
-          <Button variant="none">sssddd</Button>
+          <Button variant="none">Mini Chat</Button>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link onClick={() => history.push("/")}>Home</Nav.Link>
+            <Nav.Link onClick={() => history.push("/home")}>Home</Nav.Link>
             <Nav.Link onClick={() => history.push("/link")}>Link</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -35,6 +34,9 @@ export default function Navbars() {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>
+          </Nav>
+          <Nav>
+            <Nav.Link onClick={() => history.push("/login")}>Login</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
