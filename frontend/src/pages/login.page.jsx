@@ -77,36 +77,23 @@ export default function Login() {
           <br />
           <Row className="mt-2 m-2">
             <Col className="m-0">
-              {/* <HeaderMessage /> */}
               <Alert color="teal" attached>
                 <div>
                   <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
                     {authMode === "login" ? "Get started " : "welcome back"}
                   </Alert.Heading>
                 </div>
-                {/* ) : ( */}
                 <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
                   {location.pathname !== "login"
                     ? "Create New Account"
                     : "Login with email and password"}
                 </Alert.Heading>
-                {/* )} */}
               </Alert>
               <Form
                 loading={formLoading}
                 error={errorMsg !== null}
                 onSubmit={handleSumbit}
               >
-                {/* <Alert
-                error
-                header="Oops!"
-                onDismiss={() => {
-                  setErrorMsg(null);
-                }}
-              >
-                {errorMsg}adsfasd
-              </Alert> */}
-                {/* <Form.Label>Email or username</Form.Label> */}
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Fullname</Form.Label>
                   <Form.Control type="email" placeholder="Enter Fullname" />
@@ -127,27 +114,10 @@ export default function Login() {
                   <Form.Check type="checkbox" label="Check me out" />
                 </Form.Group>
               </Form>
-              <>
-                <Alert color="teal" attached>
-                  <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
-                    {authMode && (
-                      <p>
-                        Existing User ?
-                        {
-                          <Badge
-                            bg="light"
-                            text="dark"
-                            style={{ cursor: "pointer" }}
-                            onClick={changeAuthMode}
-                          >
-                            Login here Instead
-                          </Badge>
-                        }
-                      </p>
-                    )}
-                  </Alert.Heading>
-                </Alert>
-              </>
+              <FooterMessage
+                authMode={authMode}
+                changeAuthMode={changeAuthMode}
+              />
               <Button> Click Me</Button>
             </Col>
           </Row>
@@ -196,16 +166,6 @@ export default function Login() {
               error={errorMsg !== null}
               onSubmit={handleSumbit}
             >
-              {/* <Alert
-            error
-            header="Oops!"
-            onDismiss={() => {
-              setErrorMsg(null);
-            }}
-          >
-            {errorMsg}adsfasd
-          </Alert> */}
-              {/* <Form.Label>Email or username</Form.Label> */}
               <FloatingLabel
                 controlId="floatingInput"
                 label="Email address"
@@ -213,67 +173,15 @@ export default function Login() {
               >
                 <Form.Control type="email" placeholder="name@example.com" />
               </FloatingLabel>
-              {/* <Form.Label>Password</Form.Label> */}
               <FloatingLabel controlId="floatingPassword" label="Password">
                 <Form.Control type="password" placeholder="Password" />
               </FloatingLabel>
               <br />
             </Form>
-            {/* <FooterMessage changeAuthMode={changeAuthMode} /> */}
-            <>
-              {/* <Alert color="teal" attached>
-                {authMode === "login" ? (
-                  <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
-                    "existing user "
-                  </Alert.Heading>
-                ) : (
-                  <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
-                    {" "}
-                    <Badge
-                      bg="light"
-                      text="dark"
-                      style={{ cursor: "pointer" }}
-                      onClick={changeAuthMode}
-                    >
-                      Signup Here{" "}
-                    </Badge>
-                  </Alert.Heading>
-                )}
-              </Alert> */}
-
-              <Alert color="teal" attached>
-                <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
-                  {authMode !== "login" && (
-                    <div>
-                      New User ?
-                      <Badge
-                        bg="light"
-                        text="dark"
-                        style={{ cursor: "pointer" }}
-                        onClick={changeAuthMode}
-                      >
-                        Signup Here{" "}
-                      </Badge>
-                      Instead
-                    </div>
-                  )}
-                </Alert.Heading>
-                {/* ) : (
-                    <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
-                      {" "}
-                      <Badge
-                        bg="light"
-                        text="dark"
-                        style={{ cursor: "pointer" }}
-                        onClick={changeAuthMode}
-                      >
-                        Signup Here{" "}
-                      </Badge>
-                     
-                    </Alert.Heading> */}
-                {/* )} */}
-              </Alert>
-            </>
+            <FooterMessage
+              authMode={authMode}
+              changeAuthMode={changeAuthMode}
+            />
             <Button> Click Me</Button>
           </Col>
         </Row>
