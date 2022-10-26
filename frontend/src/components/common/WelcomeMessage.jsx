@@ -9,7 +9,7 @@ export const HeaderMessage = () => {
     <Alert color="teal" attached>
       {location.pathname === "/home" ? (
         <div>
-          <Alert.Heading>
+          <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
             {signupRoute ? "Get started " : "welcome back"}
           </Alert.Heading>
           <p>
@@ -17,10 +17,9 @@ export const HeaderMessage = () => {
             example text is going to run a bit longer so that you can see how
             spacing within an alert works with this kind of content.
           </p>
-          <hr />
         </div>
       ) : (
-        <Alert.Heading>
+        <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
           {signupRoute ? "Create New Account" : "Login with email and password"}
         </Alert.Heading>
       )}
@@ -36,12 +35,12 @@ export const FooterMessage = () => {
       <Alert color="teal" attached>
         {location.pathname === "/signup" ? (
           <div>
-            <Alert.Heading>
+            <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
               Existing User ? <Link href="/login">Login here Instead</Link>
             </Alert.Heading>
           </div>
         ) : (
-          <Alert.Heading>
+          <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
             New User ? <Link href="/signup">Signup Here </Link>Instead
           </Alert.Heading>
         )}
