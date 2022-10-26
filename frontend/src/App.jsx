@@ -5,13 +5,12 @@ import Links from "./pages/link.page";
 import { Switch, Route } from "react-router-dom";
 import homePage from "./pages/home.page";
 import NotFoundPage from "./pages/notFound.page";
-import Footer from "./components/Layout/footer";
-import HeadTags from "./components/Layout/headerTag";
-import Navbars from "./components/Layout/navbar";
+import Footer from "./components/footer";
+import HeadTags from "./components/headerTag";
+import Navbars from "./components/navbar";
 import Login from "./pages/login.page";
 import { Container } from "react-bootstrap";
 import Registration from "./pages/registeration";
-import Signup from "./pages/signup.page.";
 
 export default function App() {
   return (

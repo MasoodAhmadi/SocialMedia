@@ -140,7 +140,6 @@ const Links = () => {
     getAllItems();
   }, []);
 
-  // };
   return (
     <Container fluid>
       {spinner ? (
