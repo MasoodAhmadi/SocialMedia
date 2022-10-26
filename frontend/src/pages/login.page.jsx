@@ -19,6 +19,7 @@ import {
   FooterMessage,
   HeaderMessage,
 } from "../components/common/WelcomeMessage";
+import SocialAppLog from "../components/common/socialmedialogin";
 
 export default function Login() {
   const history = useHistory();
@@ -64,14 +65,14 @@ export default function Login() {
     }
   };
   if (authMode === "login") {
+    //signup page
     return (
       <Container
         fluid="md"
         className="mt-4 mb-4  d-flex justify-content-center align-items-center"
-        style={{ background: "" }}
       >
         <Card
-          style={{ width: "22rem", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px" }}
+          style={{ width: "25rem", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px" }}
           className="d-flex justify-content-center align-items-center mt-4 mb-4 m-5"
         >
           <br />
@@ -89,6 +90,7 @@ export default function Login() {
                     : "Login with email and password"}
                 </Alert.Heading>
               </Alert>
+              <Alert>sign up</Alert>
               <Form
                 loading={formLoading}
                 error={errorMsg !== null}
@@ -185,6 +187,13 @@ export default function Login() {
             <Button> Click Me</Button>
           </Col>
         </Row>
+        <br />
+        <Row>
+          <Col>
+            <SocialAppLog />
+          </Col>
+        </Row>
+        <br />
       </Card>
     </Container>
   );
