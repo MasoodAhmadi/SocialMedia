@@ -21,8 +21,11 @@ export default function Navbars() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link onClick={() => history.push("/home")}>Home</Nav.Link>
+            <Nav.Link onClick={() => history.push("/")}>Home</Nav.Link>
             <Nav.Link onClick={() => history.push("/link")}>Link</Nav.Link>
+            <Nav.Link onClick={() => history.push("/registration")}>
+              Register
+            </Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

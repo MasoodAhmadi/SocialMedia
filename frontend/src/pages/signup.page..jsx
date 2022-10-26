@@ -1,17 +1,14 @@
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
-import { Divider, Form } from "semantic-ui-react";
-import { Header, Icon, Image, Message, Segment } from "semantic-ui-react";
-import ImageDropDiv from "../components/common/imageDropDrag";
-import CommonInputs from "../components/common/inputs";
-import { FooterMessage } from "../components/common/welcomeMessage";
-import { HeaderMessage } from "../components/common/welcomeMessage";
-import { Button } from "react-bootstrap";
+// import { Divider, Form } from "semantic-ui-react";
+// import { Header, Icon, Image, Message, Segment } from "semantic-ui-react";
+// import ImageDropDiv from "../components/common/imageDropDrag";
+// import CommonInputs from "../components/common/inputs";
+import { Button, Container } from "react-bootstrap";
 import { useIntl } from "react-intl";
 
 function Signup() {
   const inputRef = useRef();
-  const router = useRouter();
   const [bio, setBio] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,18 +32,18 @@ function Signup() {
     twitter: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setAllSocialState((prev) => ({ ...prev, [name]: value }));
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setAllSocialState((prev) => ({ ...prev, [name]: value }));
+  // };
 
-  const uploadToClient = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      setImage(file);
-      setCreateObjectURL(URL.createObjectURL(file));
-    }
-  };
+  // const uploadToClient = (event) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     const file = event.target.files[0];
+  //     setImage(file);
+  //     setCreateObjectURL(URL.createObjectURL(file));
+  //   }
+  // };
 
   const onSubmit = async (event) => {
     // event.preventDefault();
@@ -74,8 +71,14 @@ function Signup() {
 
   return (
     <>
-      <HeaderMessage />
-      <Divider hidden />
+      <Container
+        fluid="md"
+        className="mt-4 mb-4  d-flex justify-content-center align-items-center"
+        style={{ background: "" }}
+      >
+        asdfasdfs
+        {/* <HeaderMessage /> */}
+        {/* <Divider hidden />
       <Form
         loading={formLoading}
         error={errorMsg !== null}
@@ -186,8 +189,9 @@ function Signup() {
             {intl.formatMessage({ id: "identify.signIn" })}
           </Button>
         </Segment>
-      </Form>
-      <FooterMessage />
+      </Form> */}
+        {/* <FooterMessage /> */}
+      </Container>
     </>
   );
 }
