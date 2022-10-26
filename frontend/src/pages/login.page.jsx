@@ -1,9 +1,10 @@
 import axios from "axios";
 import * as Yup from "yup";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import {
   Alert,
+  Badge,
   Button,
   Card,
   Col,
@@ -21,6 +22,8 @@ import {
 
 export default function Login() {
   const history = useHistory();
+  const location = useLocation();
+
   const [errorMsg, setErrorMsg] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   // const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +38,11 @@ export default function Login() {
     email: Yup.string().required("email is required"),
     password: Yup.string().required("Password is required"),
   });
+  let [authMode, setAuthMode] = useState("login");
 
+  const changeAuthMode = () => {
+    setAuthMode(authMode === "login" ? "signup" : "login");
+  };
   const handleSumbit = async (e) => {
     e.preventDefault();
     const { value, error: err } = validationSchema.validate({
@@ -56,7 +63,98 @@ export default function Login() {
       error.response && setError(error.response.data.error);
     }
   };
+  if (authMode === "login") {
+    return (
+      <Container
+        fluid="md"
+        className="mt-4 mb-4  d-flex justify-content-center align-items-center"
+        style={{ background: "" }}
+      >
+        <Card
+          style={{ width: "22rem", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px" }}
+          className="d-flex justify-content-center align-items-center mt-4 mb-4 m-5"
+        >
+          <br />
+          <Row className="mt-2 m-2">
+            <Col className="m-0">
+              {/* <HeaderMessage /> */}
+              <Alert color="teal" attached>
+                <div>
+                  <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
+                    {authMode === "login" ? "Get started " : "welcome back"}
+                  </Alert.Heading>
+                </div>
+                {/* ) : ( */}
+                <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
+                  {location.pathname !== "login"
+                    ? "Create New Account"
+                    : "Login with email and password"}
+                </Alert.Heading>
+                {/* )} */}
+              </Alert>
+              <Form
+                loading={formLoading}
+                error={errorMsg !== null}
+                onSubmit={handleSumbit}
+              >
+                {/* <Alert
+                error
+                header="Oops!"
+                onDismiss={() => {
+                  setErrorMsg(null);
+                }}
+              >
+                {errorMsg}adsfasd
+              </Alert> */}
+                {/* <Form.Label>Email or username</Form.Label> */}
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Fullname</Form.Label>
+                  <Form.Control type="email" placeholder="Enter Fullname" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control type="email" placeholder="Enter email" />
+                  <Form.Text className="text-muted">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Form.Group>
 
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                  <Form.Check type="checkbox" label="Check me out" />
+                </Form.Group>
+              </Form>
+              <>
+                <Alert color="teal" attached>
+                  <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
+                    {authMode && (
+                      <p>
+                        Existing User ?
+                        {
+                          <Badge
+                            bg="light"
+                            text="dark"
+                            style={{ cursor: "pointer" }}
+                            onClick={changeAuthMode}
+                          >
+                            Login here Instead
+                          </Badge>
+                        }
+                      </p>
+                    )}
+                  </Alert.Heading>
+                </Alert>
+              </>
+              <Button> Click Me</Button>
+            </Col>
+          </Row>
+        </Card>
+      </Container>
+    );
+  }
   return (
     <Container
       fluid="md"
@@ -99,15 +197,15 @@ export default function Login() {
               onSubmit={handleSumbit}
             >
               {/* <Alert
-                error
-                header="Oops!"
-                onDismiss={() => {
-                  setErrorMsg(null);
-                }}
-              >
-                {errorMsg}adsfasd
-              </Alert> */}
-
+            error
+            header="Oops!"
+            onDismiss={() => {
+              setErrorMsg(null);
+            }}
+          >
+            {errorMsg}adsfasd
+          </Alert> */}
+              {/* <Form.Label>Email or username</Form.Label> */}
               <FloatingLabel
                 controlId="floatingInput"
                 label="Email address"
@@ -115,12 +213,67 @@ export default function Login() {
               >
                 <Form.Control type="email" placeholder="name@example.com" />
               </FloatingLabel>
+              {/* <Form.Label>Password</Form.Label> */}
               <FloatingLabel controlId="floatingPassword" label="Password">
                 <Form.Control type="password" placeholder="Password" />
               </FloatingLabel>
               <br />
             </Form>
-            <FooterMessage />
+            {/* <FooterMessage changeAuthMode={changeAuthMode} /> */}
+            <>
+              {/* <Alert color="teal" attached>
+                {authMode === "login" ? (
+                  <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
+                    "existing user "
+                  </Alert.Heading>
+                ) : (
+                  <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
+                    {" "}
+                    <Badge
+                      bg="light"
+                      text="dark"
+                      style={{ cursor: "pointer" }}
+                      onClick={changeAuthMode}
+                    >
+                      Signup Here{" "}
+                    </Badge>
+                  </Alert.Heading>
+                )}
+              </Alert> */}
+
+              <Alert color="teal" attached>
+                <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
+                  {authMode !== "login" && (
+                    <div>
+                      New User ?
+                      <Badge
+                        bg="light"
+                        text="dark"
+                        style={{ cursor: "pointer" }}
+                        onClick={changeAuthMode}
+                      >
+                        Signup Here{" "}
+                      </Badge>
+                      Instead
+                    </div>
+                  )}
+                </Alert.Heading>
+                {/* ) : (
+                    <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
+                      {" "}
+                      <Badge
+                        bg="light"
+                        text="dark"
+                        style={{ cursor: "pointer" }}
+                        onClick={changeAuthMode}
+                      >
+                        Signup Here{" "}
+                      </Badge>
+                     
+                    </Alert.Heading> */}
+                {/* )} */}
+              </Alert>
+            </>
             <Button> Click Me</Button>
           </Col>
         </Row>

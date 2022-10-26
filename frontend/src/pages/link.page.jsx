@@ -138,7 +138,6 @@ const Links = () => {
 
   useEffect(() => {
     getAllItems();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // };

@@ -10,6 +10,8 @@ import HeadTags from "./components/Layout/headerTag";
 import Navbars from "./components/Layout/navbar";
 import Login from "./pages/login.page";
 import { Container } from "react-bootstrap";
+import Registration from "./pages/registeration";
+import Signup from "./pages/signup.page.";
 
 export default function App() {
   return (
@@ -29,10 +31,11 @@ export default function App() {
             }}
           >
             <Switch>
-              <Route exact path="/" component={Login} />
-              <Route exact path="/home" component={homePage} />
+              <Route exact path="/" component={homePage} />
+              <Route exact path="/login" component={Login} />
+              {/* <Route exact path="/signup" component={Signup} /> */}
+              <Route exact path="/registration" component={Registration} />
               <Route path="/link" component={Links} />
-
               <Route component={NotFoundPage} />
               {/* <Redirect to={configState.organizationUrl || "/"} /> */}
             </Switch>
