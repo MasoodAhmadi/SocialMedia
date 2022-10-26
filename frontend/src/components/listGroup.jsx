@@ -8,7 +8,6 @@ export default function ListGroups() {
   return (
     <Container>
       <div
-        className=""
         style={{
           width: "100%",
           height: "360px",
