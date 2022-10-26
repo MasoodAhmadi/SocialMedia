@@ -7,13 +7,13 @@ import { useHistory } from "react-router-dom";
 export default function Navbars() {
   const history = useHistory();
 
-  const isActive = (route) => window.location.pathname === route;
+  // const isActive = (route) => window.location.pathname === route;
 
   return (
     <Navbar bg="light" expand="lg">
       <Container>
         <Navbar.Brand
-          active={isActive === "/"}
+          // active={isActive === "/"}
           onClick={() => history.push("/")}
         >
           <Button variant="none">Mini Chat</Button>

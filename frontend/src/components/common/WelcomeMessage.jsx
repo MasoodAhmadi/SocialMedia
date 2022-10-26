@@ -6,7 +6,7 @@ export const HeaderMessage = () => {
   const signupRoute = location.pathname === "/login";
 
   return (
-    <Alert color="teal" attached>
+    <Alert color="teal">
       <div>
         <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
           {signupRoute ? "Get started " : "welcome back"}
@@ -24,7 +24,7 @@ export const HeaderMessage = () => {
 export const FooterMessage = ({ changeAuthMode, authMode }) => {
   return (
     <>
-      <Alert color="teal" attached>
+      <Alert color="teal">
         <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
           {authMode !== "login" ? (
             <div>
