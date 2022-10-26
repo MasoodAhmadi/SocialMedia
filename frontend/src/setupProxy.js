@@ -4,7 +4,7 @@ require("dotenv").config();
 module.exports = function (app) {
   app.use(
     createProxyMiddleware("/api/**", {
-      target: "/api2/",
+      target: "/api/",
       changeOrigin: true,
       secure: false,
       pathRewrite: { "^/api": "" },

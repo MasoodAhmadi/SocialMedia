@@ -1,29 +1,22 @@
 import axios from "axios";
 import * as Yup from "yup";
-import React, { useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import {
-  Alert,
-  Badge,
-  Button,
-  Card,
-  Col,
-  Container,
-  FloatingLabel,
-  Form,
-  Image,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { Container, Form, Row } from "react-bootstrap";
+import { Alert, Button, Card, Col } from "react-bootstrap";
 import {
   FooterMessage,
   HeaderMessage,
 } from "../components/common/WelcomeMessage";
 import SocialAppLog from "../components/common/socialmedialogin";
 
+import { UserInfo } from "../redux/slices/userSlice";
+import { endPoints } from "../config/endPoints";
+
 export default function Login() {
   const history = useHistory();
   const location = useLocation();
+  const [authMode, setAuthMode] = useState("login");
 
   const [errorMsg, setErrorMsg] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
@@ -34,38 +27,63 @@ export default function Login() {
   const [error, setError] = useState("");
   // const [render, setRender] = useState(0);
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  const { getallUsers } = endPoints;
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("email is required"),
     password: Yup.string().required("Password is required"),
   });
-  let [authMode, setAuthMode] = useState("login");
 
   const changeAuthMode = () => {
     setAuthMode(authMode === "login" ? "signup" : "login");
   };
+
+  // useEffect(() => {
+  //   loadUser();
+
+  //   return () => {
+  //     setEmail({ email: "" });
+  //     setPassword({ password: "" });
+  //   };
+  // }, []);
+
+  // const loadUser = async () => {
+  //   try {
+  //     if (localStorage.getItem("access-token")) {
+  //       setLoading(true);
+  //       await dispatch(UserInfo());
+  //       history.replace(from.pathname);
+  //       setLoading(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("error: ", error);
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSumbit = async (e) => {
     e.preventDefault();
-    const { value, error: err } = validationSchema.validate({
-      email,
-      password,
-    });
-    if (err) return setError(err.details[0].message);
+    // const { value, error: err } = validationSchema.validate({
+    //   email,
+    //   password,
+    // });
+    const value = { email, password };
+    // if (err) return setError(err.details[0].message);
     try {
-      const { data } = await axios.post(
-        "http://localhost:8000/api/users/signin",
-        value
-      );
+      const data = await axios.get(getallUsers, value);
+      console.log(data);
       localStorage.setItem("token", data.token);
-      if (!err) setError("");
-      data && history.push("/signin");
+      // if (!err) setError("");
+      data && history.push("/");
       //   getUser();
     } catch (error) {
       error.response && setError(error.response.data.error);
     }
   };
+  console.log("i am called", email, password);
+  // console.log("iloadUser", loadUser);
   if (authMode === "login") {
-    //signup page
     return (
       <Container
         fluid="md"
@@ -78,7 +96,7 @@ export default function Login() {
           <br />
           <Row className="mt-2 m-2">
             <Col className="m-0">
-              <Alert color="teal" attached>
+              <Alert color="teal">
                 <div>
                   <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
                     {authMode === "login" ? "Get started " : "welcome back"}
@@ -91,14 +109,10 @@ export default function Login() {
                 </Alert.Heading>
               </Alert>
               <Alert>sign up</Alert>
-              <Form
-                loading={formLoading}
-                error={errorMsg !== null}
-                onSubmit={handleSumbit}
-              >
+              <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Fullname</Form.Label>
-                  <Form.Control type="email" placeholder="Enter Fullname" />
+                  <Form.Label>Full name</Form.Label>
+                  <Form.Control type="email" placeholder="Enter Full name" />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Email address</Form.Label>
@@ -120,7 +134,11 @@ export default function Login() {
                 authMode={authMode}
                 changeAuthMode={changeAuthMode}
               />
-              <Button> Click Me</Button>
+
+              <Button onClick={() => history.push("/")}> create</Button>
+              <Button className="m-1" onClick={changeAuthMode}>
+                forgot password
+              </Button>
             </Col>
           </Row>
         </Card>
@@ -149,10 +167,8 @@ export default function Login() {
                 border: "10px",
                 boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px",
               }}
-              circle
               width={100}
               height={100}
-              rounded
               alt="profile-image"
               variant="top"
               src="https://images.unsplash.com/photo-1538407476027-5a9866ef5b39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80"
@@ -164,27 +180,31 @@ export default function Login() {
           <Col className="m-0">
             <HeaderMessage />
             <Form
-              loading={formLoading}
-              error={errorMsg !== null}
+              // loading={formLoading}
+              // error={errorMsg !== null}
               onSubmit={handleSumbit}
             >
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Email address"
-                className="mb-4"
-              >
-                <Form.Control type="email" placeholder="name@example.com" />
-              </FloatingLabel>
-              <FloatingLabel controlId="floatingPassword" label="Password">
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Text className="text-muted">
+                  We'll never share your email with anyone else.
+                </Form.Text>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
                 <Form.Control type="password" placeholder="Password" />
-              </FloatingLabel>
+              </Form.Group>
+
               <br />
             </Form>
             <FooterMessage
               authMode={authMode}
               changeAuthMode={changeAuthMode}
             />
-            <Button> Click Me</Button>
+
+            <Button onClick={handleSumbit}> LOGIN</Button>
+            <Button className="m-1">forgot password</Button>
           </Col>
         </Row>
         <br />
