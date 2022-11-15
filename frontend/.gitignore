@@ -4,9 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-
+.parcel-cache
 # testing
 /coverage
+/dist
 
 # next.js
 /.next/
