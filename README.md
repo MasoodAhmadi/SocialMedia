@@ -59,3 +59,9 @@ Useful links:
 - [sequelize-cli](https://www.npmjs.com/package/sequelize-cli)
 - [options for config.js](https://stackoverflow.com/a/53574762/17193833)
 - [Getting-started-with-sequelize-cli](https://levelup.gitconnected.com/getting-started-with-sequelize-cli-c33c797f05c6)
+
+- [JWT_TOKEN_EXPIRE] 6h
+- [JWT_PRIVATE_KEY] this-is-a-test-secret-key
+- [CLOUD_NAME]=ahmadimasood
+- [API_KEY]
+- [API_SECRET]

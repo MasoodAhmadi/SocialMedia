@@ -7,6 +7,7 @@ const cloudinary = require("cloudinary").v2;
 const follower = require("../models/follower");
 const isEmail = require("validator/lib/isEmail");
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+const Joi = require("joi");
 
 const { User } = db;
 
@@ -15,6 +16,11 @@ cloudinary.config({
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
   secure: true,
+});
+
+const auth_schema = Joi.object({
+  email: Joi.string().email().max(64).required(),
+  password: Joi.string().min(3).max(512).required(),
 });
 
 router.get("/", async (req, res, next) => {
@@ -28,14 +34,27 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/username/:username", async (req, res, next) => {
+router.get("/login", async (req, res, next) => {
+  try {
+    res.send({
+      token: "test123",
+    });
+  } catch (error) {
+    console.log("error happened!", error);
+  }
+});
+
+router.get("/:username", async (req, res, next) => {
   try {
     const { username } = req.params;
+    console.log(username);
     if (username.length < 0) return res.status(401).send("invalid");
     if (!resgexUserName.test(username)) return res.status(400).send("invalid");
     const user = await User.findOne({
       where: { username: username.toLowerCase() },
     });
+    console.log("user", user);
+
     if (user) {
       return res.status(401).send("Username already taken");
     } else {
@@ -46,9 +65,12 @@ router.get("/username/:username", async (req, res, next) => {
   }
 });
 
-router.get("/finduser/:id", async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { id: req.params.id } });
+
+    // console.log("im here");
+
     res.status(200).json(user);
   } catch ({ message }) {
     err.status(500).send(message);
@@ -76,10 +98,10 @@ router.post("/signup", async (req, res, next) => {
     if (!isEmail(email)) return res.status(401).send("invalid email");
     if (password.length < 6)
       return res.status(400).send("password must be 8 charactor");
-    const userfind = await User.findAll({
+    const userFound = await User.findAll({
       where: { email },
     });
-    if (userfind[0]) {
+    if (userFound[0]) {
       return res.status(401).send("email already exists");
     }
     let product = {
@@ -122,58 +144,59 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-// router.post("/signin", async (req, res) => {
-//   const { email } = req.body;
-//   const userFind = await User.findAll({
-//     where: { email },
-//   });
-//   if (!userFind[0])
-//     return res.status(400).send({ error: "Invalid email or password" });
-//   const validedPassword = await bcrypt.compare(userFind[0].password);
-//   if (!validedPassword)
-//     return res.status(400).send({ error: "Invalid email or password" });
-//   const token = User.generateAuthToken(userFind[0].id);
-//   res.status(200).send({ token });
-// });
-
 router.post("/signin", async (req, res) => {
-  console.log("/signin");
-  console.log(req.body);
-  const { username, email, password } = req.body;
-  try {
-    User.findOne({
-      where: {
-        email: req.body.email,
-      },
-    }).then((user) => {
-      if (!user) {
-        return res.status(404).send({ message: "User Not found." });
-      }
-      const passwordIsValid = bcrypt.compareSync(password, user.password);
-      if (!passwordIsValid) {
-        return res.status(401).send({
-          accessToken: null,
-          message: "Invalid Password!",
-        });
-      }
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: 86400, // 24 hours
-      });
+  const { email } = req.body;
+  const { value, error } = auth_schema.validate(req.body);
+  if (error) return res.status(400).send({ message: error.details[0].message });
+  const userFound = await User.findAll({
+    where: { email },
+  });
+  // const passwordIsValid = bcrypt.compareSync(password, user.password);
 
-      res.status(200).send({
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        password: user.password,
-        accessToken: token,
-      });
-    });
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
+  // if (!passwordIsValid) {
+  //   return res.status(401).send({
+  //     accessToken: null,
+  //     message: "Invalid Password!",
+  //   });
+  // }
+  // const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+  //   expiresIn: 86400, // 24 hours
+  // });
+  if (!userFound[0])
+    return res.status(400).send({ error: "Invalid email or password" });
+  const validPassword = await bcrypt.compare(
+    value.password,
+    userFound[0].password
+  );
+  if (!validPassword)
+    return res.status(400).send({ error: "Invalid email or password" });
+  const token = User.generateAuthToken(userFound[0].id);
+  res.status(200).send({ token });
+
+  // return res.status(200).send({
+  //   // id: user.id,
+  //   // username: user.username,
+  //   email: email,
+  //   password: password,
+  //   // accessToken: token,
+  // });
 });
 
 module.exports = router;
+
+// router.post("/signin", async (req, res) => {
+//   const { email } = req.body;
+//   const userFound = await User.findAll({
+//     where: { email },
+//   });
+//   if (!userFound[0])
+//     return res.status(400).send({ error: "Invalid email or password" });
+//   const validedPassword = await bcrypt.compare(userFound[0].password);
+//   if (!validedPassword)
+//     return res.status(400).send({ error: "Invalid email or password" });
+//   const token = User.generateAuthToken(userFound[0].id);
+//   res.status(200).send({ token });
+// });
 
 //image posting
 // router.post("/addprofile", async (req, res, next) => {
@@ -183,12 +206,12 @@ module.exports = router;
 //     if (!isEmail(email)) return res.status(401).send("invalid email");
 //     if (password.length < 6)
 //       return res.status(400).send("password must be 8 charactor");
-//     const userfind = await User.findAll({
+//     const userFound = await User.findAll({
 //       where: { email },
 //     });
-//     if (userfind[0]) {
+//     if (userFound[0]) {
 //       console.log("i am here");
-//       console.log(userfind[0]);
+//       console.log(userFound[0]);
 //       return res.status(401).send("user exists");
 //     }
 //     let product = {

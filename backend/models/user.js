@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define("User", {
     id: {
@@ -36,6 +38,14 @@ module.exports = (sequelize, DataTypes) => {
   {
     timeStamps: true;
   }
+
+  User.generateAuthToken = (id, role) => {
+    // const token = jwt.sign({ id, role }, config.get("jwtPrivateKey"));
+    const token = jwt.sign({ id, role }, process.env.JWT_PRIVATE_KEY, {
+      expiresIn: process.env.JWT_TOKEN_EXPIRE,
+    });
+    return token;
+  };
 
   User.associate = (models) => {
     User.hasMany(models.profile);
