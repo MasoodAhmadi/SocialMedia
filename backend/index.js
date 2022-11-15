@@ -20,8 +20,11 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: true }));
-app.use("/api/users", userRouter);
-app.use("/api/localization", localizationRouter);
+
+app.use("/users", userRouter);
+app.use("/username", userRouter); //check user name exist or not
+app.use("/finduser", userRouter);
+app.use("/localization", localizationRouter);
 app.get("/", (req, res) => {
   res.send("chat application api!");
 });

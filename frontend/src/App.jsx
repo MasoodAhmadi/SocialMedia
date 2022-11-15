@@ -13,6 +13,12 @@ import { Container } from "react-bootstrap";
 import Registration from "./pages/registeration";
 
 export default function App() {
+  const [token, setToken] = useState();
+
+  if (!token) {
+    return <Login setToken={setToken} />;
+  }
+
   return (
     <>
       {/* <IntlProvider
