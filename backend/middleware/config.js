@@ -1,5 +1,5 @@
 require('dotenv').config();
 
 module.exports = {
-  secret: process.env.ACCESS_TOKEN,
+  secret: process.env.JWT_PRIVATE_KEY,
 };

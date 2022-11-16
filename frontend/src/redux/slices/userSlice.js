@@ -1,11 +1,11 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const login = createAsyncThunk(
-  'auth/signin',
+export const signin = createAsyncThunk(
+  'user/signin',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post('api/auth/signin', data);
+      const response = await axios.post('/auth/signin', data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -14,12 +14,12 @@ export const login = createAsyncThunk(
 );
 
 export const getUserInfo = createAsyncThunk(
-  'users',
+  'user/getUserInfo',
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('access-token');
       if (token) {
-        const response = await axios.get('api/users', {
+        const response = await axios.get('/users', {
           headers: { Auth: `Bearer ${token}` },
         });
         return response.data;
@@ -31,7 +31,7 @@ export const getUserInfo = createAsyncThunk(
 );
 
 export const updateUser = createAsyncThunk(
-  'users/updateUser',
+  'user/updateUser',
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.patch(`/api/users/${data.id}`, data);
@@ -43,7 +43,7 @@ export const updateUser = createAsyncThunk(
 );
 
 export const changePassword = createAsyncThunk(
-  'users/changePassword',
+  'user/changePassword',
   async (data, { rejectWithValue }) => {
     try {
       await axios.post('api/auth/user/change-password', data);
@@ -64,7 +64,7 @@ const isRejectedAction = (action) => {
 };
 
 const userSlice = createSlice({
-  name: 'users',
+  name: 'user',
   initialState: {
     loading: false,
     errors: false,
@@ -74,19 +74,19 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // LOGIN
-      .addCase(login.fulfilled, (state, action) => {
-        const token = action?.payload?.token;
+      .addCase(signin.fulfilled, (state, action) => {
+        const token = action.payload.token;
         window.localStorage.setItem('access-token', token);
-        axios.defaults.headers.common['Auth'] = `Bearer ${token}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         state.data = action.payload;
         state.loading = false;
       })
 
       // GET USER INFO / RELOGIN
       .addCase(getUserInfo.fulfilled, (state, action) => {
-        const token = action?.payload?.token;
+        const token = action.payload.token;
         window.localStorage.setItem('access-token', token);
-        axios.defaults.headers.common['Auth'] = `Bearer ${token}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         state.data = action.payload;
         state.loading = false;
       })

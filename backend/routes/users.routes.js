@@ -25,12 +25,12 @@ const auth_schema = Joi.object({
 });
 
 router.get('/token', verifyToken, async (req, res) => {
-  const finUser = await user.findAll({
+  const findUser = await user.findAll({
     where: { id: req.user.id },
     attributes: { exclude: ['password'] },
     // include: [{ model: avatar }],
   });
-  res.send(finUser[0]);
+  res.send(findUser[0]);
 });
 
 router.get('/', verifyToken, async (req, res, next) => {

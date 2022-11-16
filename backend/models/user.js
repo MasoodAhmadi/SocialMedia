@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.generateAuthToken = (id, role) => {
     // const token = jwt.sign({ id, role }, config.get("jwtPrivateKey"));
-    const token = jwt.sign({ id, role }, process.env.ACCESS_TOKEN, {
+    const token = jwt.sign({ id, role }, process.env.JWT_PRIVATE_KEY, {
       expiresIn: process.env.JWT_TOKEN_EXPIRE,
     });
     return token;
