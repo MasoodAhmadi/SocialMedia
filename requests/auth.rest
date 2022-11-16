@@ -25,8 +25,8 @@ Content-Type: application/json
 # Get user info & refresh token
 # Authentication:
 # - Auth: Bearer <token>
-GET http://localhost:8000/api/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjY4NjA3NDU4LCJleHAiOjE2Njg2MjkwNTh9.PeMiuEC7awFpaeFk1G9EnCsXl-kUG9eedH6Le66pnmc
+GET http://localhost:8000/api/users/token
+Authorization: Bearer this-is-a-test-secret-key
 
 ###
 

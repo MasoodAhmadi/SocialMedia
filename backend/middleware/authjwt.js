@@ -8,7 +8,7 @@ function verifyToken(req, res, next) {
   if (!token)
     return res.status(401).send({ error: 'ACCESS DENIED: No token provided' });
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+    const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
     req.user = decoded;
     next();
   } catch ({ message }) {

@@ -64,7 +64,7 @@ export default function Login() {
     try {
       const { data } = await axios.get(getUserByTokenUrl, {
         headers: {
-          'x-auth-token': localStorage.token,
+          authorization: localStorage.token,
         },
       });
       setUser(data);
