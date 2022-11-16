@@ -1,133 +1,167 @@
-import axios from "axios";
-import * as Yup from "yup";
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { Container, Form, Row } from "react-bootstrap";
-import { Alert, Button, Card, Col } from "react-bootstrap";
+import axios from 'axios';
+import * as Yup from 'yup';
+
+import Joi from 'joi';
+
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col } from 'react-bootstrap';
 import {
   FooterMessage,
   HeaderMessage,
-} from "../components/common/WelcomeMessage";
-import SocialAppLog from "../components/common/socialmedialogin";
+} from '../components/common/WelcomeMessage';
+import SocialAppLog from '../components/common/socialmedialogin';
 
-import { UserInfo } from "../redux/slices/userSlice";
-import { endPoints } from "../config/endPoints";
+import { UserInfo } from '../redux/slices/userSlice';
+import { endPoints } from '../config/endPoints';
 
 export default function Login() {
   const history = useHistory();
   const location = useLocation();
-  const [authMode, setAuthMode] = useState("login");
+  const [authMode, setAuthMode] = useState('login');
 
   const [errorMsg, setErrorMsg] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   // const [showPassword, setShowPassword] = useState(false);
   // const [submitDisable, setSubmitDisable] = useState(true);
-  const [email, setEmail] = useState("");
-  // const [user, setUser] = useState(null);
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
   // const [render, setRender] = useState(0);
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState('');
+  const [render, setRender] = useState(0);
+  const { getallUsers, loginUrl, getUserByTokenUrl } = endPoints;
 
-  const { getallUsers } = endPoints;
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().required("email is required"),
-    password: Yup.string().required("Password is required"),
-  });
-
-  const changeAuthMode = () => {
-    setAuthMode(authMode === "login" ? "signup" : "login");
+  var timeout = 0;
+  const rerender = () => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      setRender(render + 1);
+    }, 60000);
   };
 
-  // useEffect(() => {
-  //   loadUser();
+  // const validationSchema = Yup.object().shape({
+  //   email: Yup.string().required("email is required"),
+  //   password: Yup.string().required("Password is required"),
+  // });
 
-  //   return () => {
-  //     setEmail({ email: "" });
-  //     setPassword({ password: "" });
-  //   };
-  // }, []);
+  const changeAuthMode = () => {
+    setAuthMode(authMode === 'login' ? 'signup' : 'login');
+  };
+  /*  */
 
-  // const loadUser = async () => {
-  //   try {
-  //     if (localStorage.getItem("access-token")) {
-  //       setLoading(true);
-  //       await dispatch(UserInfo());
-  //       history.replace(from.pathname);
-  //       setLoading(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("error: ", error);
-  //     setLoading(false);
-  //   }
-  // };
+  const validationSchema = Joi.object({
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .max(64)
+      .required(),
+    password: Joi.string().min(3).max(512).required(),
+  });
+
+  const getUser = async () => {
+    try {
+      const { data } = await axios.get(getUserByTokenUrl, {
+        headers: {
+          'x-auth-token': localStorage.token,
+        },
+      });
+      setUser(data);
+    } catch (error) {
+      localStorage.removeItem('token');
+      user && errorToast('Session expired');
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.token) {
+      getUser();
+    }
+    rerender(render, setRender);
+  }, [render]);
+
+  const onLogin = async (event) => {
+    event.preventDefault();
+    const { value, error: err } = validationSchema.validate({
+      email,
+      password,
+    });
+    if (err) return setError(err.details[0].message);
+    try {
+      const { data } = await axios.post(loginUrl, value);
+      localStorage.setItem('token', data.token);
+      if (!err) setError('');
+      data && history.push('/');
+      getUser();
+      successToast('Succesfully logged in');
+    } catch (error) {
+      error.response && setError(error.response.data.error);
+      errorToast(error.response.data.error);
+    }
+  };
+
+  /*  */
 
   const handleSumbit = async (e) => {
     e.preventDefault();
-    // const { value, error: err } = validationSchema.validate({
-    //   email,
-    //   password,
-    // });
+
     const value = { email, password };
-    // if (err) return setError(err.details[0].message);
     try {
       const data = await axios.get(getallUsers, value);
       console.log(data);
-      localStorage.setItem("token", data.token);
-      // if (!err) setError("");
-      data && history.push("/");
-      //   getUser();
+      localStorage.setItem('token', data.token);
+      data && history.push('/');
     } catch (error) {
       error.response && setError(error.response.data.error);
     }
   };
-  console.log("i am called", email, password);
-  // console.log("iloadUser", loadUser);
-  if (authMode === "login") {
+  if (authMode === 'login') {
     return (
       <Container
-        fluid="md"
-        className="mt-4 mb-4  d-flex justify-content-center align-items-center"
+        fluid='md'
+        className='mt-4 mb-4  d-flex justify-content-center align-items-center'
       >
         <Card
-          style={{ width: "25rem", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px" }}
-          className="d-flex justify-content-center align-items-center mt-4 mb-4 m-5"
+          style={{ width: '25rem', boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px' }}
+          className='d-flex justify-content-center align-items-center mt-4 mb-4 m-5'
         >
           <br />
-          <Row className="mt-2 m-2">
-            <Col className="m-0">
-              <Alert color="teal">
+          <Row className='mt-2 m-2'>
+            <Col className='m-0'>
+              <Alert color='teal'>
                 <div>
-                  <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
-                    {authMode === "login" ? "Get started " : "welcome back"}
+                  <Alert.Heading style={{ width: '', fontSize: '1rem' }}>
+                    {authMode === 'login' ? 'Get started ' : 'welcome back'}
                   </Alert.Heading>
                 </div>
-                <Alert.Heading style={{ width: "", fontSize: "1rem" }}>
-                  {location.pathname !== "login"
-                    ? "Create New Account"
-                    : "Login with email and password"}
+                <Alert.Heading style={{ width: '', fontSize: '1rem' }}>
+                  {location.pathname !== 'login'
+                    ? 'Create New Account'
+                    : 'Login with email and password'}
                 </Alert.Heading>
               </Alert>
               <Alert>sign up</Alert>
               <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className='mb-3' controlId='formBasicEmail'>
                   <Form.Label>Full name</Form.Label>
-                  <Form.Control type="email" placeholder="Enter Full name" />
+                  <Form.Control type='email' placeholder='Enter Full name' />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className='mb-3' controlId='formBasicEmail'>
                   <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" placeholder="Enter email" />
-                  <Form.Text className="text-muted">
+                  <Form.Control type='email' placeholder='Enter email' />
+                  <Form.Text className='text-muted'>
                     We'll never share your email with anyone else.
                   </Form.Text>
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className='mb-3' controlId='formBasicPassword'>
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Password" />
+                  <Form.Control type='password' placeholder='Password' />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                  <Form.Check type="checkbox" label="Check me out" />
+                <Form.Group className='mb-3' controlId='formBasicCheckbox'>
+                  <Form.Check type='checkbox' label='Check me out' />
                 </Form.Group>
               </Form>
               <FooterMessage
@@ -135,8 +169,8 @@ export default function Login() {
                 changeAuthMode={changeAuthMode}
               />
 
-              <Button onClick={() => history.push("/")}> create</Button>
-              <Button className="m-1" onClick={changeAuthMode}>
+              <Button onClick={() => history.push('/')}> create</Button>
+              <Button className='m-1' onClick={changeAuthMode}>
                 forgot password
               </Button>
             </Col>
@@ -147,53 +181,53 @@ export default function Login() {
   }
   return (
     <Container
-      fluid="md"
-      className="mt-4 mb-4  d-flex justify-content-center align-items-center"
-      style={{ background: "" }}
+      fluid='md'
+      className='mt-4 mb-4  d-flex justify-content-center align-items-center'
+      style={{ background: '' }}
     >
       <Card
-        style={{ width: "22rem", boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px" }}
-        className="d-flex justify-content-center align-items-center mt-4 mb-4 m-5"
+        style={{ width: '22rem', boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px' }}
+        className='d-flex justify-content-center align-items-center mt-4 mb-4 m-5'
       >
-        <Row className="mt-2">
+        <Row className='mt-2'>
           <Col>
             <Card.Img
               style={{
-                objectFit: "cover",
-                objectPosition: "center",
-                borderRadius: "50%",
-                width: "7rem",
-                height: "7rem",
-                border: "10px",
-                boxShadow: "rgb(0 0 0 / 16%) 1px 1px 10px",
+                objectFit: 'cover',
+                objectPosition: 'center',
+                borderRadius: '50%',
+                width: '7rem',
+                height: '7rem',
+                border: '10px',
+                boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px',
               }}
               width={100}
               height={100}
-              alt="profile-image"
-              variant="top"
-              src="https://images.unsplash.com/photo-1538407476027-5a9866ef5b39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80"
+              alt='profile-image'
+              variant='top'
+              src='https://images.unsplash.com/photo-1538407476027-5a9866ef5b39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80'
             />
           </Col>
         </Row>
         <br />
-        <Row className="mt-2 m-2">
-          <Col className="m-0">
+        <Row className='mt-2 m-2'>
+          <Col className='m-0'>
             <HeaderMessage />
             <Form
               // loading={formLoading}
               // error={errorMsg !== null}
-              onSubmit={handleSumbit}
+              onSubmit={onLogin}
             >
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className='mb-3' controlId='formBasicEmail'>
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-                <Form.Text className="text-muted">
+                <Form.Control type='email' placeholder='Enter email' />
+                <Form.Text className='text-muted'>
                   We'll never share your email with anyone else.
                 </Form.Text>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Group className='mb-3' controlId='formBasicPassword'>
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control type='password' placeholder='Password' />
               </Form.Group>
 
               <br />
@@ -204,7 +238,7 @@ export default function Login() {
             />
 
             <Button onClick={handleSumbit}> LOGIN</Button>
-            <Button className="m-1">forgot password</Button>
+            <Button className='m-1'>forgot password</Button>
           </Col>
         </Row>
         <br />

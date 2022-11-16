@@ -1,15 +1,16 @@
-require("dotenv").config();
-const db = require("../models");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const router = require("express").Router();
-const cloudinary = require("cloudinary").v2;
-const follower = require("../models/follower");
-const isEmail = require("validator/lib/isEmail");
+require('dotenv').config();
+const db = require('../models');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const router = require('express').Router();
+const cloudinary = require('cloudinary').v2;
+const follower = require('../models/follower');
+const isEmail = require('validator/lib/isEmail');
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
-const Joi = require("joi");
+const Joi = require('joi');
+const { verifyToken } = require('../middleware/authjwt');
 
-const { User } = db;
+const { user } = db;
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -23,51 +24,59 @@ const auth_schema = Joi.object({
   password: Joi.string().min(3).max(512).required(),
 });
 
-router.get("/", async (req, res, next) => {
-  try {
-    if (User.length < 0) return res.status(400).send("invalid");
+router.get('/token', verifyToken, async (req, res) => {
+  const finUser = await user.findAll({
+    where: { id: req.user.id },
+    attributes: { exclude: ['password'] },
+    // include: [{ model: avatar }],
+  });
+  res.send(finUser[0]);
+});
 
-    const users = await User.findAll({});
+router.get('/', verifyToken, async (req, res, next) => {
+  try {
+    if (user.length < 0) return res.status(400).send('invalid');
+    const users = await user.findAll({});
     res.status(200).json(users);
   } catch (error) {
-    console.log("error happened!", error);
+    console.log('error happened!', error);
   }
 });
 
-router.get("/login", async (req, res, next) => {
-  try {
-    res.send({
-      token: "test123",
-    });
-  } catch (error) {
-    console.log("error happened!", error);
-  }
-});
+// router.get("/login", async (req, res, next) => {
+//   try {
+//     res.send({
+//       token: "test123",
+//     });
+//   } catch (error) {
+//     console.log("error happened!", error);
+//   }
+// });
 
-router.get("/:username", async (req, res, next) => {
+router.get('/:username', async (req, res, next) => {
   try {
     const { username } = req.params;
     console.log(username);
-    if (username.length < 0) return res.status(401).send("invalid");
-    if (!resgexUserName.test(username)) return res.status(400).send("invalid");
-    const user = await User.findOne({
+    if (username.length < 0) return res.status(401).send('invalid');
+    if (!resgexUserName.test(username)) return res.status(400).send('invalid');
+    const user = await user.findOne({
       where: { username: username.toLowerCase() },
     });
-    console.log("user", user);
+    console.log('user', user);
 
     if (user) {
-      return res.status(401).send("Username already taken");
+      return res.status(401).send('Username already taken');
     } else {
-      return res.status(200).send("Available");
+      return res.status(200).send('Available');
     }
   } catch ({ message }) {
     res.status(500).send({ message });
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const user = await User.findOne({ where: { id: req.params.id } });
+    const user = await user.findOne({ where: { id: req.params.id } });
 
     // console.log("im here");
 
@@ -77,32 +86,32 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.put("/updateuser/:id", async (req, res, next) => {
-  console.log("req.body", req.body);
+router.put('/updateuser/:id', async (req, res, next) => {
+  console.log('req.body', req.body);
 
   try {
     await User.update(req.body, {
       where: { id: req.params.id },
     });
-    const user = await User.findOne({ where: { id: req.params.id } });
+    const user = await user.findOne({ where: { id: req.params.id } });
 
     res.status(200).json(user);
   } catch (error) {
-    console.log("error: ", error);
+    console.log('error: ', error);
   }
 });
 
-router.post("/signup", async (req, res, next) => {
+router.post('/signup', async (req, res, next) => {
   try {
     const { username, name, email, password, bio } = req.body;
-    if (!isEmail(email)) return res.status(401).send("invalid email");
+    if (!isEmail(email)) return res.status(401).send('invalid email');
     if (password.length < 6)
-      return res.status(400).send("password must be 8 charactor");
-    const userFound = await User.findAll({
+      return res.status(400).send('password must be 8 charactor');
+    const userFound = await user.findAll({
       where: { email },
     });
     if (userFound[0]) {
-      return res.status(401).send("email already exists");
+      return res.status(401).send('email already exists');
     }
     let product = {
       username,
@@ -116,7 +125,7 @@ router.post("/signup", async (req, res, next) => {
       const file = req.files.photo;
       cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
         if (!err) {
-          const myUser = new User({
+          const myUser = new user({
             username: product.username,
             name: product.name,
             created_at: new Date(),
@@ -125,7 +134,6 @@ router.post("/signup", async (req, res, next) => {
             bio: product.bio,
             profilePicUrl: result.url,
           });
-          console.log(myUser);
           myUser.save(function (err, res) {
             if (err) {
               res.send(err);
@@ -135,7 +143,7 @@ router.post("/signup", async (req, res, next) => {
         }
       });
     } else {
-      await User.create(product);
+      await user.create(product);
       return res.status(200).json(product);
     }
   } catch ({ message }) {
@@ -144,11 +152,11 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-router.post("/signin", async (req, res) => {
+router.post('/signin', async (req, res) => {
   const { email } = req.body;
   const { value, error } = auth_schema.validate(req.body);
   if (error) return res.status(400).send({ message: error.details[0].message });
-  const userFound = await User.findAll({
+  const userFound = await user.findAll({
     where: { email },
   });
   // const passwordIsValid = bcrypt.compareSync(password, user.password);
@@ -163,14 +171,14 @@ router.post("/signin", async (req, res) => {
   //   expiresIn: 86400, // 24 hours
   // });
   if (!userFound[0])
-    return res.status(400).send({ error: "Invalid email or password" });
+    return res.status(400).send({ error: 'Invalid email or password' });
   const validPassword = await bcrypt.compare(
     value.password,
     userFound[0].password
   );
   if (!validPassword)
-    return res.status(400).send({ error: "Invalid email or password" });
-  const token = User.generateAuthToken(userFound[0].id);
+    return res.status(400).send({ error: 'Invalid email or password' });
+  const token = user.generateAuthToken(userFound[0].id);
   res.status(200).send({ token });
 
   // return res.status(200).send({

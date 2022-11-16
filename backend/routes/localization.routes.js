@@ -1,8 +1,8 @@
-const router = require("express").Router();
-const fs = require("fs");
-const path = require("path");
+const router = require('express').Router();
+const fs = require('fs');
+const path = require('path');
 
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     // const localization = await localizationService.getLocalization(
     //   req.params.locale

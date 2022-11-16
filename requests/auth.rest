@@ -1,0 +1,47 @@
+@baseUrl = {{$dotenv SERVER}}
+@token = {{$dotenv TOKEN}}
+
+# Login user with SSO
+# remote_user: Set by SSO provider
+POST {{baseUrl}}/api/auth/login
+remote_user: test@test.com
+
+###
+
+# Login user locally
+# Body:
+# - email: string / required
+# - password: string / required
+POST http://localhost:8000/api/auth/signin
+Content-Type: application/json
+
+{
+	"email": "test@gmail.com",
+	"password": "666555"
+}
+
+###
+
+# Get user info & refresh token
+# Authentication:
+# - Auth: Bearer <token>
+GET http://localhost:8000/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjY4NjA3NDU4LCJleHAiOjE2Njg2MjkwNTh9.PeMiuEC7awFpaeFk1G9EnCsXl-kUG9eedH6Le66pnmc
+
+###
+
+# Change password for local login
+# Body:
+# - oldPassword: string / required
+# - newPassword: string / required
+# Authentication:
+# - Auth: Bearer <token>
+
+POST {{baseUrl}}/api/auth/users/change-password
+Auth: Bearer {{token}}
+Content-Type: application/json
+
+{
+	"oldPassword": "sekret123",
+	"newPassword": "sekret456"
+}

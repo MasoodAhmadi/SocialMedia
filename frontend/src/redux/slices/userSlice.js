@@ -1,11 +1,11 @@
-import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 export const login = createAsyncThunk(
-  "users/login",
+  'auth/signin',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${axios.defaults.url}/login`, data);
+      const response = await axios.post('api/auth/signin', data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -13,13 +13,13 @@ export const login = createAsyncThunk(
   }
 );
 
-export const UserInfo = createAsyncThunk(
-  "user/UserInfo",
+export const getUserInfo = createAsyncThunk(
+  'users',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("access-token");
+      const token = localStorage.getItem('access-token');
       if (token) {
-        const response = await axios.get("/users", {
+        const response = await axios.get('api/users', {
           headers: { Auth: `Bearer ${token}` },
         });
         return response.data;
@@ -31,10 +31,10 @@ export const UserInfo = createAsyncThunk(
 );
 
 export const updateUser = createAsyncThunk(
-  "user/updateUser",
+  'users/updateUser',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`/users/${data.id}`, data);
+      const response = await axios.patch(`/api/users/${data.id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -43,10 +43,10 @@ export const updateUser = createAsyncThunk(
 );
 
 export const changePassword = createAsyncThunk(
-  "user/changePassword",
+  'users/changePassword',
   async (data, { rejectWithValue }) => {
     try {
-      await axios.post(`${axios.defaults.url}/users/change-password`, data);
+      await axios.post('api/auth/user/change-password', data);
       return;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -54,17 +54,17 @@ export const changePassword = createAsyncThunk(
   }
 );
 
-export const logout = createAction("logout");
+export const logout = createAction('logout');
 
 const isPendingAction = (action) => {
-  return action.type.startsWith("user/") && action.type.endsWith("/pending");
+  return action.type.startsWith('user/') && action.type.endsWith('/pending');
 };
 const isRejectedAction = (action) => {
-  return action.type.startsWith("user/") && action.type.endsWith("/rejected");
+  return action.type.startsWith('user/') && action.type.endsWith('/rejected');
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'users',
   initialState: {
     loading: false,
     errors: false,
@@ -76,17 +76,17 @@ const userSlice = createSlice({
       // LOGIN
       .addCase(login.fulfilled, (state, action) => {
         const token = action?.payload?.token;
-        window.localStorage.setItem("access-token", token);
-        axios.defaults.headers.common["Auth"] = `Bearer ${token}`;
+        window.localStorage.setItem('access-token', token);
+        axios.defaults.headers.common['Auth'] = `Bearer ${token}`;
         state.data = action.payload;
         state.loading = false;
       })
 
       // GET USER INFO / RELOGIN
-      .addCase(UserInfo.fulfilled, (state, action) => {
+      .addCase(getUserInfo.fulfilled, (state, action) => {
         const token = action?.payload?.token;
-        window.localStorage.setItem("access-token", token);
-        axios.defaults.headers.common["Auth"] = `Bearer ${token}`;
+        window.localStorage.setItem('access-token', token);
+        axios.defaults.headers.common['Auth'] = `Bearer ${token}`;
         state.data = action.payload;
         state.loading = false;
       })
@@ -98,8 +98,8 @@ const userSlice = createSlice({
 
       // LOGOUT
       .addCase(logout, (state) => {
-        window.localStorage.removeItem("access-token");
-        axios.defaults.headers.common["Auth"] = null;
+        window.localStorage.removeItem('access-token');
+        axios.defaults.headers.common['Auth'] = null;
         state.loading = false;
         state.errors = false;
         state.data = null;
@@ -119,8 +119,8 @@ const userSlice = createSlice({
 
       // ERROR /FAILURE / REJECTED
       .addMatcher(isRejectedAction, (state, action) => {
-        window.localStorage.removeItem("access-token");
-        axios.defaults.headers.common["Auth"] = null;
+        window.localStorage.removeItem('access-token');
+        axios.defaults.headers.common['Auth'] = null;
 
         state.loading = false;
         state.data = null;
