@@ -1,13 +1,16 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 // const secret = require('./config');
-require('dotenv').config();
 
 function verifyToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token)
-    return res.status(401).send({ error: 'ACCESS DENIED: No token provided' });
   try {
+    if (!req.headers.authorization) {
+      return res
+        .status(401)
+        .send({ error: 'ACCESS DENIED: No token provided' });
+    }
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
     req.user = decoded;
     next();

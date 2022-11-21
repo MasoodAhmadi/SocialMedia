@@ -5,13 +5,29 @@ export const signin = createAsyncThunk(
   'user/signin',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/auth/signin', data);
+      const response = await axios.post('/api/auth/signin', data);
+      console.log('response', response);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
+
+// export const login = createAsyncThunk(
+//   'user/login',
+//   async (data, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.post(
+//         `${axios.defaults.url}/auth/login`,
+//         data
+//       );
+//       return response.data;
+//     } catch (error) {
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 
 export const getUserInfo = createAsyncThunk(
   'user/getUserInfo',
@@ -20,7 +36,7 @@ export const getUserInfo = createAsyncThunk(
       const token = localStorage.getItem('access-token');
       if (token) {
         const response = await axios.get('/users', {
-          headers: { Auth: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` },
         });
         return response.data;
       }
