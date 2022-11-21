@@ -1,7 +1,6 @@
-import React from "react";
-import { Container } from "react-bootstrap";
-import ListGroups from "../components/listGroup";
-import WeekofTheDay from "../components/weekofTheDay";
+import React from 'react';
+import { Container } from 'react-bootstrap';
+import { ListGroups, WeekofTheDay } from '../components';
 
 export default function homePage() {
   return (

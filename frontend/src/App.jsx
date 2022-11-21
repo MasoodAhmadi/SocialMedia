@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 // import { IntlProvider } from "react-intl";
 // import Layout from "./components/Layout/layout";
-import Links from './pages/link.page';
-import { Switch, Route } from 'react-router-dom';
-import homePage from './pages/home.page';
-import NotFoundPage from './pages/notFound.page';
 import Footer from './components/footer';
-import HeadTags from './components/headerTag';
 import Navbars from './components/navbar';
-import Login from './pages/login.page';
 import { Container } from 'react-bootstrap';
-import Registration from './pages/registeration';
+import HeadTags from './components/headerTag';
+import { Switch, Route } from 'react-router-dom';
+import {
+  Links,
+  homePage,
+  SignupPage,
+  NotFoundPage,
+  Registration,
+  Identification,
+} from './pages';
 
 export default function App() {
   const [token, setToken] = useState();
 
-  // if (!token) {
-  //   return <Login setToken={setToken} />;
-  // }
+  if (!token) {
+    return <Identification setToken={setToken} />;
+  }
 
   return (
     <>
@@ -27,7 +30,6 @@ export default function App() {
       > */}
       <HeadTags />
       <Navbars />
-
       <div>
         <Container
           fluid
@@ -36,13 +38,12 @@ export default function App() {
           }}
         >
           <Switch>
-            <Route exact path='/login' component={Login} />
+            <Route exact path='/login' component={Identification} />
             <Route path='/' component={homePage} />
-            {/* <Route exact path="/signup" component={Signup} /> */}
+            <Route exact path='/signup' component={SignupPage} />
             <Route exact path='/registration' component={Registration} />
             <Route path='/link' component={Links} />
             <Route component={NotFoundPage} />
-            {/* <Redirect to={configState.organizationUrl || "/"} /> */}
           </Switch>
         </Container>
       </div>
