@@ -1,21 +1,21 @@
 // import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 // import { Divider, Form } from "semantic-ui-react";
 // import { Header, Icon, Image, Message, Segment } from "semantic-ui-react";
 // import ImageDropDiv from "../components/common/imageDropDrag";
 // import CommonInputs from "../components/common/inputs";
-import { Button, Container } from "react-bootstrap";
-import { useIntl } from "react-intl";
+import { Button, Container } from 'react-bootstrap';
+import { useIntl } from 'react-intl';
 
-function Signup() {
+function SignupPage() {
   const inputRef = useRef();
-  const [bio, setBio] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [bio, setBio] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [image, setImage] = useState(null);
   const [media, setMedia] = useState(null);
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
   const [highlighted, setHighlighted] = useState(false);
@@ -26,10 +26,10 @@ function Signup() {
   const intl = useIntl();
 
   const [allsocialState, setAllSocialState] = useState({
-    facebook: "",
-    youtube: "",
-    instagram: "",
-    twitter: "",
+    facebook: '',
+    youtube: '',
+    instagram: '',
+    twitter: '',
   });
 
   // const handleChange = (e) => {
@@ -54,27 +54,27 @@ function Signup() {
       password.length > 3
     ) {
       const body = new FormData();
-      body.append("photo", image);
-      body.append("name", name);
-      body.append("password", password);
-      body.append("email", email);
-      body.append("username", username);
-      body.append("bio", bio);
-      await fetch("http://localhost:8000/api/users/signup", {
-        method: "POST",
+      body.append('photo', image);
+      body.append('name', name);
+      body.append('password', password);
+      body.append('email', email);
+      body.append('username', username);
+      body.append('bio', bio);
+      await fetch('http://localhost:8000/api/users/signup', {
+        method: 'POST',
         body,
       });
     } else {
-      alert("Please gives all the input properly");
+      alert('Please gives all the input properly');
     }
   };
 
   return (
     <>
       <Container
-        fluid="md"
-        className="mt-4 mb-4  d-flex justify-content-center align-items-center"
-        style={{ background: "" }}
+        fluid='md'
+        className='mt-4 mb-4  d-flex justify-content-center align-items-center'
+        style={{ background: '' }}
       >
         asdfasdfs
         {/* <HeaderMessage /> */}
@@ -195,7 +195,7 @@ function Signup() {
     </>
   );
 }
-export default Signup;
+export default SignupPage;
 
 // import React, { useEffect, useRef, useState } from "react";
 // import { Segment, TextArea, Divider } from "semantic-ui-react";
