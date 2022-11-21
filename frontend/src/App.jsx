@@ -15,9 +15,9 @@ import Registration from './pages/registeration';
 export default function App() {
   const [token, setToken] = useState();
 
-  if (!token) {
-    return <Login setToken={setToken} />;
-  }
+  // if (!token) {
+  //   return <Login setToken={setToken} />;
+  // }
 
   return (
     <>
@@ -36,8 +36,8 @@ export default function App() {
           }}
         >
           <Switch>
-            <Route exact path='/' component={homePage} />
             <Route exact path='/login' component={Login} />
+            <Route path='/' component={homePage} />
             {/* <Route exact path="/signup" component={Signup} /> */}
             <Route exact path='/registration' component={Registration} />
             <Route path='/link' component={Links} />

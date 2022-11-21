@@ -47,9 +47,9 @@ export default function Login() {
   //   password: Yup.string().required("Password is required"),
   // });
 
-  const changeAuthMode = () => {
-    setAuthMode(authMode === 'login' ? 'signup' : 'login');
-  };
+  // const changeAuthMode = () => {
+  //   setAuthMode(authMode === 'login' ? 'login' : 'signup');
+  // };
   /*  */
 
   const validationSchema = Joi.object({
@@ -88,6 +88,7 @@ export default function Login() {
       email,
       password,
     });
+    console.log(value);
     if (err) return setError(err.details[0].message);
     try {
       const { data } = await axios.post(loginUrl, value);
@@ -117,7 +118,7 @@ export default function Login() {
       error.response && setError(error.response.data.error);
     }
   };
-  if (authMode === 'login') {
+  if (authMode !== 'login') {
     return (
       <Container
         fluid='md'
@@ -133,11 +134,11 @@ export default function Login() {
               <Alert color='teal'>
                 <div>
                   <Alert.Heading style={{ width: '', fontSize: '1rem' }}>
-                    {authMode === 'login' ? 'Get started ' : 'welcome back'}
+                    {authMode !== 'login' ? 'Get started ' : 'welcome back'}
                   </Alert.Heading>
                 </div>
                 <Alert.Heading style={{ width: '', fontSize: '1rem' }}>
-                  {location.pathname !== 'login'
+                  {authMode !== 'login'
                     ? 'Create New Account'
                     : 'Login with email and password'}
                 </Alert.Heading>
@@ -152,7 +153,7 @@ export default function Login() {
                   <Form.Label>Email address</Form.Label>
                   <Form.Control type='email' placeholder='Enter email' />
                   <Form.Text className='text-muted'>
-                    We'll never share your email with anyone else.
+                    We'll never share your email with anyone.
                   </Form.Text>
                 </Form.Group>
 
@@ -170,9 +171,7 @@ export default function Login() {
               />
 
               <Button onClick={() => history.push('/')}> create</Button>
-              <Button className='m-1' onClick={changeAuthMode}>
-                forgot password
-              </Button>
+              <Button className='m-1'>forgot password</Button>
             </Col>
           </Row>
         </Card>
@@ -214,15 +213,15 @@ export default function Login() {
           <Col className='m-0'>
             <HeaderMessage />
             <Form
-              // loading={formLoading}
-              // error={errorMsg !== null}
-              onSubmit={onLogin}
+            // loading={formLoading}
+            // error={errorMsg !== null}
+            // onSubmit={onLogin}
             >
               <Form.Group className='mb-3' controlId='formBasicEmail'>
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type='email' placeholder='Enter email' />
                 <Form.Text className='text-muted'>
-                  We'll never share your email with anyone else.
+                  We'll never share your email with anyone.
                 </Form.Text>
               </Form.Group>
               <Form.Group className='mb-3' controlId='formBasicPassword'>
@@ -237,7 +236,16 @@ export default function Login() {
               changeAuthMode={changeAuthMode}
             />
 
-            <Button onClick={handleSumbit}> LOGIN</Button>
+            <Button
+              onClick={
+                // () => onLogin
+                console.log('i am clicked')
+              }
+              type='submit'
+            >
+              {' '}
+              LOGIN
+            </Button>
             <Button className='m-1'>forgot password</Button>
           </Col>
         </Row>

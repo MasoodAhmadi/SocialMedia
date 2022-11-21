@@ -33,7 +33,7 @@ router.get('/token', verifyToken, async (req, res) => {
   res.send(findUser[0]);
 });
 
-router.get('/', verifyToken, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     if (user.length < 0) return res.status(400).send('invalid');
     const users = await user.findAll({});
@@ -56,7 +56,6 @@ router.get('/', verifyToken, async (req, res, next) => {
 router.get('/:username', async (req, res, next) => {
   try {
     const { username } = req.params;
-    console.log(username);
     if (username.length < 0) return res.status(401).send('invalid');
     if (!resgexUserName.test(username)) return res.status(400).send('invalid');
     const user = await user.findOne({
@@ -152,43 +151,43 @@ router.post('/signup', async (req, res, next) => {
   }
 });
 
-router.post('/signin', async (req, res) => {
-  const { email } = req.body;
-  const { value, error } = auth_schema.validate(req.body);
-  if (error) return res.status(400).send({ message: error.details[0].message });
-  const userFound = await user.findAll({
-    where: { email },
-  });
-  // const passwordIsValid = bcrypt.compareSync(password, user.password);
+// router.post('/signin', async (req, res) => {
+//   const { email } = req.body;
+//   const { value, error } = auth_schema.validate(req.body);
+//   if (error) return res.status(400).send({ message: error.details[0].message });
+//   const userFound = await user.findAll({
+//     where: { email },
+//   });
+//   // const passwordIsValid = bcrypt.compareSync(password, user.password);
 
-  // if (!passwordIsValid) {
-  //   return res.status(401).send({
-  //     accessToken: null,
-  //     message: "Invalid Password!",
-  //   });
-  // }
-  // const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-  //   expiresIn: 86400, // 24 hours
-  // });
-  if (!userFound[0])
-    return res.status(400).send({ error: 'Invalid email or password' });
-  const validPassword = await bcrypt.compare(
-    value.password,
-    userFound[0].password
-  );
-  if (!validPassword)
-    return res.status(400).send({ error: 'Invalid email or password' });
-  const token = user.generateAuthToken(userFound[0].id);
-  res.status(200).send({ token });
+//   // if (!passwordIsValid) {
+//   //   return res.status(401).send({
+//   //     accessToken: null,
+//   //     message: "Invalid Password!",
+//   //   });
+//   // }
+//   // const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+//   //   expiresIn: 86400, // 24 hours
+//   // });
+//   if (!userFound[0])
+//     return res.status(400).send({ error: 'Invalid email or password' });
+//   const validPassword = await bcrypt.compare(
+//     value.password,
+//     userFound[0].password
+//   );
+//   if (!validPassword)
+//     return res.status(400).send({ error: 'Invalid email or password' });
+//   const token = user.generateAuthToken(userFound[0].id);
+//   res.status(200).send({ token });
 
-  // return res.status(200).send({
-  //   // id: user.id,
-  //   // username: user.username,
-  //   email: email,
-  //   password: password,
-  //   // accessToken: token,
-  // });
-});
+//   // return res.status(200).send({
+//   //   // id: user.id,
+//   //   // username: user.username,
+//   //   email: email,
+//   //   password: password,
+//   //   // accessToken: token,
+//   // });
+// });
 
 module.exports = router;
 
