@@ -8,7 +8,7 @@ const follower = require('../models/follower');
 const isEmail = require('validator/lib/isEmail');
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 const Joi = require('joi');
-const { verifyToken } = require('../../middleware/authjwt');
+const { verifyToken } = require('../middleware/authjwt');
 
 const { user } = db;
 
