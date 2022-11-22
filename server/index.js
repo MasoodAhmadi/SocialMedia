@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-const userRouter = require('./routes/users.routes');
-const authRouter = require('./routes/auth.routes');
+const userRouter = require('./src/routes/users.routes');
+const authRouter = require('./src/routes/auth.routes');
 // const localizationRouter = require('./routes/localization.routes');
 require('dotenv').config();
 const cors = require('cors');

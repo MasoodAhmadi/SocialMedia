@@ -1,8 +1,6 @@
 import axios from 'axios';
 import * as Yup from 'yup';
-
 import Joi from 'joi';
-
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Container, Form, Row } from 'react-bootstrap';
@@ -12,7 +10,6 @@ import {
   HeaderMessage,
 } from '../components/common/WelcomeMessage';
 import SocialAppLog from '../components/common/socialmedialogin';
-
 import { UserInfo } from '../redux/slices/userSlice';
 import { endPoints } from '../config/endPoints';
 
