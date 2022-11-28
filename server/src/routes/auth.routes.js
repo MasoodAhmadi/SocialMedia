@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
-const db = require('../models');
+const db = require('../unused_codes');
 const { user } = db;
 
 const auth_schema = Joi.object({

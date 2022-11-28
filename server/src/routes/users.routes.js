@@ -1,23 +1,21 @@
-require('dotenv').config();
-const db = require('../models');
+// require('dotenv').config();
+const { User } = require('../sequelize');
+
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const router = require('express').Router();
-const cloudinary = require('cloudinary').v2;
-const follower = require('../models/follower');
-const isEmail = require('validator/lib/isEmail');
+// const cloudinary = require('cloudinary').v2;
+// const follower = require('../models/follower');
+// const isEmail = require('validator/lib/isEmail');
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 const Joi = require('joi');
 const { verifyToken } = require('../middleware/authjwt');
 
-const { user } = db;
-
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
-  secure: true,
-});
+// cloudinary.config({
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.API_KEY,
+//   api_secret: process.env.API_SECRET,
+//   secure: true,
+// });
 
 const auth_schema = Joi.object({
   email: Joi.string().email().max(64).required(),
@@ -25,7 +23,7 @@ const auth_schema = Joi.object({
 });
 
 router.get('/token', verifyToken, async (req, res) => {
-  const findUser = await user.findAll({
+  const findUser = await User.findAll({
     where: { id: req.user.id },
     attributes: { exclude: ['password'] },
     // include: [{ model: avatar }],
@@ -35,8 +33,8 @@ router.get('/token', verifyToken, async (req, res) => {
 
 router.get('/', async (req, res, next) => {
   try {
-    if (user.length < 0) return res.status(400).send('invalid');
-    const users = await user.findAll({});
+    // if (user.length < 0) return res.status(400).send('invalid');
+    const users = await User.findAll({});
     res.status(200).json(users);
   } catch (error) {
     console.log('error happened!', error);
@@ -58,12 +56,12 @@ router.get('/:username', async (req, res, next) => {
     const { username } = req.params;
     if (username.length < 0) return res.status(401).send('invalid');
     if (!resgexUserName.test(username)) return res.status(400).send('invalid');
-    const user = await user.findOne({
+    const users = await User.findOne({
       where: { username: username.toLowerCase() },
     });
-    console.log('user', user);
+    console.log('user', users);
 
-    if (user) {
+    if (users) {
       return res.status(401).send('Username already taken');
     } else {
       return res.status(200).send('Available');
@@ -100,57 +98,76 @@ router.put('/updateuser/:id', async (req, res, next) => {
   }
 });
 
-router.post('/signup', async (req, res, next) => {
+// router.post('/signup', async (req, res, next) => {
+//   try {
+//     const { username, name, email, password, bio } = req.body;
+//     if (!isEmail(email)) return res.status(401).send('invalid email');
+//     if (password.length < 6)
+//       return res.status(400).send('password must be 8 charactor');
+//     const userFound = await User.findAll({
+//       where: { email },
+//     });
+//     if (userFound[0]) {
+//       return res.status(401).send('email already exists');
+//     }
+//     let product = {
+//       username,
+//       name,
+//       email,
+//       password,
+//       bio,
+//     };
+//     product.password = await bcrypt.hash(password, 10);
+//     if (req.files !== null) {
+//       const file = req.files.photo;
+//       cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+//         if (!err) {
+//           const myUser = new User({
+//             username: product.username,
+//             name: product.name,
+//             created_at: new Date(),
+//             email: product.email,
+//             password: product.password,
+//             bio: product.bio,
+//             profilePicUrl: result.url,
+//           });
+//           myUser.save(function (err, res) {
+//             if (err) {
+//               res.send(err);
+//             }
+//             return res.status(200).json(myUser);
+//           });
+//         }
+//       });
+//     } else {
+//       await User.create(product);
+//       return res.status(200).json(product);
+//     }
+//   } catch ({ message }) {
+//     console.log(message);
+//     res.status(500).send({ message });
+//   }
+// });
+
+router.post('/create_demo', async (req, res, next) => {
   try {
-    const { username, name, email, password, bio } = req.body;
-    if (!isEmail(email)) return res.status(401).send('invalid email');
-    if (password.length < 6)
-      return res.status(400).send('password must be 8 charactor');
-    const userFound = await user.findAll({
-      where: { email },
+    const hashedPassword = await bcrypt.hash('masood123', 12);
+    const users = await User.create({
+      email: 'demo@masood.it',
+      password: hashedPassword,
     });
-    if (userFound[0]) {
-      return res.status(401).send('email already exists');
-    }
-    let product = {
-      username,
-      name,
-      email,
-      password,
-      bio,
-    };
-    product.password = await bcrypt.hash(password, 10);
-    if (req.files !== null) {
-      const file = req.files.photo;
-      cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
-        if (!err) {
-          const myUser = new user({
-            username: product.username,
-            name: product.name,
-            created_at: new Date(),
-            email: product.email,
-            password: product.password,
-            bio: product.bio,
-            profilePicUrl: result.url,
-          });
-          myUser.save(function (err, res) {
-            if (err) {
-              res.send(err);
-            }
-            return res.status(200).json(myUser);
-          });
-        }
-      });
-    } else {
-      await user.create(product);
-      return res.status(200).json(product);
-    }
-  } catch ({ message }) {
-    console.log(message);
-    res.status(500).send({ message });
+    res.status(201).json(users);
+  } catch (error) {
+    console.error(error);
+    // next({
+    //   clientStatusCode: 500,
+    //   trace: error?.errors || error?.response?.data,
+    //   statusCode: error.status || error?.response?.status || error.statusCode,
+    //   message: error?.response?.message || error.message,
+    // });
   }
 });
-
+module.exports = router;
 // router.post('/signin', async (req, res) => {
 //   const { email } = req.body;
 //   const { value, error } = auth_schema.validate(req.body);
@@ -188,8 +205,6 @@ router.post('/signup', async (req, res, next) => {
 //   //   // accessToken: token,
 //   // });
 // });
-
-module.exports = router;
 
 // router.post("/signin", async (req, res) => {
 //   const { email } = req.body;
