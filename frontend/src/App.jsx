@@ -6,14 +6,9 @@ import Navbars from './components/navbar';
 import { Container } from 'react-bootstrap';
 import HeadTags from './components/headerTag';
 import { Switch, Route } from 'react-router-dom';
-import {
-  Links,
-  homePage,
-  SignupPage,
-  NotFoundPage,
-  Registration,
-  Identification,
-} from './pages';
+import { Links, homePage, Registration } from './pages';
+import { SignupPage, NotFoundPage, Identification } from './pages';
+import './assets/styles/base.scss';
 
 export default function App() {
   const [token, setToken] = useState();
