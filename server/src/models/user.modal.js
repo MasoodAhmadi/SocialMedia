@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'user',
@@ -21,11 +19,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         required: true,
         unique: true,
+        allowNull: false,
       },
       password: {
         type: DataTypes.STRING(250),
         required: true,
         select: false,
+        allowNull: false,
       },
       profilePicUrl: {
         type: DataTypes.STRING,
@@ -37,9 +37,20 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
     },
-    { paranoid: true, onDelete: 'cascade', onUpdate: 'cascade' }
+    { onDelete: 'cascade', onUpdate: 'cascade' }
   );
 
+	/*
+ * | users | CREATE TABLE `users` (
+ *  `id` int(11) NOT NULL AUTO_INCREMENT,
+ *  `email` varchar(255) NOT NULL,
+ *  `password` varchar(128) NOT NULL,
+ *  `createdAt` datetime NOT NULL,
+ *  `updatedAt` datetime NOT NULL,
+ *  PRIMARY KEY (`id`),
+ *  UNIQUE KEY `email` (`email`),
+ * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
+ */
   // User.generateAuthToken = (id, role) => {
   //   // const token = jwt.sign({ id, role }, config.get("jwtPrivateKey"));
   //   const token = jwt.sign({ id, role }, process.env.JWT_PRIVATE_KEY, {

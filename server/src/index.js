@@ -1,45 +1,34 @@
+// importing libraries
 const express = require('express');
-const path = require('path');
-const helmet = require('helmet');
-const userRoute = require('./routes/users.routes');
-const authRoute = require('./routes/auth.routes');
-const CONTAINER_PORT = process.env.SERVER_CONTAINER_PORT;
-const PUBLIC_PORT = process.env.SERVER_PUBLIC_PORT;
-
+// initializing express
 const app = express();
+// initializing services
+require('./start/middleware.start')(app);
+require('./start/routes.start')(app);
+require('./start/sequelize.start')();
 
-//middlewares
-app.use(helmet());
-app.use(express.static('build'));
-app.use(express.json());
+const { NODE_ENV, SERVER_CONTAINER_PORT, SERVER_PUBLIC_PORT } = process.env;
+const { SERVER_CONTAINER_TEST_PORT, SERVER_PUBLIC_TEST_PORT } = process.env;
+const CONTAINER_PORT =
+  NODE_ENV === 'test' ? SERVER_CONTAINER_TEST_PORT : SERVER_CONTAINER_PORT;
+const PUBLIC_PORT =
+  NODE_ENV === 'test' ? SERVER_PUBLIC_TEST_PORT : SERVER_PUBLIC_PORT;
 
-// routes
-app.use('/api/auth', authRoute);
-app.use('/api/users', userRoute);
-
-// post middlewares
-app.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
-});
-// app.use(errorLogger);
-// app.use(errorHandler);
-
-app.listen(CONTAINER_PORT, () => {
-  console.log(`Server running on localhost:${PUBLIC_PORT}`);
+const server = app.listen(CONTAINER_PORT, () => {
+  console.log(`Server is running on localhost:${PUBLIC_PORT}`);
 });
 
-// const express = require('express');
-// const bodyParser = require('body-parser');
-// const fileUpload = require('express-fileupload');
-// const userRouter = require('./routes/users.routes');
-// const authRouter = require('./routes/auth.routes');
-// // const localizationRouter = require('./routes/localization.routes');
-// // require('dotenv').config();
-// const cors = require('cors');
+module.exports = server;
+// const express = require("express");
+// const fileUpload = require("express-fileupload");
+// const userRouter = require("./routes/users.routes");
+// const bodyParser = require("body-parser");
+// require("dotenv").config();
+// const cors = require("cors");
 // const app = express();
 
-// const CONTAINER_PORT = process.env.SERVER_CONTAINER_PORT;
-// const PUBLIC_PORT = process.env.SERVER_PUBLIC_PORT;
+// const PORT = process.env.SERVER_CONTAINER_PORT || 8000;
+
 // app.use(bodyParser.json());
 // app.use(express.json());
 // app.use(cors());
@@ -51,16 +40,12 @@ app.listen(CONTAINER_PORT, () => {
 // );
 
 // app.use(express.urlencoded({ extended: true }));
+// app.use("/api/users", userRouter);
 
-// app.use('/api/users', userRouter);
-// app.use('/api/auth', authRouter);
-// app.use('/api/username', userRouter); //check user name exist or not
-// app.use('/api/finduser', userRouter);
-// // app.use('/localization', localizationRouter);
-// app.get('/', (req, res) => {
-//   res.send('chat application api!');
+// app.get("/", (req, res) => {
+//   res.send("chat application api!");
 // });
 
-// app.listen(CONTAINER_PORT, () => {
-//   console.log(`Server running on localhost:${PUBLIC_PORT}`);
+// app.listen(PORT, () => {
+//   console.log(`Listening on port ${PORT}`);
 // });

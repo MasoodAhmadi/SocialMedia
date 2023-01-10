@@ -7,7 +7,7 @@ const authRoute = require('../routes/auth.routes');
 
 
 // importing utils
-const { errorLogger } = require('../utils/logger');
+// const { errorLogger } = require('../utils/logger');
 
 module.exports = function (app) {
   const BASE = '/api';
@@ -16,7 +16,7 @@ module.exports = function (app) {
   app.use(`${BASE}/users`, userRoute);
  
   // next handler
-  app.use(error);
-  app.use(errorLogger);
-	app.use(unknownEndpointHandler);
+  // app.use(error);
+  // app.use(errorLogger);
+	// app.use(unknownEndpointHandler);
 };
