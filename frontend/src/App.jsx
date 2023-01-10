@@ -16,7 +16,7 @@ export default function App() {
   if (!token) {
     return <Identification setToken={setToken} />;
   }
-
+  console.log('i am a test console');
   return (
     <>
       {/* <IntlProvider

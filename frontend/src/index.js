@@ -1,49 +1,17 @@
-import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import * as serviceWorker from './serviceWorker';
-// import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-// import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
 import { Provider as ReduxProvider } from 'react-redux';
-import './index.css';
 import store from './redux/store';
-
-// const rootElement = document.getElementById('root');
-// const root = createRoot(rootElement);
-// root.render(
-//   <BrowserRouter>
-//     <ReduxProvider store={store}>
-//       <App />
-//     </ReduxProvider>
-//   </BrowserRouter>
-// );
+import App from './App';
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <ReduxProvider store={store}>
+      <App />
+    </ReduxProvider>
   </BrowserRouter>,
   document.getElementById('root')
 );
 
 if (module.hot) module.hot.accept();
-
-// ReactDOM.render(
-//   <BrowserRouter>
-//     <App />
-//   </BrowserRouter>,
-
-//   document.getElementById("root")
-// );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-
-// reportWebVitals();
-// serviceWorker.register({
-//   onUpdate: () => {
-//     console.log('Update happened.');
-//   },
-// });

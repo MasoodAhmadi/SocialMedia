@@ -20,8 +20,6 @@ export default function Identification() {
 
   const [errorMsg, setErrorMsg] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
-  // const [showPassword, setShowPassword] = useState(false);
-  // const [submitDisable, setSubmitDisable] = useState(true);
   const [email, setEmail] = useState('');
   // const [render, setRender] = useState(0);
   // const [loading, setLoading] = useState(false);
@@ -30,6 +28,7 @@ export default function Identification() {
   const [error, setError] = useState('');
   const [render, setRender] = useState(0);
   const { getallUsers, loginUrl, getUserByTokenUrl } = endPoints;
+  console.log('i am a test console');
 
   var timeout = 0;
   const rerender = () => {
