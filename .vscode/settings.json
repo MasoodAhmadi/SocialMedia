@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": false,
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+  "editor.tabSize": 2,
+  "emmet.excludeLanguages": ["markdown"],
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  }
+}
