@@ -1,14 +1,12 @@
-// require('dotenv').config();
-const { User } = require('../sequelize');
-
-const bcrypt = require('bcryptjs');
 const router = require('express').Router();
+const bcrypt = require('bcrypt');
+const { User } = require('../sequelize');
 // const cloudinary = require('cloudinary').v2;
 // const follower = require('../models/follower');
 // const isEmail = require('validator/lib/isEmail');
 const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
-const Joi = require('joi');
-const { verifyToken } = require('../middleware/authjwt');
+const { verifyToken } = require('../middleware/auth.middleware');
+const { auth, asyncErrorHandler } = require('../middleware');
 
 // cloudinary.config({
 //   cloud_name: process.env.CLOUD_NAME,
@@ -17,29 +15,52 @@ const { verifyToken } = require('../middleware/authjwt');
 //   secure: true,
 // });
 
-const auth_schema = Joi.object({
-  email: Joi.string().email().max(64).required(),
-  password: Joi.string().min(3).max(512).required(),
-});
-
-router.get('/token', verifyToken, async (req, res) => {
-  const findUser = await User.findAll({
-    where: { id: req.user.id },
-    attributes: { exclude: ['password'] },
-    // include: [{ model: avatar }],
-  });
-  res.send(findUser[0]);
-});
-
-router.get('/', async (req, res, next) => {
+router.get('/create_demo', async (req, res, next) => {
   try {
-    // if (user.length < 0) return res.status(400).send('invalid');
-    const users = await User.findAll({});
-    res.status(200).json(users);
+    const hashedPassword = await bcrypt.hash('asdf123', 12);
+    const user = await User.create({
+      name: 'masood',
+      username: 'masood.ahmadi',
+      email: 'masood@example.com',
+      password: hashedPassword,
+    });
+    res.status(201).json(user);
   } catch (error) {
-    console.log('error happened!', error);
+    console.error(error);
+    next({
+      clientStatusCode: 500,
+      trace: error?.errors || error?.response?.data,
+      statusCode: error.status || error?.response?.status || error.statusCode,
+      message: error?.response?.message || error.message,
+    });
   }
 });
+
+//Getting all data
+router.get('/', auth, asyncErrorHandler, async (req, res) => {
+  const users = await User.findAll({
+    attributes: ['id', 'email', 'name', 'username', 'bio', 'profilePicUrl'],
+  });
+  res.status(200).json(users);
+});
+
+// router.get('/token', verifyToken, async (req, res) => {
+//   const findUser = await User.findAll({
+//     where: { id: req.user.id },
+//     attributes: { exclude: ['password'] },
+//     // include: [{ model: avatar }],
+//   });
+//   res.send(findUser[0]);
+// });
+
+// router.get('/', async (req, res, next) => {
+//   try {
+//     const users = await User.findAll({});
+//     res.status(200).json(users);
+//   } catch (error) {
+//     console.log('error happened!', error);
+//   }
+// });
 
 // router.get("/login", async (req, res, next) => {
 //   try {
@@ -51,52 +72,52 @@ router.get('/', async (req, res, next) => {
 //   }
 // });
 
-router.get('/:username', async (req, res, next) => {
-  try {
-    const { username } = req.params;
-    if (username.length < 0) return res.status(401).send('invalid');
-    if (!resgexUserName.test(username)) return res.status(400).send('invalid');
-    const users = await User.findOne({
-      where: { username: username.toLowerCase() },
-    });
-    console.log('user', users);
+// router.get('/:username', async (req, res, next) => {
+//   try {
+//     const { username } = req.params;
+//     if (username.length < 0) return res.status(401).send('invalid');
+//     if (!resgexUserName.test(username)) return res.status(400).send('invalid');
+//     const users = await User.findOne({
+//       where: { username: username.toLowerCase() },
+//     });
+//     console.log('user', users);
 
-    if (users) {
-      return res.status(401).send('Username already taken');
-    } else {
-      return res.status(200).send('Available');
-    }
-  } catch ({ message }) {
-    res.status(500).send({ message });
-  }
-});
+//     if (users) {
+//       return res.status(401).send('Username already taken');
+//     } else {
+//       return res.status(200).send('Available');
+//     }
+//   } catch ({ message }) {
+//     res.status(500).send({ message });
+//   }
+// });
 
-router.get('/:id', async (req, res, next) => {
-  try {
-    const user = await user.findOne({ where: { id: req.params.id } });
+// router.get('/:id', async (req, res, next) => {
+//   try {
+//     const user = await user.findOne({ where: { id: req.params.id } });
 
-    // console.log("im here");
+//     // console.log("im here");
 
-    res.status(200).json(user);
-  } catch ({ message }) {
-    err.status(500).send(message);
-  }
-});
+//     res.status(200).json(user);
+//   } catch ({ message }) {
+//     err.status(500).send(message);
+//   }
+// });
 
-router.put('/updateuser/:id', async (req, res, next) => {
-  console.log('req.body', req.body);
+// router.put('/updateuser/:id', async (req, res, next) => {
+//   console.log('req.body', req.body);
 
-  try {
-    await User.update(req.body, {
-      where: { id: req.params.id },
-    });
-    const user = await user.findOne({ where: { id: req.params.id } });
+//   try {
+//     await User.update(req.body, {
+//       where: { id: req.params.id },
+//     });
+//     const user = await user.findOne({ where: { id: req.params.id } });
 
-    res.status(200).json(user);
-  } catch (error) {
-    console.log('error: ', error);
-  }
-});
+//     res.status(200).json(user);
+//   } catch (error) {
+//     console.log('error: ', error);
+//   }
+// });
 
 // router.post('/signup', async (req, res, next) => {
 //   try {
@@ -149,24 +170,6 @@ router.put('/updateuser/:id', async (req, res, next) => {
 //   }
 // });
 
-router.post('/create_demo', async (req, res, next) => {
-  try {
-    const hashedPassword = await bcrypt.hash('masood123', 12);
-    const users = await User.create({
-      email: 'demo@masood.it',
-      password: hashedPassword,
-    });
-    res.status(201).json(users);
-  } catch (error) {
-    console.error(error);
-    // next({
-    //   clientStatusCode: 500,
-    //   trace: error?.errors || error?.response?.data,
-    //   statusCode: error.status || error?.response?.status || error.statusCode,
-    //   message: error?.response?.message || error.message,
-    // });
-  }
-});
 module.exports = router;
 // router.post('/signin', async (req, res) => {
 //   const { email } = req.body;

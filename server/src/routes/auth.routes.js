@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const Joi = require('joi');
-const db = require('../unused_codes');
-const { user } = db;
+const { user } = require('../sequelize');
 
 const auth_schema = Joi.object({
   email: Joi.string().email().max(64).required(),
