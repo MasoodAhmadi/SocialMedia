@@ -1,8 +1,8 @@
 const backend = 'http://localhost:8000';
-const api = 'api';
+const BASE = '/api';
 export const endPoints = {
-  addUsers: `${backend}/addusers`,
+	users: `${BASE}/users`,
+	userSignIn: `${BASE}/auth/login`,
+  userByToken: `${BASE}/auth/token`,
   allData: 'https://deploytoheruku70.herokuapp.com/api/menus',
-  loginUrl: `${backend}/${api}/auth/signin`,
-  getUserByTokenUrl: `${backend}/users/token`,
 };
