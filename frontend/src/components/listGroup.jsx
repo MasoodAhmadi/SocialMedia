@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState } from "react";
 import { initialTabs as tabs } from "../data/constants";
 import { motion, AnimatePresence } from "framer-motion";

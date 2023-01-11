@@ -39,7 +39,7 @@ export default function Navbars() {
             </NavDropdown>
           </Nav>
           <Nav>
-            <Nav.Link onClick={() => history.push("/login")}>Login</Nav.Link>
+            <Nav.Link onClick={() => history.push("/identify")}>Login</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
