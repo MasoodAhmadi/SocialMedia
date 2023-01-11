@@ -9,7 +9,7 @@ const commonConfig = {
     filename: "[name].bundle.js",
     chunkFilename: "[name].chunk.js",
     path: path.resolve(__dirname, "build"),
-    publicPath: "/",
+    publicPath: "/",	
     clean: true,
   },
   resolve: {

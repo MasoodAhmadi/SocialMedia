@@ -11,9 +11,7 @@ const sequelize = new Sequelize(
     dialect: 'mysql',
     pool: {
       max: 90,
-     
     },
-
     define: { underscored: true },
     logging: false,
   }

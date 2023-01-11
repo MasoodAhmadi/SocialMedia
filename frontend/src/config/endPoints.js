@@ -1,6 +1,6 @@
 const backend = 'http://localhost:8000';
 const BASE = '/api';
-export const endPoints = {
+export const api = {
 	users: `${BASE}/users`,
 	userSignIn: `${BASE}/auth/login`,
   userByToken: `${BASE}/auth/token`,
