@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Footer from './components/footer';
 import Navbars from './components/navbar';
 import { ThemeProvider } from 'styled-components';
-
 import { unwrapResult } from '@reduxjs/toolkit';
 
 import { Container } from 'react-bootstrap';
@@ -18,6 +17,7 @@ import './assets/styles/base.scss';
 import { routes, themes } from './config';
 import { loadUser } from './redux/slices/userSlice';
 import { useWindowDimensions } from './hooks';
+import ProtectedRoute from './components/protected-route.component';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ export default function App() {
           }}>
           <Switch>
             <Route exact path={identify} component={Identification} />
-            <Route path={home} component={homePage} />
+            <ProtectedRoute path={home} component={homePage} />
             {/*    <Route exact path='/signup' component={SignupPage} />
             <Route exact path='/registration' component={Registration} /> */}
             <Route path={link} component={Links} />
