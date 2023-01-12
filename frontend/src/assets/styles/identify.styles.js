@@ -53,7 +53,6 @@ export const LoginButton = styled(Button)`
   background-color: ${({ theme }) => theme.basic.bright}!important;
 `;
 
-
 export const LogoutButton = styled(Button)`
   border: none;
   font-size: 1.2rem;
