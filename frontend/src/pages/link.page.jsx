@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Col, Button, Modal } from "react-bootstrap";
 import { Card, Container, Form, Row } from "react-bootstrap";
-import { endPoints } from "../config/endPoints";
+import { api } from "../config";
 import axios from "axios";
 import Loader from "../components/loader";
 
@@ -121,7 +121,7 @@ const Links = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [allItem, setAllItems] = useState([]);
-  const { allData } = endPoints;
+  const { allData } = api;
   const [spinner, setSpinner] = useState(false);
 
   const getAllItems = async () => {

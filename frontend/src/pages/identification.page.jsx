@@ -5,30 +5,32 @@ import { Container, Form, Row } from 'react-bootstrap';
 import { Button, Card, Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import { useTheme } from 'styled-components';
 
 import { FooterMessage } from '../components/common/WelcomeMessage';
 import { HeaderMessage } from '../components/common/WelcomeMessage';
 import SocialAppLog from '../components/common/socialmedialogin';
 import { signInUser } from '../redux/slices/userSlice';
 import { routes } from '../config';
+import { unwrapResult } from '@reduxjs/toolkit';
+
 import { authServices } from '../services/auth.services';
+import {
+  LoginFormContainer,
+  LoginInputField,
+  LoginButton,
+} from '../assets/styles/identify.styles';
+import { PersonBoundingBox, ShieldLock, Unlock } from 'react-bootstrap-icons';
+
 export default function Identification() {
-  const [authMode, setAuthMode] = useState('login');
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { home, identify, users } = routes;
+  const { home } = routes;
+  const { basic, primary } = useTheme();
 
-  const [errorMsg, setErrorMsg] = useState(false);
-  const [formLoading, setFormLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  // const [render, setRender] = useState(0);
-  // const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState('');
   const { user } = useSelector((user) => user);
-
-  /*   const { getallUsers, loginUrl, getUserByTokenUrl } = endPoints;
-   */
+  // console.log(user);
   useEffect(() => {
     if (authServices?.getCurrentUser()) history.push(home);
   }, [user]);
@@ -48,38 +50,80 @@ export default function Identification() {
       try {
         unwrapResult(await dispatch(signInUser(values)));
         history.push(home);
-        /*  dispatch(
-          addNotification({
-            timeout: 5,
-            identifier: 'user',
-            icon: <Unlock size={25} className='me-2 text-success' />,
-            content: 'login successfull',
-          })
-        ); */
       } catch (error) {
-        /*  dispatch(
-          addNotification({
-            timeout: 5,
-            identifier: 'user',
-            icon: (
-              <ExclamationCircle size={25} className='me-2' color={primary} />
-            ),
-            content: error?.message,
-          })
-        ); */
         console.log('error: ', error);
       }
     },
   });
   return (
-    <Container
+    <LoginFormContainer>
+      {' '}
+      <Form onSubmit={formik.handleSubmit}>
+        <Row className='pe-5 ps-5 mt-5'>
+          <Col xs={1} sm={1} md={1} lg={1} xl={1}>
+            <PersonBoundingBox
+              width={22}
+              height={22}
+              className='mt-2'
+              color={`${basic.bright}80`}
+            />
+          </Col>
+          <Col xs={11} sm={11} md={11} lg={11} xl={11}>
+            <LoginInputField
+              name='email'
+              type='email'
+              placeholder='enter email'
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              aria-label='Email for access admin'
+            />
+          </Col>
+          {formik.errors.email && formik.touched.email && (
+            <p className='mt-2' style={{ color: basic.bright }}>
+              {formik.errors.email}
+            </p>
+          )}
+        </Row>
+        <Row className='pe-5 ps-5 mt-4'>
+          <Col xs={1} sm={1} md={1} lg={1} xl={1}>
+            <ShieldLock
+              width={24}
+              height={24}
+              className='mt-2'
+              color={`${basic.bright}80`}
+            />
+          </Col>
+          <Col xs={11} sm={11} md={11} lg={11} xl={11}>
+            <LoginInputField
+              name='password'
+              type='password'
+              placeholder='enter password'
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              aria-label='Password for access admin'
+            />
+          </Col>
+          {formik.errors.password && formik.touched.password && (
+            <p className='mt-2' style={{ color: basic.bright }}>
+              {formik.errors.password}
+            </p>
+          )}
+        </Row>
+        <div className='d-flex flex-direction-column align-items-center justify-content-center mb-5'>
+          <LoginButton type='submit'>login</LoginButton>
+        </div>
+      </Form>
+    </LoginFormContainer>
+    /*  <Container
       fluid='md'
       className='mt-4 mb-4  d-flex justify-content-center align-items-center'
-      style={{ background: '' }}>
+      style={{ background: '' }}
+    >
       <Card
         style={{ width: '22rem', boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px' }}
-        className='d-flex justify-content-center align-items-center mt-4 mb-4 m-5'>
-        {/*  <Row className='mt-2'>
+        className='d-flex justify-content-center align-items-center mt-4 mb-4 m-5'
+      >
+        <Row className='mt-2'>
           <Col>
             <Card.Img
               style={{
@@ -89,7 +133,6 @@ export default function Identification() {
                 width: '7rem',
                 height: '7rem',
                 border: '50px',
-                // position:"absolute",
                 boxShadow: 'rgb(0 0 0 / 16%) 1px 1px 10px black',
               }}
               width={100}
@@ -100,16 +143,11 @@ export default function Identification() {
             />
           </Col>
         </Row>
-        <br /> */}
+        <br />
         <Row className='mt-2 m-2'>
           <Col className='m-0'>
             <HeaderMessage />
-            <Form
-              onSubmit={formik.handleSubmit}
-              // loading={formLoading}
-              // error={errorMsg !== null}
-              // onSubmit={onLogin}
-            >
+            <Form onSubmit={formik.handleSubmit}>
               <Form.Group className='mb-3' controlId='formBasicEmail'>
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
@@ -122,6 +160,11 @@ export default function Identification() {
                 <Form.Text className='text-muted'>
                   We'll never share your email with anyone.
                 </Form.Text>
+                {formik.errors.email && formik.touched.email && (
+                  <p className='mt-2' style={{ color: basic.bright }}>
+                    {formik.errors.email}
+                  </p>
+                )}
               </Form.Group>
               <Form.Group className='mb-3' controlId='formBasicPassword'>
                 <Form.Label>Password</Form.Label>
@@ -131,16 +174,18 @@ export default function Identification() {
                   placeholder='Password'
                   value={formik.values.password}
                   onChange={formik.handleChange}
-									aria-label='Password for access admin'
-
+                  aria-label='Password for access admin'
                 />
+                {formik.errors.password && formik.touched.password && (
+                  <p className='' style={{ color: 'black' }}>
+                    {formik.errors.password}
+                  </p>
+                )}
               </Form.Group>
 
               <br />
             </Form>
-            <FooterMessage
-            /* authMode={authMode} */
-            />
+            <FooterMessage authMode={authMode} />
 
             <Button type='submit'>Login</Button>
             <Button className='m-1'>forgot password</Button>
@@ -152,8 +197,9 @@ export default function Identification() {
             <SocialAppLog />
           </Col>
         </Row>
-        <br />
+        <br /> 
       </Card>
     </Container>
+		*/
   );
 }
