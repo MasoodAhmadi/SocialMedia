@@ -1,14 +1,19 @@
 const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const Joi = require('joi');
-const { user } = require('../sequelize');
+const jwt = require('jsonwebtoken');
 
-const auth_schema = Joi.object({
+const { User } = require('../sequelize');
+
+const { user_schema: schema } = require('../validation');
+
+const { auth, asyncErrorHandler } = require('../middleware');
+
+/* const auth_schema = Joi.object({
   email: Joi.string().email().max(64).required(),
   password: Joi.string().min(3).max(512).required(),
-});
-router.post('/signin', async (req, res) => {
+}); */
+/* router.post('/signin', async (req, res) => {
   const { email } = req.body;
   const { value, error } = auth_schema.validate(req.body);
   if (error) return res.status(400).send({ message: error.details[0].message });
@@ -25,8 +30,51 @@ router.post('/signin', async (req, res) => {
     return res.status(400).send({ error: 'Invalid email or password' });
   const token = user.generateAuthToken(userFound[0].id);
   res.status(200).send({ token });
-});
+}); */
+router.get(
+  '/token',
+  auth,
+  asyncErrorHandler(async (req, res) => {
+    const user = await User.findOne({
+      where: { id: req.user.id },
+      paranoid: false,
+    });
+    if (!user) return res.status(404).json({ message: "User doesn't exist" });
+    res.status(200).send({ id: user.id, email: user.email });
+  })
+);
 
+router.post(
+  '/login',
+  asyncErrorHandler(async (req, res) => {
+    const { value, error } = schema.validate(req.body);
+    if (error)
+      return res.status(400).send({ message: error.details[0].message });
+
+    const user = await User.findOne({
+      where: { email: value.email },
+      paranoid: false,
+    });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    const isPasswordCorrect = await bcrypt.compare(
+      value.password,
+      user.password
+    );
+    if (!isPasswordCorrect)
+      return res.status(400).json({ message: 'Invalid credentials' });
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: '10h',
+      }
+    );
+    res.status(200).json({ token });
+  })
+);
 module.exports = router;
 
 // const express = require("express");

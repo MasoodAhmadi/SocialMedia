@@ -2,8 +2,8 @@
 // const { error, unknownEndpointHandler } = require('../middlewares');
 
 // importing routes
-const userRoute = require('../routes/users.routes');
 const authRoute = require('../routes/auth.routes');
+const userRoute = require('../routes/users.routes');
 
 
 // importing utils

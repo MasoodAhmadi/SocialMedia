@@ -1,30 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { IntlProvider } from "react-intl";
 // import Layout from "./components/Layout/layout";
 import Footer from './components/footer';
 import Navbars from './components/navbar';
+import { ThemeProvider } from 'styled-components';
+
+import { unwrapResult } from '@reduxjs/toolkit';
+
 import { Container } from 'react-bootstrap';
 import HeadTags from './components/headerTag';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import { Links, homePage, Registration } from './pages';
 import { SignupPage, NotFoundPage, Identification } from './pages';
+import { useDispatch } from 'react-redux';
+
 import './assets/styles/base.scss';
-import { routes } from './config';
+import { routes, themes } from './config';
+import { loadUser } from './redux/slices/userSlice';
+import { useWindowDimensions } from './hooks';
 
 export default function App() {
-  const [token, setToken] = useState();
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  const [theme] = useState('defaultTheme');
+  const size = useWindowDimensions();
+
   const { home, identify, link } = routes;
-/*   if (!token) {
-    return <Identification setToken={setToken} />;
-  } */
+
+  useEffect(async () => {
+    unwrapResult(await dispatch(loadUser()));
+  }, []);
   return (
-    <>
+		<ThemeProvider
+		theme={{ ...themes[theme], width: size.width, height: size.height }}
+	>
       {/* <IntlProvider
       locale={localizationsState.locale}
       messages={localizationsState.data}
       > */}
       <HeadTags />
-      <Navbars />
+      {pathname !== identify && <Navbars />}
+
       <div>
         <Container
           fluid
@@ -43,6 +59,6 @@ export default function App() {
       </div>
       <Footer />
       {/* </IntlProvider> */}
-    </>
+			</ThemeProvider>
   );
 }

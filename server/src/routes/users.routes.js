@@ -44,6 +44,20 @@ router.get('/', auth, asyncErrorHandler, async (req, res) => {
   res.status(200).json(users);
 });
 
+// Getting data by id
+router.get(
+  '/:id',
+  auth,
+  asyncErrorHandler(async (req, res) => {
+    const { id } = req.params;
+    const query = await User.findAll({ where: { id } });
+    if (!query[0])
+      return res.status(404).send({ message: `user of id ${id} not found` });
+    res.status(200).send(query[0]);
+  })
+);
+
+
 // router.get('/token', verifyToken, async (req, res) => {
 //   const findUser = await User.findAll({
 //     where: { id: req.user.id },
