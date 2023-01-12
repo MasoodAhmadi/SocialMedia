@@ -52,3 +52,17 @@ export const LoginButton = styled(Button)`
   color: ${({ theme }) => theme.basic.dark}!important;
   background-color: ${({ theme }) => theme.basic.bright}!important;
 `;
+
+
+export const LogoutButton = styled(Button)`
+  border: none;
+  font-size: 1.2rem;
+  border-radius: 0%;
+  color: ${({ theme }) => theme.basic.dark};
+  background-color: ${({ theme }) => theme.dark};
+  &:hover {
+    border-radius: 0%;
+    color: ${({ theme }) => theme.basic.greyOpacity};
+    // background-color: ${({ theme }) => theme.primary};
+  }
+`;
