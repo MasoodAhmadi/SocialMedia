@@ -1,36 +1,25 @@
 import * as Yup from 'yup';
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Container, Form, Row } from 'react-bootstrap';
-import { Button, Card, Col } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
-import { useTheme } from 'styled-components';
-
-import { FooterMessage } from '../components/common/WelcomeMessage';
-import { HeaderMessage } from '../components/common/WelcomeMessage';
-import SocialAppLog from '../components/common/socialmedialogin';
-import { signInUser } from '../redux/slices/userSlice';
 import { routes } from '../config';
+import { useFormik } from 'formik';
+import React, { useEffect } from 'react';
+import { useTheme } from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
-
+import { Form, Row, Col } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { signInUser } from '../redux/slices/userSlice';
 import { authServices } from '../services/auth.services';
-import {
-  LoginFormContainer,
-  LoginInputField,
-  LoginButton,
-} from '../assets/styles/identify.styles';
+
 import { PersonBoundingBox, ShieldLock, Unlock } from 'react-bootstrap-icons';
+import { LoginButton, LoginFormContainer, LoginInputField } from '../assets';
 
 export default function Identification() {
   const history = useHistory();
   const dispatch = useDispatch();
-
   const { home } = routes;
-  const { basic, primary } = useTheme();
+  const { basic } = useTheme();
+  const { user } = useSelector(({ user }) => user);
 
-  const { user } = useSelector((user) => user);
-  // console.log(user);
   useEffect(() => {
     if (authServices?.getCurrentUser()) history.push(home);
   }, [user]);

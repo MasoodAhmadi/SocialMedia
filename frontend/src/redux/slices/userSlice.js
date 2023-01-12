@@ -41,30 +41,6 @@ export const addUser = createAsyncThunk(
   }
 );
 
-export const signin = createAsyncThunk(
-  'user/signin',
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('/api/auth/signin', data);
-      console.log('response', response);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const changePassword = createAsyncThunk(
-  'user/changePassword',
-  async (data, { rejectWithValue }) => {
-    try {
-      await axios.post('api/auth/user/change-password', data);
-      return;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
 export const signInUser = createAsyncThunk(
   'user/login',
   async (data, { rejectWithValue }) => {
@@ -79,8 +55,6 @@ export const signInUser = createAsyncThunk(
   }
 );
 
-export const logout = createAction('logout');
-
 const isPendingAction = (action) => {
   return action.type.startsWith('user/') && action.type.endsWith('/pending');
 };
@@ -93,7 +67,6 @@ const userSlice = createSlice({
   initialState: {
     loading: false,
     errors: false,
-    data: null,
     user: null,
     users: [],
   },
@@ -120,13 +93,13 @@ const userSlice = createSlice({
         state.loading = false;
       })
       // LOGIN
-      .addCase(signin.fulfilled, (state, action) => {
-        const token = action.payload.token;
-        window.localStorage.setItem('access-token', token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        state.data = action.payload;
-        state.loading = false;
-      })
+      // .addCase(signin.fulfilled, (state, action) => {
+      //   const token = action.payload.token;
+      //   window.localStorage.setItem('access-token', token);
+      //   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      //   state.data = action.payload;
+      //   state.loading = false;
+      // })
 
       // GET USER INFO / RELOGIN
       // .addCase(getUserInfo.fulfilled, (state, action) => {
@@ -138,18 +111,18 @@ const userSlice = createSlice({
       // })
 
       // CHANGE PASSWORD
-      .addCase(changePassword.fulfilled, (state, action) => {
-        state.loading = false;
-      })
+      // .addCase(changePassword.fulfilled, (state, action) => {
+      //   state.loading = false;
+      // })
 
       // LOGOUT
-      .addCase(logout, (state) => {
-        window.localStorage.removeItem('access-token');
-        axios.defaults.headers.common['Auth'] = null;
-        state.loading = false;
-        state.errors = false;
-        state.data = null;
-      })
+      // .addCase(logout, (state) => {
+      //   window.localStorage.removeItem('access-token');
+      //   axios.defaults.headers.common['Auth'] = null;
+      //   state.loading = false;
+      //   state.errors = false;
+      //   state.data = null;
+      // })
 
       // // UPDATE
       // .addCase(updateUser.fulfilled, (state, action) => {
@@ -177,6 +150,32 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
+// export const logout = createAction('logout');
+
+// export const signin = createAsyncThunk(
+//   'user/signin',
+//   async (data, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.post('/api/auth/signin', data);
+//       console.log('response', response);
+//       return response.data;
+//     } catch (error) {
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
+
+// export const changePassword = createAsyncThunk(
+//   'user/changePassword',
+//   async (data, { rejectWithValue }) => {
+//     try {
+//       await axios.post('api/auth/user/change-password', data);
+//       return;
+//     } catch (error) {
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 // export const getUserInfo = createAsyncThunk(
 //   'user/getUserInfo',
 //   async (_, { rejectWithValue }) => {

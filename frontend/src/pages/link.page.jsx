@@ -4,7 +4,7 @@ import { Col, Button, Modal } from "react-bootstrap";
 import { Card, Container, Form, Row } from "react-bootstrap";
 import { api } from "../config";
 import axios from "axios";
-import Loader from "../components/loader";
+import Loader from "../components/loader.component";
 
 const cardVariants = {
   offscreen: {
