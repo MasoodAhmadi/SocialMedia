@@ -1,12 +1,8 @@
-const express = require('express');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const { User } = require('../sequelize');
-
 const { user_schema: schema } = require('../validation');
-
 const { auth, asyncErrorHandler } = require('../middleware');
 
 /* const auth_schema = Joi.object({
