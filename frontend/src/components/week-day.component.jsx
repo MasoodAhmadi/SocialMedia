@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
+import React from 'react';
+import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 
 export default function WeekofTheDay() {
   return (
@@ -7,108 +7,108 @@ export default function WeekofTheDay() {
     <Container fluid>
       <div>
         <Row>
-          <Col className="d-flex justify-content-center">
+          <Col className='d-flex justify-content-center'>
             <Card
               style={{
-                width: "18rem",
+                width: '18rem',
                 // margin: "0.5rem",
-                background: "#4BABF8",
+                background: '#4BABF8',
               }}
             >
               <Card.Body>
-                <Card.Title className="mb-2 d-flex justify-content-center">
+                <Card.Title className='mb-2 d-flex justify-content-center'>
                   MONDAY
                 </Card.Title>
-                <Card.Subtitle className="mb-3 text-muted d-flex justify-content-center">
+                <Card.Subtitle className='mb-3 text-muted d-flex justify-content-center'>
                   Card Subtitle
                 </Card.Subtitle>
-                <Card.Text style={{ background: "white" }}>
+                <Card.Text style={{ background: 'white' }}>
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
                 <br />
 
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
-                <Button variant="primary">Go somewhere</Button>
+                <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
             </Card>
           </Col>
-          <Col className="d-flex justify-content-center">
+          <Col className='d-flex justify-content-center'>
             <Card
               style={{
-                width: "18rem",
+                width: '18rem',
                 // margin: "0.5rem",
-                background: "#9F413F",
+                background: '#9F413F',
               }}
             >
               <Card.Body>
-                <Card.Title className="mb-2 d-flex justify-content-center">
+                <Card.Title className='mb-2 d-flex justify-content-center'>
                   TUESDAY
                 </Card.Title>
-                <Card.Subtitle className="mb-3 text-muted d-flex justify-content-center">
+                <Card.Subtitle className='mb-3 text-muted d-flex justify-content-center'>
                   Card Subtitle
                 </Card.Subtitle>
-                <Card.Text style={{ background: "white" }}>
+                <Card.Text style={{ background: 'white' }}>
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
                 <br />
 
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
-                <Button variant="primary">Go somewhere</Button>
+                <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
             </Card>
           </Col>
-          <Col className="d-flex justify-content-center">
+          <Col className='d-flex justify-content-center'>
             <Card
               style={{
-                width: "18rem",
+                width: '18rem',
                 // margin: "0.5rem",
-                background: "#B4B1B1 ",
+                background: '#B4B1B1 ',
               }}
             >
               <Card.Body>
-                <Card.Title className="mb-2 d-flex justify-content-center">
+                <Card.Title className='mb-2 d-flex justify-content-center'>
                   WEDNESDAY
                 </Card.Title>
-                <Card.Subtitle className="mb-3 text-muted d-flex justify-content-center">
+                <Card.Subtitle className='mb-3 text-muted d-flex justify-content-center'>
                   Card Subtitle
                 </Card.Subtitle>
-                <Card.Text style={{ background: "white" }}>
+                <Card.Text style={{ background: 'white' }}>
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
                 <br />
 
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
-                <Button variant="primary">Go somewhere</Button>
+                <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
             </Card>
           </Col>
@@ -116,112 +116,112 @@ export default function WeekofTheDay() {
         </Row>
         <Row>
           {/* <div> */}
-          <Col className="d-flex justify-content-center">
+          <Col className='d-flex justify-content-center'>
             <Card
               style={{
-                width: "18rem",
+                width: '18rem',
                 // margin: "0.5rem",
-                background: "#EBD2AC",
+                background: '#EBD2AC',
               }}
             >
               <Card.Body>
-                <Card.Title className="mb-2 d-flex justify-content-center">
+                <Card.Title className='mb-2 d-flex justify-content-center'>
                   THURSDAY
                 </Card.Title>
-                <Card.Subtitle className="mb-3 text-muted d-flex justify-content-center">
+                <Card.Subtitle className='mb-3 text-muted d-flex justify-content-center'>
                   Card Subtitle
                 </Card.Subtitle>
 
-                <Card.Text style={{ background: "white" }}>
+                <Card.Text style={{ background: 'white' }}>
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
                 <br />
 
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
-                <Button variant="primary">Go somewhere</Button>
+                <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
             </Card>
           </Col>
 
-          <Col className="d-flex justify-content-center">
+          <Col className='d-flex justify-content-center'>
             <Card
               style={{
-                width: "18rem",
+                width: '18rem',
                 // margin: "0.5rem",
-                background: "#B0CFD0",
+                background: '#B0CFD0',
               }}
             >
               <Card.Body>
-                <Card.Title className="mb-2 d-flex justify-content-center">
+                <Card.Title className='mb-2 d-flex justify-content-center'>
                   FRIDAY
                 </Card.Title>
-                <Card.Subtitle className="mb-3 text-muted d-flex justify-content-center">
+                <Card.Subtitle className='mb-3 text-muted d-flex justify-content-center'>
                   Card Subtitle
                 </Card.Subtitle>
-                <Card.Text style={{ background: "white" }}>
+                <Card.Text style={{ background: 'white' }}>
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
                 <br />
 
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
-                <Button variant="primary">Go somewhere</Button>
+                <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
             </Card>
           </Col>
-          <Col className="d-flex justify-content-center">
-            {" "}
+          <Col className='d-flex justify-content-center'>
+            {' '}
             <Card
               style={{
-                width: "18rem",
+                width: '18rem',
                 // margin: "0.5rem",
-                background: "#B0CFD0",
-                borderRadius: "20px 30px 35px 40px",
+                background: '#B0CFD0',
+                borderRadius: '20px 30px 35px 40px',
               }}
             >
               <Card.Body>
-                <Card.Title className="mb-2 d-flex justify-content-center">
+                <Card.Title className='mb-2 d-flex justify-content-center'>
                   WEEKEND
                 </Card.Title>
-                <Card.Subtitle className="mb-3 text-muted d-flex justify-content-center">
+                <Card.Subtitle className='mb-3 text-muted d-flex justify-content-center'>
                   Card Subtitle
                 </Card.Subtitle>
-                <Card.Text style={{ background: "white" }}>
+                <Card.Text style={{ background: 'white' }}>
                   Some quick example text to build on the card title and make up
                   the bulk of the card's content.
                 </Card.Text>
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
                 <br />
-                <ListGroup variant="flush">
+                <ListGroup variant='flush'>
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
                   <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
                   <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
                 </ListGroup>
 
-                <Button variant="primary">Go somewhere</Button>
+                <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
             </Card>
           </Col>
