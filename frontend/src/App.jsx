@@ -10,7 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { NotFoundPage, Identification } from './pages';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { Footer, Navbars, ProtectedRoute } from './components';
-import './assets/styles/base.scss';
+import './styles/base.scss';
 
 export default function App() {
   // const dispatch = useDispatch();
