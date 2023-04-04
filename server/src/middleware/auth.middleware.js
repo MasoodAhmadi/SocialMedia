@@ -8,7 +8,7 @@ function auth(req, res, next) {
       .status(401)
       .send({ message: 'ACCESS DENIED: No token provided' });
   try {
-    const decoded = jwt.verify(token, 'this-is-a-test-secret-key');
+    const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
     console.log('i am decode', decoded);
     req.user = decoded;
     next();

@@ -18,7 +18,7 @@ const { auth, asyncErrorHandler } = require('../middleware');
 
 router.get('/create_demo', async (req, res, next) => {
   try {
-    const hashedPassword = await bcrypt.hash('123456789', 12);
+    const hashedPassword = await bcrypt.hash('asdf123', 12);
     const user = await User.create({
       name: 'masood',
       username: 'masoodahmadi',
