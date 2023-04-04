@@ -2,9 +2,11 @@ import i18next from 'i18next';
 
 import { initReactI18next } from 'react-i18next';
 import languageDedector from 'i18next-browser-languagedetector';
+import Backend from 'i18next-http-backend';
 i18next
   .use(initReactI18next)
   .use(languageDedector)
+  .use(Backend)
   .init({
     debug: true,
     fallback: 'en',
@@ -21,7 +23,7 @@ i18next
       },
       de: {
         translation: {
-          learn: 'Cras asdfasdfasdjusto odio',
+          learn: 'سلام خوب هستی همه خوب است',
           learn1: 'Dapibus acasdfasdfasd facilisis in',
           learn2: 'Vestibulum aasdfasdfasdt eros',
           Register: 'Registwfasdfasdfaser',
