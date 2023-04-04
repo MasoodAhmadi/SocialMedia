@@ -6,8 +6,7 @@ const { User } = require('../sequelize');
 // const cloudinary = require('cloudinary').v2;
 // const follower = require('../models/follower');
 // const isEmail = require('validator/lib/isEmail');
-const resgexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
-const { verifyToken } = require('../middleware/auth.middleware');
+
 const { auth, asyncErrorHandler } = require('../middleware');
 
 // cloudinary.config({
