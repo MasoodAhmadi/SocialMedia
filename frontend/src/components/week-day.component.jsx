@@ -1,7 +1,15 @@
+import i18next from 'i18next';
 import React from 'react';
 import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 
+import { useTranslation, Trans } from 'react-i18next';
 export default function WeekofTheDay() {
+  const { t, i18n } = useTranslation();
+
+  const Lang = {
+    en: { nativeName: 'English' },
+    de: { nativeName: 'Deutsch' },
+  };
   return (
     // <div>
     <Container fluid>
@@ -15,6 +23,17 @@ export default function WeekofTheDay() {
                 background: '#4BABF8',
               }}
             >
+              asdas
+              {Object.keys(Lang).map((lng) => {
+                <button
+                  type='submit'
+                  key={lng}
+                  onClick={() => i18n.changeLanguage(lng)}
+                  disabled={i18n.resolvedLanguage === lng}
+                >
+                  {Lang[lng.nativeName]}{' '}
+                </button>;
+              })}
               <Card.Body>
                 <Card.Title className='mb-2 d-flex justify-content-center'>
                   MONDAY
@@ -23,20 +42,21 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nkey='description'>
+                    Some quick example text to build on the card title and make
+                    up the bulk of the card's content.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
-
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
@@ -58,20 +78,22 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nkey='description'>
+                    Some quick example text to build on the card title and make
+                    up the bulk of the card's content.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
 
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
@@ -93,20 +115,22 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nkey='description'>
+                    Some quick example text to build on the card title and make
+                    up the bulk of the card's content.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
 
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
@@ -133,20 +157,22 @@ export default function WeekofTheDay() {
                 </Card.Subtitle>
 
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nkey='description'>
+                    Some quick example text to build on the card title and make
+                    up the bulk of the card's content.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
 
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
@@ -169,20 +195,22 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nkey='description'>
+                    Some quick example text to build on the card title and make
+                    up the bulk of the card's content.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
 
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
@@ -206,19 +234,21 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nkey='description'>
+                    Some quick example text to build on the card title and make
+                    up the bulk of the card's content.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
                 </ListGroup>
 
                 <Button variant='primary'>Go somewhere</Button>
