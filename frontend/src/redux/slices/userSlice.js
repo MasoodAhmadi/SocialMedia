@@ -1,8 +1,8 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { api } from '../../config';
-import { getUser, getUsers, saveUser, removeUser } from '../../services';
 import jwt_decode from 'jwt-decode';
+import { getUser, getUsers, saveUser } from '../../services/user.services';
 
 export const loadUser = createAsyncThunk(
   'user/loadUser',

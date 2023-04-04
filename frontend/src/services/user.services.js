@@ -1,4 +1,4 @@
-import { http } from '.';
+import http from './http.services';
 import { api } from '../config';
 import { getJwt } from './auth.services';
 const { users, userByToken } = api;

@@ -1,2 +1,0 @@
-language.id=fi
-general.cancel=Peruuta
