@@ -7,7 +7,7 @@ export const LoginFormContainer = styled.div`
   position: absolute;
   right: ${({ theme }) => theme.width <= 992 && 0};
   background-color: ${({ theme }) => theme.basic.dark};
-  left: ${({ theme }) => (theme.width > 992 ? '45vw' : 0)};
+  left: ${({ theme }) => (theme.width > 992 ? '30vw' : 0)};
   margin-left: ${({ theme }) => theme.width <= 992 && 'auto'};
   top: ${({ theme }) => (theme.width > 992 ? '22vh' : '30vh')};
   padding: ${({ theme }) => theme.width > 1200 && '0rem 5rem'};
