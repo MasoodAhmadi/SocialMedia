@@ -50,12 +50,11 @@ export default function Navbars() {
             </NavDropdown>
           </Nav>
           <Nav>
-            assed
             <div>
               {Object.keys(lang).map((lng) => {
                 return (
                   <button
-                    type=''
+                    type='submit'
                     key={lng}
                     onClick={() => i18n.changeLanguage(lng)}
                     disabled={i18n.resolvedLanguage === lng}
