@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
+require('dotenv').config();
+
 const { User } = require('../sequelize');
 // const cloudinary = require('cloudinary').v2;
 // const follower = require('../models/follower');
@@ -17,10 +19,10 @@ const { auth, asyncErrorHandler } = require('../middleware');
 
 router.get('/create_demo', async (req, res, next) => {
   try {
-    const hashedPassword = await bcrypt.hash('asdf123', 12);
+    const hashedPassword = await bcrypt.hash('123456789', 12);
     const user = await User.create({
       name: 'masood',
-      username: 'masood.ahmadi',
+      username: 'masoodahmadi',
       email: 'masood@example.com',
       password: hashedPassword,
     });
@@ -39,7 +41,7 @@ router.get('/create_demo', async (req, res, next) => {
 //Getting all data
 router.get('/', auth, asyncErrorHandler, async (req, res) => {
   const users = await User.findAll({
-    attributes: ['id', 'email', 'name', 'username', 'bio', 'profilePicUrl'],
+    attributes: ['id', 'email', 'name', 'username'],
   });
   res.status(200).json(users);
 });
@@ -56,7 +58,6 @@ router.get(
     res.status(200).send(query[0]);
   })
 );
-
 
 // router.get('/token', verifyToken, async (req, res) => {
 //   const findUser = await User.findAll({

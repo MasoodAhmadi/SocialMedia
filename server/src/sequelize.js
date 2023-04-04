@@ -1,13 +1,18 @@
 const { Sequelize } = require('sequelize');
+require('dotenv').config();
+
+// const config = require('/../config/config.json')[env];
+const config = require('./config/config');
+
 const userModel = require('./models/user.modal');
 
 const sequelize = new Sequelize(
-  process.env.DATABASE_NAME,
-  process.env.DATABASE_ROOT_USER,
-  process.env.DATABASE_ROOT_PASSWORD,
+  config.database,
+  config.username,
+  config.password,
   {
-    host: process.env.DATABASE_HOST,
-    port: process.env.DATABASE_CONTAINER_PORT,
+    host: config.host,
+    port: config.port,
     dialect: 'mysql',
     pool: {
       max: 90,

@@ -1,4 +1,5 @@
 // importing libraries
+require('dotenv').config();
 const express = require('express');
 // initializing express
 const app = express();
@@ -7,15 +8,9 @@ require('./start/middleware.start')(app);
 require('./start/routes.start')(app);
 require('./start/sequelize.start')();
 
-const { NODE_ENV, SERVER_CONTAINER_PORT, SERVER_PUBLIC_PORT } = process.env;
-const { SERVER_CONTAINER_TEST_PORT, SERVER_PUBLIC_TEST_PORT } = process.env;
-const CONTAINER_PORT =
-  NODE_ENV === 'test' ? SERVER_CONTAINER_TEST_PORT : SERVER_CONTAINER_PORT;
-const PUBLIC_PORT =
-  NODE_ENV === 'test' ? SERVER_PUBLIC_TEST_PORT : SERVER_PUBLIC_PORT;
-
-const server = app.listen(CONTAINER_PORT, () => {
-  console.log(`Server is running on localhost:${PUBLIC_PORT}`);
+const PORT = process.env.PORT || 3009;
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on localhost:${PORT}`);
 });
 
 module.exports = server;
