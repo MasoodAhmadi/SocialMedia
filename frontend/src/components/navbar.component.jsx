@@ -4,7 +4,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import { Button, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { LogoutButton } from '../assets/styles/identify.styles';
+import { LogoutButton } from '../styles/identify.styles';
 import {  routes } from '../config';
 export default function Navbars() {
   const history = useHistory();
