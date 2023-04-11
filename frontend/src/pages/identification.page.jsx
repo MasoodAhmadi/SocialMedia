@@ -65,12 +65,12 @@ export default function Identification() {
   return (
     <div>
       <LoginFormContainer>
-        {/* <Form onSubmit={formik.handleSubmit}> */}
-        <Row className='mt-4'>
-          <Col>
-            <HeaderMessage />
+        <Form onSubmit={formik.handleSubmit}>
+          <Row className='mt-4'>
+            <Col>
+              <HeaderMessage />
 
-            <Form onSubmit={formik.handleSubmit}>
+              {/* <Form onSubmit={formik.handleSubmit}> */}
               <Form.Group className='mb-3' controlId='formBasicEmail'>
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
@@ -105,47 +105,51 @@ export default function Identification() {
                   </p>
                 )}
               </Form.Group>
-            </Form>
-          </Col>
-        </Row>
+              {/* </Form> */}
+            </Col>
+          </Row>
 
-        <Row>
-          <Col xs={6} sm={6} md={6} lg={6} xl={6}>
-            {' '}
-            <LoginButton type='submit'>login</LoginButton>
-          </Col>
-          <Col xs={6} sm={6} md={6} lg={6} xl={6}>
-            {' '}
-            <ForgotPasswordButton>forgot password</ForgotPasswordButton>
-            <br />
-          </Col>
-        </Row>
-        <FooterMessage authMode={authMode} />
-        <div>
-          <FacebookButton>
-            <Row>
-              <Col xs={9} sm={9} md={9} lg={9} xl={9}>
-                sign in with
-              </Col>
-              <Col xs={3} sm={3} md={3} lg={3} xl={3}>
-                <Facebook width={22} height={22} />
-              </Col>
-            </Row>
-          </FacebookButton>
-          <FacebookButton>
-            {' '}
-            <Row>
+          <Row>
+            <Col xs={6} sm={6} md={6} lg={6} xl={6}>
               {' '}
-              <Col xs={9} sm={9} md={9} lg={9} xl={9}>
-                sign in with
-              </Col>
-              <Col xs={3} sm={3} md={3} lg={3} xl={3}>
-                <Facebook width={22} height={22} />
-              </Col>
-            </Row>
-          </FacebookButton>
-        </div>
-        {/* <Row>
+              <LoginButton type='submit'>login</LoginButton>
+            </Col>
+            <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+              {' '}
+              <ForgotPasswordButton>forgot password</ForgotPasswordButton>
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col>
+              <FooterMessage authMode={authMode} />
+            </Col>
+          </Row>
+          <div>
+            <FacebookButton>
+              <Row>
+                <Col xs={9} sm={9} md={9} lg={9} xl={9}>
+                  sign in with
+                </Col>
+                <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+                  <Facebook width={22} height={22} />
+                </Col>
+              </Row>
+            </FacebookButton>
+            <FacebookButton>
+              {' '}
+              <Row>
+                {' '}
+                <Col xs={9} sm={9} md={9} lg={9} xl={9}>
+                  sign in with
+                </Col>
+                <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+                  <Facebook width={22} height={22} />
+                </Col>
+              </Row>
+            </FacebookButton>
+          </div>
+          {/* <Row>
             <Card>
               <Col xs={9} sm={9} md={9} lg={9} xl={9}>
                 sign in with
@@ -157,7 +161,8 @@ export default function Identification() {
               </Col>
             </Card>
           </Row> */}
-        <br />
+          <br />
+        </Form>
       </LoginFormContainer>
     </div>
     // <Container
