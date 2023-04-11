@@ -5,8 +5,10 @@ import { Facebook, Google } from 'react-bootstrap-icons';
 export default function SocialAppLog() {
   return (
     <Container>
-      <div>Log in using your social account</div>
-      <br />
+      {/* <div className='d-flex flex-direction-column justify-content-center fst-italic'>
+        Log in using your social account
+      </div>
+      <br /> */}
       <div className='m-0 w-100 d-flex flex-direction-column justify-content-center'>
         <Row>
           <Col xs={12} md={12}>

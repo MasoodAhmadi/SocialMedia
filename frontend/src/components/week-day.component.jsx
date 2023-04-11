@@ -8,9 +8,9 @@ export default function WeekofTheDay() {
 
   return (
     <Container fluid>
-      <div>
+      <div className='m-2'>
         <Row>
-          <Col className='d-flex justify-content-center'>
+          <Col className='d-flex justify-content-center m-2'>
             <Card
               style={{
                 width: '18rem',
@@ -44,7 +44,7 @@ export default function WeekofTheDay() {
               </Card.Body>
             </Card>
           </Col>
-          <Col className='d-flex justify-content-center'>
+          <Col className='d-flex justify-content-center m-2'>
             <Card
               style={{
                 width: '18rem',
@@ -80,7 +80,7 @@ export default function WeekofTheDay() {
               </Card.Body>
             </Card>
           </Col>
-          <Col className='d-flex justify-content-center'>
+          <Col className='d-flex justify-content-center m-2'>
             <Card
               style={{
                 width: '18rem',
@@ -118,7 +118,7 @@ export default function WeekofTheDay() {
           </Col>
         </Row>
         <Row>
-          <Col className='d-flex justify-content-center'>
+          <Col className='d-flex justify-content-center m-2'>
             <Card
               style={{
                 width: '18rem',
@@ -155,7 +155,7 @@ export default function WeekofTheDay() {
             </Card>
           </Col>
 
-          <Col className='d-flex justify-content-center'>
+          <Col className='d-flex justify-content-center m-2'>
             <Card
               style={{
                 width: '18rem',
@@ -190,7 +190,7 @@ export default function WeekofTheDay() {
               </Card.Body>
             </Card>
           </Col>
-          <Col className='d-flex justify-content-center'>
+          <Col className='d-flex justify-content-center m-2'>
             {' '}
             <Card
               style={{

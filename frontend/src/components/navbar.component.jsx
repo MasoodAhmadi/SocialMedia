@@ -12,22 +12,30 @@ const lang = {
   dr: { nativeName: 'Dari' },
 };
 export default function Navbars() {
-  const { t, i18n } = useTranslation();
+  const { t: localize, i18n } = useTranslation();
   const history = useHistory();
   const { identify } = routes;
 
   return (
-    <Navbar bg='light' expand='lg'>
+    <Navbar
+      bg='light'
+      variant='light'
+      fixed='top'
+      className='px-4 py-3'
+      expand='md'
+    >
       <Container>
         <Navbar.Brand as={Link} to={'/'}>
-          Mini Cha
+          Mini Chat
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='me-auto'>
-            <Nav.Link onClick={() => history.push('/link')}>Link</Nav.Link>
+            <Nav.Link onClick={() => history.push('/link')}>
+              {localize('Link')}
+            </Nav.Link>
             <Nav.Link onClick={() => history.push('/registration')}>
-              {t('Register')}
+              {localize('Register')}
             </Nav.Link>
           </Nav>
           <Nav>
@@ -69,15 +77,15 @@ export default function Navbars() {
             </NavDropdown>
           </Nav>
           <Nav>
-            <LogoutButton
+            <Nav.Link
               variant=''
               onClick={() => {
                 localStorage.removeItem('token');
                 history.push(identify);
               }}
             >
-              logout
-            </LogoutButton>
+              {localize('Logout')}
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

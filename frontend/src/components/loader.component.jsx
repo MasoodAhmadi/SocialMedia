@@ -2,31 +2,38 @@ import React from 'react';
 import { motion } from 'framer-motion';
 const Loader = () => {
   return (
-    <div className='d-flex flex-column align-items-center justify-content-center'>
-      <div className='fixed  w-full min-h-screen z-50 bg-black opacity-30' />
-      <div className='flex fixed w-full justify-center  items-center h-screen'>
-        <motion.div
-          style={loadingContainer}
-          variants={loadingContainerVariants}
-          initial='start'
-          animate='end'
-        >
-          <motion.span
-            style={loadingCircle}
-            variants={loadingCircleVariants}
-            transition={loadingCircleTransition}
-          ></motion.span>
-          <motion.span
-            style={loadingCircle}
-            variants={loadingCircleVariants}
-            transition={loadingCircleTransition}
-          ></motion.span>
-          <motion.span
-            style={loadingCircle}
-            variants={loadingCircleVariants}
-            transition={loadingCircleTransition}
-          ></motion.span>
-        </motion.div>
+    <div className='position-relative'>
+      <div className='position-absolute bottom-50 end-50'>
+        <div className='d-flex flex-column align-items-center justify-content-center'>
+          {/* 
+          <div className='fixed  w-full min-h-screen z-50 bg-black opacity-30' />
+          <div className='flex fixed w-full justify-center  items-center h-screen'>
+            <motion.div
+              style={loadingContainer}
+              variants={loadingContainerVariants}
+              initial='start'
+              animate='end'
+            >
+              <motion.span
+                style={loadingCircle}
+                variants={loadingCircleVariants}
+                transition={loadingCircleTransition}
+              ></motion.span>
+              <motion.span
+                style={loadingCircle}
+                variants={loadingCircleVariants}
+                transition={loadingCircleTransition}
+              ></motion.span>
+              <motion.span
+                style={loadingCircle}
+                variants={loadingCircleVariants}
+                transition={loadingCircleTransition}
+              ></motion.span>
+            </motion.div>
+          </div>
+				*/}
+        </div>
+        adsfasd
       </div>
     </div>
   );

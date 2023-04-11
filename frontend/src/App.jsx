@@ -1,4 +1,5 @@
-import { routes, themes } from './config';
+import { routes } from './config';
+import { themes } from './styles/colors.styles';
 import { Links, homePage } from './pages';
 import { Container } from 'react-bootstrap';
 import { useWindowDimensions } from './hooks';
@@ -19,8 +20,11 @@ function App() {
     <ThemeProvider
       theme={{ ...themes[theme], width: size.width, height: size.height }}
     >
-      {pathname !== identify && <Navbars />}
       <div>
+        {/* {
+				pathname !== identify &&
+			} */}
+        <Navbars />
         <Container
           fluid
           style={{
