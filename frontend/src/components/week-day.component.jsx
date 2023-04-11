@@ -1,17 +1,11 @@
-import i18next from 'i18next';
 import React from 'react';
 import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 export default function WeekofTheDay() {
-  const { t, i18n } = useTranslation();
+  const { t: localize } = useTranslation();
 
-  const Lang = {
-    en: { nativeName: 'English' },
-    de: { nativeName: 'Deutsch' },
-  };
   return (
-    // <div>
     <Container fluid>
       <div>
         <Row>
@@ -19,21 +13,9 @@ export default function WeekofTheDay() {
             <Card
               style={{
                 width: '18rem',
-                // margin: "0.5rem",
                 background: '#4BABF8',
               }}
             >
-              asdas
-              {Object.keys(Lang).map((lng) => {
-                <button
-                  type='submit'
-                  key={lng}
-                  onClick={() => i18n.changeLanguage(lng)}
-                  disabled={i18n.resolvedLanguage === lng}
-                >
-                  {Lang[lng.nativeName]}{' '}
-                </button>;
-              })}
               <Card.Body>
                 <Card.Title className='mb-2 d-flex justify-content-center'>
                   MONDAY
@@ -42,21 +24,19 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  <Trans i18nkey='description'>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Trans>
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
@@ -78,22 +58,20 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  <Trans i18nkey='description'>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Trans>
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
 
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
@@ -115,36 +93,31 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  <Trans i18nkey='description'>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Trans>
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
 
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
             </Card>
           </Col>
-          {/* </div> */}
         </Row>
         <Row>
-          {/* <div> */}
           <Col className='d-flex justify-content-center'>
             <Card
               style={{
                 width: '18rem',
-                // margin: "0.5rem",
                 background: '#EBD2AC',
               }}
             >
@@ -157,22 +130,20 @@ export default function WeekofTheDay() {
                 </Card.Subtitle>
 
                 <Card.Text style={{ background: 'white' }}>
-                  <Trans i18nkey='description'>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Trans>
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
 
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
@@ -183,7 +154,6 @@ export default function WeekofTheDay() {
             <Card
               style={{
                 width: '18rem',
-                // margin: "0.5rem",
                 background: '#B0CFD0',
               }}
             >
@@ -195,22 +165,20 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  <Trans i18nkey='description'>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Trans>
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
 
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
@@ -221,7 +189,6 @@ export default function WeekofTheDay() {
             <Card
               style={{
                 width: '18rem',
-                // margin: "0.5rem",
                 background: '#B0CFD0',
                 borderRadius: '20px 30px 35px 40px',
               }}
@@ -234,28 +201,25 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  <Trans i18nkey='description'>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Trans>
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
                 </Card.Text>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
                 <br />
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{t('learn')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn1')}</ListGroup.Item>
-                  <ListGroup.Item>{t('learn2')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn1')}</ListGroup.Item>
+                  <ListGroup.Item>{localize('learn2')}</ListGroup.Item>
                 </ListGroup>
 
                 <Button variant='primary'>Go somewhere</Button>
               </Card.Body>
             </Card>
           </Col>
-          {/* </div> */}
         </Row>
       </div>
     </Container>
