@@ -108,31 +108,27 @@ export default function Identification() {
             </Form>
           </Col>
         </Row>
+
         <Row>
-          <div className='d-flex m-1 gap-3'>
-            <Col xs={4} sm={4} md={4} lg={4} xl={4}>
-              <LoginButton type='submit'>login</LoginButton>
-            </Col>
-            <Col xs={6} sm={6} md={6} lg={6} xl={6}>
-              {' '}
-              <ForgotPasswordButton>forgot password</ForgotPasswordButton>
-            </Col>
-          </div>
-        </Row>
-        <br />
-        <Row>
-          <Col>
-            <FooterMessage authMode={authMode} />
+          <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+            {' '}
+            <LoginButton type='submit'>login</LoginButton>
+          </Col>
+          <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+            {' '}
+            <ForgotPasswordButton>forgot password</ForgotPasswordButton>
+            <br />
           </Col>
         </Row>
-        <Row>
+        <FooterMessage authMode={authMode} />
+        <div>
           <FacebookButton>
             <Row>
-              <Col xs={8} sm={8} md={8} lg={8} xl={8}>
+              <Col xs={9} sm={9} md={9} lg={9} xl={9}>
                 sign in with
               </Col>
               <Col xs={3} sm={3} md={3} lg={3} xl={3}>
-                <Facebook width={32} height={32} />
+                <Facebook width={22} height={22} />
               </Col>
             </Row>
           </FacebookButton>
@@ -148,7 +144,7 @@ export default function Identification() {
               </Col>
             </Row>
           </FacebookButton>
-        </Row>
+        </div>
         {/* <Row>
             <Card>
               <Col xs={9} sm={9} md={9} lg={9} xl={9}>

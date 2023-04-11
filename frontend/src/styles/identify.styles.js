@@ -43,11 +43,10 @@ export const LoginInputField = styled(Form.Control)`
 `;
 
 export const LoginButton = styled(Button)`
-  width: ${({ theme }) => (theme.width > 992 ? '10rem' : '9rem')};
+  width: 10rem;
   height: 3rem;
   font-size: 1rem;
-  // margin-left: 1rem;
-  // left: 1rem;
+  margin-top: 1rem;
   border-radius: 0%;
   border: none !important;
   color: ${({ theme }) => theme.basic.dark}!important;
@@ -57,8 +56,7 @@ export const ForgotPasswordButton = styled(Button)`
   width: ${({ theme }) => (theme.width > 992 ? '10rem' : '9rem')};
   height: 3rem;
   font-size: 1rem;
-  margin-right: 20rem;
-  // left: 1rem;
+  margin-top: 1rem;
   border-radius: 0%;
   border: none !important;
   color: ${({ theme }) => theme.basic.dark}!important;
