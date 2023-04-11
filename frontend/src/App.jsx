@@ -1,27 +1,19 @@
 import { routes, themes } from './config';
-import { useDispatch } from 'react-redux';
 import { Links, homePage } from './pages';
 import { Container } from 'react-bootstrap';
 import { useWindowDimensions } from './hooks';
-// import { unwrapResult } from '@reduxjs/toolkit';
 import { ThemeProvider } from 'styled-components';
-import React, { useState, useEffect } from 'react';
-// import { loadUser } from './redux/slices/userSlice';
+import React, { useState, Suspense } from 'react';
 import { NotFoundPage, Identification } from './pages';
 import { Switch, Route, useLocation } from 'react-router-dom';
-import { Footer, Navbars, ProtectedRoute } from './components';
+import { Loader, Navbars, ProtectedRoute } from './components';
 import './styles/base.scss';
 
-export default function App() {
-  // const dispatch = useDispatch();
+function App() {
   const { pathname } = useLocation();
   const [theme] = useState('defaultTheme');
   const size = useWindowDimensions();
   const { home, identify, link } = routes;
-
-  // useEffect(async () => {
-  //   unwrapResult(await dispatch(loadUser()));
-  // }, []);
 
   return (
     <ThemeProvider
@@ -44,5 +36,13 @@ export default function App() {
         </Container>
       </div>
     </ThemeProvider>
+  );
+}
+
+export default function WrappedApp() {
+  return (
+    <Suspense fallback={<Loader />}>
+      <App />
+    </Suspense>
   );
 }
