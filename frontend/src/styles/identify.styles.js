@@ -25,22 +25,6 @@ export const LoginFormContainer = styled.div`
     transition: box-shadow 1s ease;
   }
 `;
-export const LoginInputField = styled(Form.Control)`
-  border: none;
-  border-radius: 0%;
-  font-style: italic;
-  outline: none !important;
-  box-shadow: none !important;
-  color: ${({ theme }) => theme.basic.dark}!important;
-  background-color: ${({ theme }) => theme.basic.bright}!important;
-  border-bottom: ${({ theme }) =>
-    `0.1rem solid ${theme.basic.bright}`}!important;
-  &:hover {
-    transition: background-color 0.4s ease-out;
-    color: ${({ theme }) => theme.basic.dark}!important;
-    background-color: ${({ theme }) => theme.basic.bright}!important;
-  }
-`;
 
 export const LoginButton = styled(Button)`
   width: 10rem;
