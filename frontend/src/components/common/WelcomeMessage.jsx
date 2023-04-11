@@ -1,48 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useTransition } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Alert, Badge } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 export const HeaderMessage = () => {
   const location = useLocation();
   const signupRoute = location.pathname === '/identify';
-
+  const { t: localize } = useTranslation();
   return (
     <Alert color='teal'>
       <div>
         <Alert.Heading style={{ width: '', fontSize: '1rem' }}>
-          {signupRoute ? 'Get started ' : 'welcome back'}
+          {signupRoute
+            ? `${localize('Started')}`
+            : `${localize('WelcomeBack')}`}
         </Alert.Heading>
       </div>
       <Alert.Heading style={{ width: '', fontSize: '1rem' }}>
         {location.pathname !== '/identify'
-          ? 'Create New Account'
-          : 'Login with email and password'}
+          ? `${localize('CreateNewAccount')}`
+          : `${localize('LoginWithEmail')}`}
       </Alert.Heading>
     </Alert>
   );
 };
 
 export const FooterMessage = ({ changeAuthMode, authMode }) => {
+  const { t: localize } = useTranslation();
+
   return (
     <>
       <Alert color='teal'>
         <Alert.Heading style={{ width: '', fontSize: '1rem' }}>
-          {authMode !== 'login' ? (
+          {authMode !== '/identify' ? (
             <div>
-              New User ?
+              {localize(NewUser)} ?
               <Badge
                 bg='light'
                 text='dark'
                 style={{ cursor: 'pointer' }}
                 onClick={changeAuthMode}
               >
-                Signup Here{' '}
+                {localize(SignupHere)}
               </Badge>
-              Instead
+              {localize(Instead)}
             </div>
           ) : (
             <p>
-              Existing User ?
+              {localize(ExistingUser)} ?
               {
                 <Badge
                   bg='light'
@@ -50,7 +55,7 @@ export const FooterMessage = ({ changeAuthMode, authMode }) => {
                   style={{ cursor: 'pointer' }}
                   onClick={changeAuthMode}
                 >
-                  Login here Instead
+                  {localize(LoginHereInstead)}
                 </Badge>
               }
             </p>
