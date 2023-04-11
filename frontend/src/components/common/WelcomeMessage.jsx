@@ -4,7 +4,7 @@ import { Alert, Badge } from 'react-bootstrap';
 
 export const HeaderMessage = () => {
   const location = useLocation();
-  const signupRoute = location.pathname === '/login';
+  const signupRoute = location.pathname === '/identify';
 
   return (
     <Alert color='teal'>
@@ -14,7 +14,7 @@ export const HeaderMessage = () => {
         </Alert.Heading>
       </div>
       <Alert.Heading style={{ width: '', fontSize: '1rem' }}>
-        {location.pathname !== '/login'
+        {location.pathname !== '/identify'
           ? 'Create New Account'
           : 'Login with email and password'}
       </Alert.Heading>

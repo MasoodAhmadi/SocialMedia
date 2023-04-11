@@ -5,7 +5,6 @@ import React, { useRef, useState } from 'react';
 // import ImageDropDiv from "../components/common/imageDropDrag";
 // import CommonInputs from "../components/common/inputs";
 import { Button, Container } from 'react-bootstrap';
-import { useIntl } from 'react-intl';
 
 function SignupPage() {
   const inputRef = useRef();
@@ -23,8 +22,6 @@ function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showSocialLinks, setShowSocialLinks] = useState(false);
   const [createObjectURL, setCreateObjectURL] = useState(null);
-  const intl = useIntl();
-
   const [allsocialState, setAllSocialState] = useState({
     facebook: '',
     youtube: '',

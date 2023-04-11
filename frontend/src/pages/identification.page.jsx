@@ -9,7 +9,13 @@ import { Form, Row, Col, Container, Card, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { signInUser } from '../redux/slices/userSlice';
 
-import { PersonBoundingBox, ShieldLock, Unlock } from 'react-bootstrap-icons';
+import {
+  Facebook,
+  Google,
+  PersonBoundingBox,
+  ShieldLock,
+  Unlock,
+} from 'react-bootstrap-icons';
 import { LoginButton, LoginFormContainer, LoginInputField } from '../assets';
 import authServices from '../services/auth.services';
 import {
@@ -17,13 +23,19 @@ import {
   HeaderMessage,
 } from '../components/common/WelcomeMessage';
 import SocialAppLog from '../components/common/SocialAppLog.component';
+import {
+  FacebookButton,
+  ForgotPassword,
+  ForgotPasswordButton,
+  GoogleButton,
+} from '../styles/identify.styles';
 
 export default function Identification() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { home } = routes;
   const { basic } = useTheme();
-  const [authMode, setAuthMode] = useState('login');
+  const [authMode, setAuthMode] = useState('identify');
   const { user } = useSelector(({ user }) => user);
 
   useEffect(() => {
@@ -51,66 +63,107 @@ export default function Identification() {
     },
   });
   return (
-    <LoginFormContainer>
-      {' '}
-      <Form onSubmit={formik.handleSubmit}>
-        <Row className='pe-5 ps-5 mt-5'>
-          <Col xs={1} sm={1} md={1} lg={1} xl={1}>
-            <PersonBoundingBox
-              width={22}
-              height={22}
-              className='mt-2'
-              color={`${basic.bright}80`}
-            />
-            asdfasdf
-          </Col>
-          <Col xs={11} sm={11} md={11} lg={11} xl={11}>
-            <LoginInputField
-              name='email'
-              type='email'
-              placeholder='enter email'
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              aria-label='Email for access admin'
-            />
-          </Col>
-          {formik.errors.email && formik.touched.email && (
-            <p className='mt-2' style={{ color: basic.bright }}>
-              {formik.errors.email}
-            </p>
-          )}
-        </Row>
-        <Row className='pe-5 ps-5 mt-4'>
-          <Col xs={1} sm={1} md={1} lg={1} xl={1}>
-            <ShieldLock
-              width={24}
-              height={24}
-              className='mt-2'
-              color={`${basic.bright}80`}
-            />
-          </Col>
-          <Col xs={11} sm={11} md={11} lg={11} xl={11}>
-            <LoginInputField
-              name='password'
-              type='password'
-              placeholder='enter password'
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              aria-label='Password for access admin'
-            />
-          </Col>
-          {formik.errors.password && formik.touched.password && (
-            <p className='mt-2' style={{ color: basic.bright }}>
-              {formik.errors.password}
-            </p>
-          )}
-        </Row>
-        <div className='d-flex flex-direction-column align-items-center justify-content-center mb-5'>
-          <LoginButton type='submit'>login</LoginButton>
-        </div>
-      </Form>
-    </LoginFormContainer>
+    <div>
+      <LoginFormContainer>
+        {/* <Form onSubmit={formik.handleSubmit}> */}
+        <Row className='mt-4'>
+          <Col>
+            <HeaderMessage />
 
+            <Form onSubmit={formik.handleSubmit}>
+              <Form.Group className='mb-3' controlId='formBasicEmail'>
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                  name='email'
+                  type='email'
+                  placeholder='Enter email'
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                />
+                <Form.Text className='text-muted'>
+                  We'll never share your email with anyone.
+                </Form.Text>
+                {formik.errors.email && formik.touched.email && (
+                  <p className='mt-2' style={{ color: basic.dark }}>
+                    {formik.errors.email}
+                  </p>
+                )}
+              </Form.Group>
+              <Form.Group className='mb-3' controlId='formBasicPassword'>
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  name='password'
+                  type='password'
+                  placeholder='Enter password'
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  aria-label='Password for access admin'
+                />
+                {formik.errors.password && formik.touched.password && (
+                  <p className='' style={{ color: 'black' }}>
+                    {formik.errors.password}
+                  </p>
+                )}
+              </Form.Group>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <div className='d-flex m-1 gap-3'>
+            <Col xs={4} sm={4} md={4} lg={4} xl={4}>
+              <LoginButton type='submit'>login</LoginButton>
+            </Col>
+            <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+              {' '}
+              <ForgotPasswordButton>forgot password</ForgotPasswordButton>
+            </Col>
+          </div>
+        </Row>
+        <br />
+        <Row>
+          <Col>
+            <FooterMessage authMode={authMode} />
+          </Col>
+        </Row>
+        <Row>
+          <FacebookButton>
+            <Row>
+              <Col xs={8} sm={8} md={8} lg={8} xl={8}>
+                sign in with
+              </Col>
+              <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+                <Facebook width={32} height={32} />
+              </Col>
+            </Row>
+          </FacebookButton>
+          <FacebookButton>
+            {' '}
+            <Row>
+              {' '}
+              <Col xs={9} sm={9} md={9} lg={9} xl={9}>
+                sign in with
+              </Col>
+              <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+                <Facebook width={22} height={22} />
+              </Col>
+            </Row>
+          </FacebookButton>
+        </Row>
+        {/* <Row>
+            <Card>
+              <Col xs={9} sm={9} md={9} lg={9} xl={9}>
+                sign in with
+              </Col>
+              <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+                <GoogleButton>
+                  <Google width={22} height={22} />
+                </GoogleButton>
+              </Col>
+            </Card>
+          </Row> */}
+        <br />
+      </LoginFormContainer>
+    </div>
     // <Container
     //   fluid='md'
     //   className='mt-4 mb-4  d-flex justify-content-center align-items-center'
