@@ -21,7 +21,7 @@ i18next
             'Some quick example text to build on the card title and make	up the bulk of the cards content.',
         },
       },
-      de: {
+      dr: {
         translation: {
           learn: 'سلام خوب هستی همه خوب است',
           learn1: 'Dapibus acasdfasdfasd facilisis in',

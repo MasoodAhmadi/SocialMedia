@@ -1,5 +1,5 @@
-import React from "react";
-import { Divider, Form, Message, TextArea, Button } from "semantic-ui-react";
+import React from 'react';
+import { Divider, Form, Message, TextArea, Button } from 'semantic-ui-react';
 
 function CommonInputs({
   allsocialState: { facebook, instagram, youtube, twitter },
@@ -14,57 +14,57 @@ function CommonInputs({
       <Form.Field
         reguired
         control={TextArea}
-        name="bio"
+        name='bio'
         value={bio}
         onChange={(e) => setBio(e.target.value)}
-        placeholder="bio"
+        placeholder='bio'
       />
       <Button
-        content="Add social link"
-        color="red"
-        icon="at"
-        type="button"
+        content='Add social link'
+        color='red'
+        icon='at'
+        type='button'
         onClick={() => {
           setShowSocialLinks(!showSocialLinks);
         }}
       />
       {showSocialLinks && (
         <>
-          {" "}
-          <Divider />{" "}
+          {' '}
+          <Divider />{' '}
           <Form.Input
-            icon="facebook"
-            iconPosition="left"
-            name="facebook"
+            icon='facebook'
+            iconPosition='left'
+            name='facebook'
             value={facebook}
             onChange={handleChange}
           />
           <Form.Input
-            icon="twitter"
-            iconPosition="left"
-            name="twitter"
+            icon='twitter'
+            iconPosition='left'
+            name='twitter'
             value={twitter}
             onChange={handleChange}
           />
           <Form.Input
-            icon="instagram"
-            iconPosition="left"
-            name="instagram"
+            icon='instagram'
+            iconPosition='left'
+            name='instagram'
             value={instagram}
             onChange={handleChange}
           />
           <Form.Input
-            icon="youtube"
-            iconPosition="left"
-            name="youtube"
+            icon='youtube'
+            iconPosition='left'
+            name='youtube'
             value={youtube}
             onChange={handleChange}
           />
           <Message
-            icon="attention"
+            icon='attention'
             info
-            size="small"
-            header="Social Media Links are optional"
+            size='small'
+            header='Social Media Links are optional'
           />
         </>
       )}
