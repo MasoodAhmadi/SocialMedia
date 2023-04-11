@@ -1,11 +1,11 @@
 import * as Yup from 'yup';
 import { routes } from '../config';
 import { useFormik } from 'formik';
-import React, { useEffect } from 'react';
 import { useTheme } from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { Form, Row, Col, Container, Card } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Form, Row, Col, Container, Card, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { signInUser } from '../redux/slices/userSlice';
 
@@ -16,12 +16,14 @@ import {
   FooterMessage,
   HeaderMessage,
 } from '../components/common/WelcomeMessage';
+import SocialAppLog from '../components/common/SocialAppLog.component';
 
 export default function Identification() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { home } = routes;
   const { basic } = useTheme();
+  const [authMode, setAuthMode] = useState('login');
   const { user } = useSelector(({ user }) => user);
 
   useEffect(() => {

@@ -1,36 +1,39 @@
-import i18next from 'i18next';
-
+import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import languageDedector from 'i18next-browser-languagedetector';
+import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
-i18next
-  .use(initReactI18next)
-  .use(languageDedector)
+
+i18n
+  // i18next-http-backend
+  // loads translations from your server
+  // https://github.com/i18next/i18next-http-backend
   .use(Backend)
+  // detect user language
+  // learn more: https://github.com/i18next/i18next-browser-languageDetector
+  .use(LanguageDetector)
+  // pass the i18n instance to react-i18next.
+  .use(initReactI18next)
+  // init i18next
+  // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     debug: true,
-    fallback: 'en',
-    resources: {
-      en: {
-        translation: {
-          learn: 'Cras justo odio',
-          learn1: 'Dapibus ac facilisis in',
-          learn2: 'Vestibulum at eros',
-          Register: 'Register',
-          description:
-            'Some quick example text to build on the card title and make	up the bulk of the cards content.',
-        },
-      },
-      dr: {
-        translation: {
-          learn: 'سلام خوب هستی همه خوب است',
-          learn1: 'Dapibus acasdfasdfasd facilisis in',
-          learn2: 'Vestibulum aasdfasdfasdt eros',
-          Register: 'Registwfasdfasdfaser',
-
-          description:
-            'Some quick exampasdfale texasdfasdft to builfasdfasdfd on the card tiasdfasdfasdtle and make	up the bulk of the cards content.',
-        },
-      },
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false, // not needed for react as it escapes by default
+      // format: (value, format, lng) => { // legacy usage
+      //   if (value instanceof Date) {
+      //     return DateTime.fromJSDate(value).setLocale(lng).toLocaleString(DateTime[format])
+      //   }
+      //   return value;
+      // }
     },
   });
+
+// new usage
+// i18n.services.formatter.add('DATE_HUGE', (value, lng, options) => {
+//   return DateTime.fromJSDate(value)
+//     .setLocale(lng)
+//     .toLocaleString(DateTime.DATE_HUGE);
+// });
+
+export default i18n;

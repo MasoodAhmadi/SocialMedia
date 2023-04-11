@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 export default function WeekofTheDay() {
+  // const { t: localize } = useTranslation();
   const { t: localize } = useTranslation();
 
   return (
@@ -24,8 +25,9 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nKey='description.part1'>
+                    Edit <code>src/App.js</code> and save to reload.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>{localize('learn')}</ListGroup.Item>
@@ -58,8 +60,9 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nKey='description.part1'>
+                    Edit <code>src/App.js</code> and save to reload.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>{localize('learn')}</ListGroup.Item>
@@ -93,8 +96,9 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nKey='description.part1'>
+                    Edit <code>src/App.js</code> and save to reload.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>{localize('learn')}</ListGroup.Item>
@@ -130,8 +134,9 @@ export default function WeekofTheDay() {
                 </Card.Subtitle>
 
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nKey='description.part1'>
+                    Edit <code>src/App.js</code> and save to reload.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>{localize('learn')}</ListGroup.Item>
@@ -165,8 +170,9 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nKey='description.part1'>
+                    Edit <code>src/App.js</code> and save to reload.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>{localize('learn')}</ListGroup.Item>
@@ -201,8 +207,9 @@ export default function WeekofTheDay() {
                   Card Subtitle
                 </Card.Subtitle>
                 <Card.Text style={{ background: 'white' }}>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  <Trans i18nKey='description.part1'>
+                    Edit <code>src/App.js</code> and save to reload.
+                  </Trans>
                 </Card.Text>
                 <ListGroup variant='flush'>
                   <ListGroup.Item>{localize('learn')}</ListGroup.Item>
