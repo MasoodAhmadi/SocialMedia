@@ -24,14 +24,14 @@ import {
 export default function Identification() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { home } = routes;
+  const { home, link } = routes;
   const { basic } = useTheme();
   const [authMode, setAuthMode] = useState('identify');
   const { user } = useSelector(({ user }) => user);
 
-  // useEffect(() => {
-  //   if (authServices?.getCurrentUser()) history.push(home);
-  // }, [user]);
+  useEffect(() => {
+    if (authServices.getCurrentUser()) history.push(link);
+  }, [user]);
 
   const userSchema = Yup.object({
     email: Yup.string().email('Invalid email format').required('Required!'),
@@ -47,7 +47,7 @@ export default function Identification() {
     onSubmit: async (values) => {
       try {
         unwrapResult(await dispatch(signInUser(values)));
-        history.push(home);
+        history.push(link);
       } catch (error) {
         console.log('error: ', error);
       }

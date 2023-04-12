@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Translate } from 'react-bootstrap-icons';
 import Container from 'react-bootstrap/Container';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { LogoutButton } from '../styles/identify.styles';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import authServices from '../services/auth.services';
+import { logout } from '../redux/slices/userSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const lang = {
   en: { nativeName: 'English' },
@@ -16,11 +18,34 @@ export default function Navbars() {
   const { t: localize, i18n } = useTranslation();
   const history = useHistory();
   const location = useLocation();
-
+  const dispatch = useDispatch();
   const { identify, home } = routes;
   const { user } = useSelector((state) => state.user);
-  useEffect(() => {}, [location.pathname]);
+  // useEffect(() => {
+  //   if (!authServices.getCurrentUser()) history.push(home);
+  // }, [user]);
 
+  const localLogout = (event) => {
+    event.preventDefault();
+
+    try {
+      // setIsExpanded(false);
+      unwrapResult(dispatch(logout()));
+      history.push(home);
+      // dispatch(
+      //   addNotification({
+      //     identifier: 'user',
+      //     timeout: 5,
+      //     icon: <CheckCircle className='text-success' />,
+      //     content: intl.formatMessage({ id: 'profile.signOut.success' })
+      //   })
+      // );
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
+
+  console.log(user);
   return (
     <Navbar
       bg='light'
@@ -42,8 +67,8 @@ export default function Navbars() {
             <Nav.Link onClick={() => history.push('/registration')}>
               {localize('Register')}
             </Nav.Link>
-          </Nav>
-          <Nav>
+            {/* </Nav>
+          <Nav> */}
             <NavDropdown
               align='end'
               className='d-flex'
@@ -80,16 +105,10 @@ export default function Navbars() {
                 );
               })}
             </NavDropdown>
-          </Nav>
-          <Nav>
-            {!!user ? (
-              <Nav.Link
-                variant=''
-                onClick={() => {
-                  localStorage.removeItem('token');
-                  history.push(home);
-                }}
-              >
+            {/* </Nav>
+          <Nav> */}
+            {user ? (
+              <Nav.Link variant='' onClick={localLogout}>
                 {localize('Logout')}
               </Nav.Link>
             ) : (
