@@ -19,7 +19,6 @@ function App() {
   const dispatch = useDispatch();
   const { home, identify, link } = routes;
 
-	
   useEffect(async () => {
     unwrapResult(await dispatch(loadUser()));
   }, []);
@@ -39,10 +38,11 @@ function App() {
             minHeight: 'calc(100vh - 4rem)',
           }}
         >
+          {/* <homePage /> */}
           <Switch>
-            <ProtectedRoute exact path={home} component={homePage} />
-            <Route exact path={identify} component={Identification} />
-            <Route exact path={link} component={Links} />
+            <ProtectedRoute exact path={link} component={Links} />
+            <ProtectedRoute exact path={identify} component={Identification} />
+            <Route exact path={home} component={homePage} />
             <Route component={NotFoundPage} />
           </Switch>
         </Container>

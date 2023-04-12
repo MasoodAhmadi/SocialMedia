@@ -29,9 +29,9 @@ export default function Identification() {
   const [authMode, setAuthMode] = useState('identify');
   const { user } = useSelector(({ user }) => user);
 
-  useEffect(() => {
-    if (authServices?.getCurrentUser()) history.push(home);
-  }, [user]);
+  // useEffect(() => {
+  //   if (authServices?.getCurrentUser()) history.push(home);
+  // }, [user]);
 
   const userSchema = Yup.object({
     email: Yup.string().email('Invalid email format').required('Required!'),

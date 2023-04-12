@@ -82,12 +82,12 @@ export default function Navbars() {
             </NavDropdown>
           </Nav>
           <Nav>
-            {user ? (
+            {!!user ? (
               <Nav.Link
                 variant=''
                 onClick={() => {
                   localStorage.removeItem('token');
-                  history.push(identify);
+                  history.push(home);
                 }}
               >
                 {localize('Logout')}
@@ -96,7 +96,7 @@ export default function Navbars() {
               <Nav.Link
                 variant=''
                 onClick={() => {
-                  history.push(home);
+                  history.push(identify);
                 }}
               >
                 {localize('Login')}
