@@ -8,17 +8,17 @@ export default function ProtectedRoute({
   component: Component,
   ...rest
 }) {
-  const { identify } = routes;
+  const { identify, home } = routes;
   return (
     <Route
       path={path}
       {...rest}
       render={(props) => {
-        if (!authServices.getCurrentUser())
+        if (authServices.getCurrentUser())
           return (
             <Redirect
               to={{
-                pathname: identify,
+                pathname: home,
                 state: { from: props.location },
               }}
             />
