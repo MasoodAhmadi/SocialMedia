@@ -34,20 +34,20 @@ export const FooterMessage = ({ changeAuthMode, authMode }) => {
         <Alert.Heading style={{ width: '', fontSize: '1rem' }}>
           {authMode !== '/identify' ? (
             <div>
-              {localize(NewUser)} ?
+              {localize('NewUser')} ?
               <Badge
                 bg='light'
                 text='dark'
                 style={{ cursor: 'pointer' }}
                 onClick={changeAuthMode}
               >
-                {localize(SignupHere)}
+                {localize('SignupHere')}
               </Badge>
-              {localize(Instead)}
+              {localize('Instead')}
             </div>
           ) : (
             <p>
-              {localize(ExistingUser)} ?
+              {localize('ExistingUser')} ?
               {
                 <Badge
                   bg='light'
@@ -55,7 +55,7 @@ export const FooterMessage = ({ changeAuthMode, authMode }) => {
                   style={{ cursor: 'pointer' }}
                   onClick={changeAuthMode}
                 >
-                  {localize(LoginHereInstead)}
+                  {localize('LoginHereInstead')}
                 </Badge>
               }
             </p>

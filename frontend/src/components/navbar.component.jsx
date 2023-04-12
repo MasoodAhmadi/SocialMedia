@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { routes } from '../config';
 import { useTranslation } from 'react-i18next';
 import { Translate } from 'react-bootstrap-icons';
 import Container from 'react-bootstrap/Container';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { LogoutButton } from '../styles/identify.styles';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 const lang = {
   en: { nativeName: 'English' },
@@ -14,7 +15,11 @@ const lang = {
 export default function Navbars() {
   const { t: localize, i18n } = useTranslation();
   const history = useHistory();
-  const { identify } = routes;
+  const location = useLocation();
+
+  const { identify, home } = routes;
+  const { user } = useSelector((state) => state.user);
+  useEffect(() => {}, [location.pathname]);
 
   return (
     <Navbar
@@ -77,15 +82,26 @@ export default function Navbars() {
             </NavDropdown>
           </Nav>
           <Nav>
-            <Nav.Link
-              variant=''
-              onClick={() => {
-                localStorage.removeItem('token');
-                history.push(identify);
-              }}
-            >
-              {localize('Logout')}
-            </Nav.Link>
+            {user ? (
+              <Nav.Link
+                variant=''
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  history.push(identify);
+                }}
+              >
+                {localize('Logout')}
+              </Nav.Link>
+            ) : (
+              <Nav.Link
+                variant=''
+                onClick={() => {
+                  history.push(home);
+                }}
+              >
+                {localize('Login')}
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -1,8 +1,8 @@
-import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { api } from '../../config';
 import jwt_decode from 'jwt-decode';
-import { getUser, getUsers, saveUser } from '../../services/user.services';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getUser, getUsers, saveUser, removeUser } from '../../services';
 
 export const loadUser = createAsyncThunk(
   'user/loadUser',
@@ -41,6 +41,30 @@ export const addUser = createAsyncThunk(
   }
 );
 
+export const editUser = createAsyncThunk(
+  'video/editUser',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await saveUser(data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  'video/deleteUser',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await removeUser(id);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const signInUser = createAsyncThunk(
   'user/login',
   async (data, { rejectWithValue }) => {
@@ -58,6 +82,7 @@ export const signInUser = createAsyncThunk(
 const isPendingAction = (action) => {
   return action.type.startsWith('user/') && action.type.endsWith('/pending');
 };
+
 const isRejectedAction = (action) => {
   return action.type.startsWith('user/') && action.type.endsWith('/rejected');
 };
@@ -76,7 +101,7 @@ const userSlice = createSlice({
       // LOAD
       .addCase(loadUser.fulfilled, (state, { payload }) => {
         state.user = payload;
-        state.loading = false;
+        state.loadinloadUsersg = false;
       })
       .addCase(loadUsers.fulfilled, (state, { payload }) => {
         state.users = payload;
@@ -91,121 +116,30 @@ const userSlice = createSlice({
         state.users = [...state.users, payload];
         state.loading = false;
       })
-
+      // EDIT
+      .addCase(editUser.fulfilled, (state, { payload }) => {
+        state.users = state.users.map((user) => {
+          if (user.id === payload.id) user = payload;
+          return user;
+        });
+        state.loading = false;
+      })
+      // DELETE
+      .addCase(deleteUser.fulfilled, (state, { payload }) => {
+        state.users = state.users.filter((user) => user.id !== payload.id);
+        state.loading = false;
+      })
       // LOADING / PENDING
       .addMatcher(isPendingAction, (state) => {
         state.loading = true;
         state.errors = false;
       })
-
       // ERROR /FAILURE / REJECTED
       .addMatcher(isRejectedAction, (state, { payload }) => {
         state.loading = false;
         state.errors = payload;
       });
-    // LOGIN
-    // .addCase(signin.fulfilled, (state, action) => {
-    //   const token = action.payload.token;
-    //   window.localStorage.setItem('access-token', token);
-    //   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    //   state.data = action.payload;
-    //   state.loading = false;
-    // })
-
-    // GET USER INFO / RELOGIN
-    // .addCase(getUserInfo.fulfilled, (state, action) => {
-    //   const token = action.payload.token;
-    //   window.localStorage.setItem('access-token', token);
-    //   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    //   state.data = action.payload;
-    //   state.loading = false;
-    // })
-
-    // CHANGE PASSWORD
-    // .addCase(changePassword.fulfilled, (state, action) => {
-    //   state.loading = false;
-    // })
-
-    // LOGOUT
-    // .addCase(logout, (state) => {
-    //   window.localStorage.removeItem('access-token');
-    //   axios.defaults.headers.common['Auth'] = null;
-    //   state.loading = false;
-    //   state.errors = false;
-    //   state.data = null;
-    // })
-
-    // // UPDATE
-    // .addCase(updateUser.fulfilled, (state, action) => {
-    //   state.data = action.payload.user;
-    //   state.loading = false;
-    // })
-
-    // ERROR /FAILURE / REJECTED
-    // .addMatcher(isRejectedAction, (state, action) => {
-    //   window.localStorage.removeItem('access-token');
-    //   axios.defaults.headers.common['Auth'] = null;
-
-    //   state.loading = false;
-    //   state.data = null;
-    //   state.errors = action.payload;
-    // });
   },
 });
 
 export default userSlice.reducer;
-
-// export const logout = createAction('logout');
-
-// export const signin = createAsyncThunk(
-//   'user/signin',
-//   async (data, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.post('/api/auth/signin', data);
-//       console.log('response', response);
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-
-// export const changePassword = createAsyncThunk(
-//   'user/changePassword',
-//   async (data, { rejectWithValue }) => {
-//     try {
-//       await axios.post('api/auth/user/change-password', data);
-//       return;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-// export const getUserInfo = createAsyncThunk(
-//   'user/getUserInfo',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const token = localStorage.getItem('access-token');
-//       if (token) {
-//         const response = await axios.get('/users', {
-//           headers: { Authorization: `Bearer ${token}` },
-//         });
-//         return response.data;
-//       }
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-
-// export const updateUser = createAsyncThunk(
-//   'user/updateUser',
-//   async (data, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.patch(`/api/users/${data.id}`, data);
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );

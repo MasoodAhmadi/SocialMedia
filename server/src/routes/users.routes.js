@@ -2,12 +2,12 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
+const { auth, asyncErrorHandler } = require('../middleware');
 const { User } = require('../sequelize');
 // const cloudinary = require('cloudinary').v2;
+
 // const follower = require('../models/follower');
 // const isEmail = require('validator/lib/isEmail');
-
-const { auth, asyncErrorHandler } = require('../middleware');
 
 // cloudinary.config({
 //   cloud_name: process.env.CLOUD_NAME,
@@ -16,34 +16,37 @@ const { auth, asyncErrorHandler } = require('../middleware');
 //   secure: true,
 // });
 
-router.get('/create_demo', async (req, res, next) => {
-  try {
-    const hashedPassword = await bcrypt.hash('asdf123', 12);
-    const user = await User.create({
-      name: 'masood',
-      username: 'masoodahmadi',
-      email: 'masood@example.com',
-      password: hashedPassword,
-    });
-    res.status(201).json(user);
-  } catch (error) {
-    console.error(error);
-    next({
-      clientStatusCode: 500,
-      trace: error?.errors || error?.response?.data,
-      statusCode: error.status || error?.response?.status || error.statusCode,
-      message: error?.response?.message || error.message,
-    });
-  }
-});
+// router.get('/create_demo', async (req, res, next) => {
+//   try {
+//     const hashedPassword = await bcrypt.hash('asdf123', 12);
+//     const user = await User.create({
+//       name: 'masood',
+//       username: 'masoodahmadi',
+//       email: 'masood@example.com',
+//       password: hashedPassword,
+//     });
+//     res.status(201).json(user);
+//   } catch (error) {
+//     console.error(error);
+//     next({
+//       clientStatusCode: 500,
+//       trace: error?.errors || error?.response?.data,
+//       statusCode: error.status || error?.response?.status || error.statusCode,
+//       message: error?.response?.message || error.message,
+//     });
+//   }
+// });
 
 //Getting all data
-router.get('/', auth, asyncErrorHandler, async (req, res) => {
-  const users = await User.findAll({
-    attributes: ['id', 'email', 'name', 'username'],
-  });
-  res.status(200).json(users);
-});
+//Getting all data
+router.get(
+  '/',
+  auth,
+  asyncErrorHandler(async (req, res) => {
+    const users = await User.findAll({ attributes: ['id', 'email'] });
+    res.status(200).json(users);
+  })
+);
 
 // Getting data by id
 router.get(

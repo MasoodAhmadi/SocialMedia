@@ -3,7 +3,7 @@ import { api } from '../config';
 import { getJwt } from './auth.services';
 const { users, userByToken } = api;
 
-http?.setJwt(getJwt());
+http.setJwt(getJwt());
 
 export function getUser() {
   return http.get(userByToken, {
