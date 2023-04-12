@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { api } from '../../config';
 import jwt_decode from 'jwt-decode';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getUser, getUsers, saveUser, removeUser } from '../../services';
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 
 export const loadUser = createAsyncThunk(
   'user/loadUser',
@@ -86,6 +86,7 @@ const isPendingAction = (action) => {
 const isRejectedAction = (action) => {
   return action.type.startsWith('user/') && action.type.endsWith('/rejected');
 };
+export const logout = createAction('logout');
 
 const userSlice = createSlice({
   name: 'user',
@@ -107,6 +108,7 @@ const userSlice = createSlice({
         state.users = payload;
         state.loading = false;
       })
+
       // ADD / ACCESS
       .addCase(signInUser.fulfilled, (state, { payload }) => {
         state.user = payload;
@@ -115,6 +117,13 @@ const userSlice = createSlice({
       .addCase(addUser.fulfilled, (state, { payload }) => {
         state.users = [...state.users, payload];
         state.loading = false;
+      })
+
+      .addCase(logout, (state) => {
+        window.localStorage.removeItem('token');
+        state.loading = false;
+        state.errors = false;
+        state.user = null;
       })
       // EDIT
       .addCase(editUser.fulfilled, (state, { payload }) => {

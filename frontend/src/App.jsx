@@ -38,11 +38,10 @@ function App() {
             minHeight: 'calc(100vh - 4rem)',
           }}
         >
-          {/* <homePage /> */}
           <Switch>
-            <ProtectedRoute exact path={link} component={Links} />
-            <ProtectedRoute exact path={identify} component={Identification} />
+            <Route exact path={link} component={Links} />
             <Route exact path={home} component={homePage} />
+            <Route exact path={identify} component={Identification} />
             <Route component={NotFoundPage} />
           </Switch>
         </Container>
