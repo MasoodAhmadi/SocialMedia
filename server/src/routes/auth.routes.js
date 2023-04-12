@@ -5,28 +5,6 @@ const { User } = require('../sequelize');
 const { user_schema: schema } = require('../validation');
 const { auth, asyncErrorHandler } = require('../middleware');
 
-/* const auth_schema = Joi.object({
-  email: Joi.string().email().max(64).required(),
-  password: Joi.string().min(3).max(512).required(),
-}); */
-/* router.post('/signin', async (req, res) => {
-  const { email } = req.body;
-  const { value, error } = auth_schema.validate(req.body);
-  if (error) return res.status(400).send({ message: error.details[0].message });
-  const userFound = await user.findAll({
-    where: { email },
-  });
-  if (!userFound[0])
-    return res.status(400).send({ error: 'Invalid email or password' });
-  const validPassword = await bcrypt.compare(
-    value.password,
-    userFound[0].password
-  );
-  if (!validPassword)
-    return res.status(400).send({ error: 'Invalid email or password' });
-  const token = user.generateAuthToken(userFound[0].id);
-  res.status(200).send({ token });
-}); */
 router.get(
   '/token',
   auth,

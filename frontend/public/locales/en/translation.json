@@ -4,6 +4,7 @@
   "learn2": "Vestibulum at eros",
   "Register": "Register",
   "Logout": "Logout",
+  "Login": "Login",
   "Link": "Link",
   "Started": "Get started",
   "WelcomeBack": "Welcome back",
@@ -11,6 +12,7 @@
   "CreateNewAccount": "Create New Account",
   "NewUser": "New User",
   "SignupHere": "Signup Here",
+  "Instead": "Instead",
   "ExistingUser": "Existing User",
   "LoginHereInstead": "Login here Instead",
   "description": {

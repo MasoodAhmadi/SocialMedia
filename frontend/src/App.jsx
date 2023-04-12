@@ -4,27 +4,35 @@ import { Links, homePage } from './pages';
 import { Container } from 'react-bootstrap';
 import { useWindowDimensions } from './hooks';
 import { ThemeProvider } from 'styled-components';
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useEffect } from 'react';
 import { NotFoundPage, Identification } from './pages';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { Loader, Navbars, ProtectedRoute } from './components';
 import './styles/base.scss';
+import { loadUser } from './redux/slices/userSlice';
+import { useDispatch } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 function App() {
-  const { pathname } = useLocation();
   const [theme] = useState('defaultTheme');
   const size = useWindowDimensions();
+  const dispatch = useDispatch();
   const { home, identify, link } = routes;
+
+	
+  useEffect(async () => {
+    unwrapResult(await dispatch(loadUser()));
+  }, []);
 
   return (
     <ThemeProvider
       theme={{ ...themes[theme], width: size.width, height: size.height }}
     >
       <div>
-        {/* {
-				pathname !== identify &&
-			} */}
+        {/* {pathname !== identify &&
+				 } */}
         <Navbars />
+
         <Container
           fluid
           style={{

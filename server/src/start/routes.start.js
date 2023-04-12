@@ -1,10 +1,9 @@
 // importing middlewares
-// const { error, unknownEndpointHandler } = require('../middlewares');
 
 // importing routes
-const authRoute = require('../routes/auth.routes');
+const { unknownEndpointHandler, error } = require('../middleware');
 const userRoute = require('../routes/users.routes');
-
+const authRoute = require('../routes/auth.routes');
 
 // importing utils
 // const { errorLogger } = require('../utils/logger');
@@ -14,9 +13,9 @@ module.exports = function (app) {
   // routes
   app.use(`${BASE}/auth`, authRoute);
   app.use(`${BASE}/users`, userRoute);
- 
+
   // next handler
-  // app.use(error);
+  app.use(error);
   // app.use(errorLogger);
-	// app.use(unknownEndpointHandler);
+  app.use(unknownEndpointHandler);
 };
