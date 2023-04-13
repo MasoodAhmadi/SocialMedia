@@ -2,13 +2,13 @@ import * as Yup from 'yup';
 import { routes } from '../config';
 import { useFormik } from 'formik';
 import { useTheme } from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { Facebook } from 'react-bootstrap-icons';
+import { CheckCircle, Facebook, UnlockFill } from 'react-bootstrap-icons';
 import { Form, Row, Col } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import authServices from '../services/auth.services';
-import { signInUser } from '../redux/slices/userSlice';
+import { loadUser, loadUsers, signInUser } from '../redux/slices/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   FooterMessage,
@@ -20,14 +20,21 @@ import {
   LoginButton,
   LoginFormContainer,
 } from '../styles/identify.styles';
+import { addNotification } from '../redux/slices/addNotificationSlice';
 
 export default function Identification() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { home, link } = routes;
+  const { t: localize, i18n } = useTranslation();
+
+  const { link } = routes;
   const { basic } = useTheme();
   const [authMode, setAuthMode] = useState('identify');
   const { user } = useSelector(({ user }) => user);
+
+  useEffect(() => {
+    dispatch(loadUser());
+  }, []);
 
   useEffect(() => {
     if (authServices.getCurrentUser()) history.push(link);
@@ -46,8 +53,18 @@ export default function Identification() {
     validationSchema: userSchema,
     onSubmit: async (values) => {
       try {
-        unwrapResult(await dispatch(signInUser(values)));
+        const response = unwrapResult(await dispatch(signInUser(values)));
         history.push(link);
+        dispatch(
+          addNotification({
+            identifier: 'user',
+            timeout: 5,
+            icon: <UnlockFill className='text-success' />,
+            content: response?.name
+              ? `${localize('Welcome')} ${response?.name}`
+              : localize('Welcome'),
+          })
+        );
       } catch (error) {
         console.log('error: ', error);
       }

@@ -1,51 +1,42 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { routes } from '../config';
 import { useTranslation } from 'react-i18next';
-import { Translate } from 'react-bootstrap-icons';
-import Container from 'react-bootstrap/Container';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import authServices from '../services/auth.services';
-import { logout } from '../redux/slices/userSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
+import Container from 'react-bootstrap/Container';
+import { logout } from '../redux/slices/userSlice';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { LockFill, Translate } from 'react-bootstrap-icons';
+import { addNotification } from '../redux/slices/addNotificationSlice';
+import { lang } from '../data/constants';
 
-const lang = {
-  en: { nativeName: 'English' },
-  dr: { nativeName: 'Dari' },
-};
 export default function Navbars() {
   const { t: localize, i18n } = useTranslation();
   const history = useHistory();
-  const location = useLocation();
   const dispatch = useDispatch();
   const { identify, home } = routes;
   const { user } = useSelector((state) => state.user);
-  // useEffect(() => {
-  //   if (!authServices.getCurrentUser()) history.push(home);
-  // }, [user]);
 
   const localLogout = (event) => {
     event.preventDefault();
 
     try {
-      // setIsExpanded(false);
       unwrapResult(dispatch(logout()));
       history.push(home);
-      // dispatch(
-      //   addNotification({
-      //     identifier: 'user',
-      //     timeout: 5,
-      //     icon: <CheckCircle className='text-success' />,
-      //     content: intl.formatMessage({ id: 'profile.signOut.success' })
-      //   })
-      // );
+      dispatch(
+        addNotification({
+          timeout: 5,
+          identifier: 'user',
+          icon: <LockFill className='me-2 text-success' />,
+          content: 'logout successfully',
+        })
+      );
     } catch (error) {
       console.log('error: ', error);
     }
   };
 
-  console.log(user);
   return (
     <Navbar
       bg='light'
@@ -67,8 +58,8 @@ export default function Navbars() {
             <Nav.Link onClick={() => history.push('/registration')}>
               {localize('Register')}
             </Nav.Link>
-            {/* </Nav>
-          <Nav> */}
+          </Nav>
+          <Nav>
             <NavDropdown
               align='end'
               className='d-flex'
@@ -105,8 +96,8 @@ export default function Navbars() {
                 );
               })}
             </NavDropdown>
-            {/* </Nav>
-          <Nav> */}
+          </Nav>
+          <Nav>
             {user ? (
               <Nav.Link variant='' onClick={localLogout}>
                 {localize('Logout')}

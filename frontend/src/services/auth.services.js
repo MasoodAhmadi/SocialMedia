@@ -10,6 +10,14 @@ export async function login(email, password) {
   const { data: jwt } = await http.post(apiEndpoint, { email, password });
   localStorage.setItem(tokenKey, jwt);
 }
+export async function loginInfo(email, password, name, username) {
+  await http.post(apiEndpoint, {
+    email,
+    password,
+    name,
+    username,
+  });
+}
 
 export function loginWithJwt(jwt) {
   localStorage.setItem(tokenKey, jwt);

@@ -26,6 +26,7 @@
     "mysql2": "^2.3.3",
     "node-cache": "^5.1.2",
     "sequelize": "^6.9.0",
+    "uuid": "^9.0.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {

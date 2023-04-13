@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userSlice from './slices/userSlice';
+import addNotificationSlice from './slices/addNotificationSlice';
 
 const store = configureStore({
   reducer: {
     user: userSlice,
     // modal: modalSlice,
     // confirm: confirmSlice,
-    // notifications: notificationSlice,
+    notifications: addNotificationSlice,
   },
 
-	
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
