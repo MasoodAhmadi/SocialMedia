@@ -7,7 +7,12 @@ import { ThemeProvider } from 'styled-components';
 import React, { useState, Suspense, useEffect } from 'react';
 import { NotFoundPage, Identification } from './pages';
 import { Switch, Route, useLocation } from 'react-router-dom';
-import { Loader, Navbars, ProtectedRoute } from './components';
+import {
+  Loader,
+  Navbars,
+  NotificationManager,
+  ProtectedRoute,
+} from './components';
 import './styles/base.scss';
 import { loadUser } from './redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
@@ -38,6 +43,7 @@ function App() {
             minHeight: 'calc(100vh - 4rem)',
           }}
         >
+          <NotificationManager />
           <Switch>
             <Route exact path={link} component={Links} />
             <Route exact path={home} component={homePage} />

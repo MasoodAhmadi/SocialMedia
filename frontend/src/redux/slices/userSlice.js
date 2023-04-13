@@ -3,6 +3,7 @@ import { api } from '../../config';
 import jwt_decode from 'jwt-decode';
 import { getUser, getUsers, saveUser, removeUser } from '../../services';
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
+import { loginInfo } from '../../services/auth.services';
 
 export const loadUser = createAsyncThunk(
   'user/loadUser',
@@ -108,7 +109,6 @@ const userSlice = createSlice({
         state.users = payload;
         state.loading = false;
       })
-
       // ADD / ACCESS
       .addCase(signInUser.fulfilled, (state, { payload }) => {
         state.user = payload;

@@ -1,9 +1,8 @@
-const router = require('express').Router();
-const bcrypt = require('bcrypt');
 require('dotenv').config();
-
-const { auth, asyncErrorHandler } = require('../middleware');
+const router = require('express').Router();
 const { User } = require('../sequelize');
+const bcrypt = require('bcrypt');
+const { auth, asyncErrorHandler } = require('../middleware');
 // const cloudinary = require('cloudinary').v2;
 
 // const follower = require('../models/follower');
@@ -38,12 +37,13 @@ const { User } = require('../sequelize');
 // });
 
 //Getting all data
-//Getting all data
 router.get(
   '/',
   auth,
   asyncErrorHandler(async (req, res) => {
-    const users = await User.findAll({ attributes: ['id', 'email'] });
+    const users = await User.findAll({
+      attributes: ['id', 'email', 'username'],
+    });
     res.status(200).json(users);
   })
 );
@@ -60,66 +60,6 @@ router.get(
     res.status(200).send(query[0]);
   })
 );
-
-// router.get('/token', verifyToken, async (req, res) => {
-//   const findUser = await User.findAll({
-//     where: { id: req.user.id },
-//     attributes: { exclude: ['password'] },
-//     // include: [{ model: avatar }],
-//   });
-//   res.send(findUser[0]);
-// });
-
-// router.get('/', async (req, res, next) => {
-//   try {
-//     const users = await User.findAll({});
-//     res.status(200).json(users);
-//   } catch (error) {
-//     console.log('error happened!', error);
-//   }
-// });
-
-// router.get("/login", async (req, res, next) => {
-//   try {
-//     res.send({
-//       token: "test123",
-//     });
-//   } catch (error) {
-//     console.log("error happened!", error);
-//   }
-// });
-
-// router.get('/:username', async (req, res, next) => {
-//   try {
-//     const { username } = req.params;
-//     if (username.length < 0) return res.status(401).send('invalid');
-//     if (!resgexUserName.test(username)) return res.status(400).send('invalid');
-//     const users = await User.findOne({
-//       where: { username: username.toLowerCase() },
-//     });
-//     console.log('user', users);
-
-//     if (users) {
-//       return res.status(401).send('Username already taken');
-//     } else {
-//       return res.status(200).send('Available');
-//     }
-//   } catch ({ message }) {
-//     res.status(500).send({ message });
-//   }
-// });
-
-// router.get('/:id', async (req, res, next) => {
-//   try {
-//     const user = await user.findOne({ where: { id: req.params.id } });
-
-//     // console.log("im here");
-
-//     res.status(200).json(user);
-//   } catch ({ message }) {
-//     err.status(500).send(message);
-//   }
-// });
 
 // router.put('/updateuser/:id', async (req, res, next) => {
 //   console.log('req.body', req.body);
