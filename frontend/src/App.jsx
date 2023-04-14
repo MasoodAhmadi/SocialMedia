@@ -1,18 +1,13 @@
 import { routes } from './config';
 import { themes } from './styles/colors.styles';
-import { Links, homePage } from './pages';
+import { Links, SignupPage, homePage } from './pages';
 import { Container } from 'react-bootstrap';
 import { useWindowDimensions } from './hooks';
 import { ThemeProvider } from 'styled-components';
 import React, { useState, Suspense, useEffect } from 'react';
 import { NotFoundPage, Identification } from './pages';
-import { Switch, Route, useLocation } from 'react-router-dom';
-import {
-  Loader,
-  Navbars,
-  NotificationManager,
-  ProtectedRoute,
-} from './components';
+import { Switch, Route } from 'react-router-dom';
+import { Loader, Navbars, NotificationManager } from './components';
 import './styles/base.scss';
 import { loadUser } from './redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
@@ -22,7 +17,7 @@ function App() {
   const [theme] = useState('defaultTheme');
   const size = useWindowDimensions();
   const dispatch = useDispatch();
-  const { home, identify, link } = routes;
+  const { home, identify, link, signup } = routes;
 
   useEffect(async () => {
     unwrapResult(await dispatch(loadUser()));
@@ -48,6 +43,7 @@ function App() {
             <Route exact path={link} component={Links} />
             <Route exact path={home} component={homePage} />
             <Route exact path={identify} component={Identification} />
+            <Route exact path={signup} component={SignupPage} />
             <Route component={NotFoundPage} />
           </Switch>
         </Container>

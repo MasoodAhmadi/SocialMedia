@@ -1,14 +1,14 @@
 import * as Yup from 'yup';
-import { routes } from '../config';
 import { useFormik } from 'formik';
+import { routes } from '../config';
 import { useTheme } from 'styled-components';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { CheckCircle, Facebook, UnlockFill } from 'react-bootstrap-icons';
+import { Facebook, Google, UnlockFill } from 'react-bootstrap-icons';
 import { Form, Row, Col } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import authServices from '../services/auth.services';
-import { loadUser, loadUsers, signInUser } from '../redux/slices/userSlice';
+import { loadUser, signInUser } from '../redux/slices/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   FooterMessage,
@@ -17,6 +17,7 @@ import {
 import {
   FacebookButton,
   ForgotPasswordButton,
+  GoogleButton,
   LoginButton,
   LoginFormContainer,
 } from '../styles/identify.styles';
@@ -142,7 +143,7 @@ export default function Identification() {
                 </Col>
               </Row>
             </FacebookButton>
-            <FacebookButton>
+            <GoogleButton>
               {' '}
               <Row>
                 {' '}
@@ -150,10 +151,10 @@ export default function Identification() {
                   sign in with
                 </Col>
                 <Col xs={3} sm={3} md={3} lg={3} xl={3}>
-                  <Facebook width={22} height={22} />
+                  <Google width={22} height={22} />
                 </Col>
               </Row>
-            </FacebookButton>
+            </GoogleButton>
           </div>
           <br />
         </Form>
