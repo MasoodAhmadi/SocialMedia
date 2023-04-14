@@ -1,5 +1,6 @@
-import React from "react";
-import { Form, Header, Icon, Image, Segment } from "semantic-ui-react";
+import React from 'react';
+import { Card } from 'react-bootstrap';
+import { Form, Header, Icon, Image, Segment } from 'semantic-ui-react';
 
 function ImageDropDiv({
   highlighed,
@@ -12,15 +13,14 @@ function ImageDropDiv({
 }) {
   return (
     <>
-      <Form.Field>
-        <Segment placeholder basic secondary>
-          {" "}
+      <Card>
+        <div>
           <input
-            style={{ display: "none" }}
-            type="file"
-            accept="image/*"
+            style={{ display: 'none' }}
+            type='file'
+            accept='image/*'
             onChange={handleChange}
-            name="media"
+            name='media'
             ref={inputRef}
           />
           <div
@@ -43,11 +43,15 @@ function ImageDropDiv({
           >
             {createObjectURL === null ? (
               <>
-                <Segment color={highlighed ? "green" : ""} placeholder basic>
+                <Segment
+                  color={highlighed ? 'green' : 'black'}
+                  placeholder
+                  basic
+                >
                   <Header icon>
                     <Icon
-                      name="file image outline"
-                      style={{ cursor: "pointer" }}
+                      name='file image outline'
+                      style={{ cursor: 'pointer' }}
                       onClick={() => inputRef.current.click()}
                     />
                     Drag n drop or click to upload image
@@ -56,20 +60,20 @@ function ImageDropDiv({
               </>
             ) : (
               <>
-                <Segment color="green" placeholder basic>
+                <Segment color='green' placeholder basic>
                   <Image
                     src={createObjectURL}
-                    size="mediam"
+                    size='mediam'
                     centerd
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                     onClick={() => inputRef.current.click()}
                   />
                 </Segment>
               </>
             )}
           </div>
-        </Segment>
-      </Form.Field>
+        </div>
+      </Card>
     </>
   );
 }
