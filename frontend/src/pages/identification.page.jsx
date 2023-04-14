@@ -21,6 +21,7 @@ import {
   LoginFormContainer,
 } from '../styles/identify.styles';
 import { addNotification } from '../redux/slices/addNotificationSlice';
+import { useTranslation } from 'react-i18next';
 
 export default function Identification() {
   const history = useHistory();
