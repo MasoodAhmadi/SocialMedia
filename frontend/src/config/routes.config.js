@@ -3,4 +3,5 @@ export const routes = {
   users: '/users',
   identify: '/identify',
   link: '/link',
+  signup: '/signup',
 };

@@ -4,7 +4,20 @@ import React, { useRef, useState } from 'react';
 // import { Header, Icon, Image, Message, Segment } from "semantic-ui-react";
 // import ImageDropDiv from "../components/common/imageDropDrag";
 // import CommonInputs from "../components/common/inputs";
-import { Button, Container } from 'react-bootstrap';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { Col, Form, Row } from 'react-bootstrap';
+import {
+  FacebookButton,
+  ForgotPasswordButton,
+  LoginButton,
+  LoginFormContainer,
+} from '../styles/identify.styles';
+import {
+  FooterMessage,
+  HeaderMessage,
+} from '../components/common/WelcomeMessage';
+import { Facebook } from 'react-bootstrap-icons';
 
 function SignupPage() {
   const inputRef = useRef();
@@ -41,7 +54,36 @@ function SignupPage() {
   //     setCreateObjectURL(URL.createObjectURL(file));
   //   }
   // };
+  const userSchema = Yup.object({
+    email: Yup.string().email('Invalid email format').required('Required!'),
+    password: Yup.string().min(5, 'Minimum 5 characters').required('Required!'),
+  });
 
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: userSchema,
+    onSubmit: async (values) => {
+      try {
+        const response = unwrapResult(await dispatch(signInUser(values)));
+        history.push(link);
+        dispatch(
+          addNotification({
+            identifier: 'user',
+            timeout: 5,
+            icon: <UnlockFill className='text-success' />,
+            content: response?.name
+              ? `${localize('Welcome')} ${response?.name}`
+              : localize('Welcome'),
+          })
+        );
+      } catch (error) {
+        console.log('error: ', error);
+      }
+    },
+  });
   const onSubmit = async (event) => {
     // event.preventDefault();
     if (
@@ -67,14 +109,99 @@ function SignupPage() {
   };
 
   return (
-    <>
-      <Container
-        fluid='md'
-        className='mt-4 mb-4  d-flex justify-content-center align-items-center'
-        style={{ background: '' }}
-      >
-        asdfasdfs
-        {/* <HeaderMessage /> */}
+    <div>
+      <LoginFormContainer>
+        <Form
+        // onSubmit={formik.handleSubmit}
+        >
+          <Row className='mt-4'>
+            <Col>
+              <HeaderMessage />
+              <Form.Group className='mb-3' controlId='formBasicEmail'>
+                <Form.Label>Email address</Form.Label>
+                <Form.Control
+                  name='email'
+                  type='email'
+                  placeholder='Enter email'
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                />
+                <Form.Text className='text-muted'>
+                  We'll never share your email with anyone.
+                </Form.Text>
+                {formik.errors.email && formik.touched.email && (
+                  <p className='mt-2' style={{ color: basic.dark }}>
+                    {formik.errors.email}
+                  </p>
+                )}
+              </Form.Group>
+              <Form.Group className='mb-3' controlId='formBasicPassword'>
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  name='password'
+                  type='password'
+                  placeholder='Enter password'
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  aria-label='Password for access admin'
+                />
+                {formik.errors.password && formik.touched.password && (
+                  <p className='' style={{ color: 'black' }}>
+                    {formik.errors.password}
+                  </p>
+                )}
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+              {' '}
+              <LoginButton type='submit'>login</LoginButton>
+            </Col>
+            <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+              {' '}
+              <ForgotPasswordButton>forgot password</ForgotPasswordButton>
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col>
+              <FooterMessage
+              //  authMode={authMode}
+              />
+            </Col>
+          </Row>
+          <div>
+            <FacebookButton>
+              <Row>
+                <Col xs={9} sm={9} md={9} lg={9} xl={9}>
+                  sign in with
+                </Col>
+                <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+                  <Facebook width={22} height={22} />
+                </Col>
+              </Row>
+            </FacebookButton>
+            <FacebookButton>
+              {' '}
+              <Row>
+                {' '}
+                <Col xs={9} sm={9} md={9} lg={9} xl={9}>
+                  sign in with
+                </Col>
+                <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+                  <Facebook width={22} height={22} />
+                </Col>
+              </Row>
+            </FacebookButton>
+          </div>
+          <br />
+        </Form>
+      </LoginFormContainer>
+    </div>
+
+    /* <HeaderMessage /> 
         {/* <Divider hidden />
       <Form
         loading={formLoading}
@@ -186,10 +313,8 @@ function SignupPage() {
             {intl.formatMessage({ id: "identify.signIn" })}
           </Button>
         </Segment>
-      </Form> */}
-        {/* <FooterMessage /> */}
-      </Container>
-    </>
+      </Form> 
+         <FooterMessage /> */
   );
 }
 export default SignupPage;

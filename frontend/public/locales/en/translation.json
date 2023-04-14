@@ -15,6 +15,7 @@
   "Instead": "Instead",
   "ExistingUser": "Existing User",
   "LoginHereInstead": "Login here Instead",
+  "LoginHere": "Login",
   "Welcome": "Welcome",
   "description": {
     "part1": "Edit <1>src/App.js</1> and save to reload.",
