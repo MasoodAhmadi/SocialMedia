@@ -2,11 +2,11 @@
 import React, { useRef, useState } from 'react';
 // import { Divider, Form } from "semantic-ui-react";
 // import { Header, Icon, Image, Message, Segment } from "semantic-ui-react";
-// import ImageDropDiv from "../components/common/imageDropDrag";
+import ImageDropDiv from '../components/common/imageDropDrag';
 // import CommonInputs from "../components/common/inputs";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import {
   FacebookButton,
   ForgotPasswordButton,
@@ -17,7 +17,7 @@ import {
   FooterMessage,
   HeaderMessage,
 } from '../components/common/WelcomeMessage';
-import { Facebook } from 'react-bootstrap-icons';
+import { CardImage, Facebook } from 'react-bootstrap-icons';
 
 function SignupPage() {
   const inputRef = useRef();
@@ -30,7 +30,7 @@ function SignupPage() {
   const [username, setUsername] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
-  const [highlighted, setHighlighted] = useState(false);
+  const [highlighted, setHighlighed] = useState(false);
   const [loading, setLoading] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showSocialLinks, setShowSocialLinks] = useState(false);
@@ -47,13 +47,6 @@ function SignupPage() {
   //   setAllSocialState((prev) => ({ ...prev, [name]: value }));
   // };
 
-  // const uploadToClient = (event) => {
-  //   if (event.target.files && event.target.files[0]) {
-  //     const file = event.target.files[0];
-  //     setImage(file);
-  //     setCreateObjectURL(URL.createObjectURL(file));
-  //   }
-  // };
   const userSchema = Yup.object({
     email: Yup.string().email('Invalid email format').required('Required!'),
     password: Yup.string().min(5, 'Minimum 5 characters').required('Required!'),
@@ -84,6 +77,25 @@ function SignupPage() {
       }
     },
   });
+  const uploadToClient = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      setImage(file);
+      setCreateObjectURL(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadToServer = async (event) => {
+    try {
+      const formData = new FormData();
+      formData.append('photo', data.file);
+      await fetch('http://localhost:8000/api/users/signup', {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: { 'Content-Type': 'application/json' },
+      }).then((res) => res.json());
+    } catch (error) {}
+  };
   const onSubmit = async (event) => {
     // event.preventDefault();
     if (
@@ -112,11 +124,126 @@ function SignupPage() {
     <div>
       <LoginFormContainer>
         <Form
-        // onSubmit={formik.handleSubmit}
+          loading={formLoading}
+          error={errorMsg !== null}
+
+          // onSubmit={formik.handleSubmit}
         >
           <Row className='mt-4'>
             <Col>
               <HeaderMessage />
+              <Alert
+                color='warmmidgrey'
+                error
+                header='Oops!'
+                content={errorMsg}
+                onDismiss={() => setErrorMsg(null)}
+              >
+                <div>
+                  <Alert.Heading style={{ fontSize: '1rem' }}></Alert.Heading>
+                </div>
+              </Alert>
+              <Form>
+                {/* <ImageDropDiv
+                  setMedia={setMedia}
+                  handleChange={uploadToClient}
+                  highlighted={highlighted}
+                  setHighlighted={setHighlighted}
+                  inputRef={inputRef}
+                  createObjectURL={createObjectURL}
+                  setCreateObjectURL={setCreateObjectURL}
+                /> */}
+                <Card>
+                  <div>
+                    <input
+                      style={{ display: 'none' }}
+                      type='file'
+                      accept='image/*'
+                      onChange={uploadToClient}
+                      name='media'
+                      ref={inputRef}
+                    />
+                    <div
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setHighlighed(true);
+                      }}
+                      onDragLeave={(e) => {
+                        e.preventDefault();
+                        setHighlighed(false);
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setHighlighed(true);
+                        const droppedFile = Array.from(e.dataTransfer.files);
+                        setMedia(droppedFile[0]);
+                        setCreateObjectURL(URL.createObjectURL(droppedFile[0]));
+                        console.log(e.dataTransfer.files);
+                      }}
+                    >
+                      {createObjectURL === null ? (
+                        <div
+                          style={
+                            highlighted
+                              ? { backgroundColor: '#D0F0C0' }
+                              : { background: '' }
+                          }
+                        >
+                          <div className='d-flex justify-content-center'>
+                            <CardImage
+                              className='d-flex justify-content-center'
+                              name='file image outline'
+                              style={{
+                                cursor: 'pointer',
+                                // display: 'flex',
+                                // justifyItems: 'center',
+                                // justifyContent: 'center',
+                              }}
+                              onClick={() => inputRef.current.click()}
+                            />
+                          </div>
+                          <h4
+                            className='d-flex justify-content-center'
+                            onClick={() => inputRef.current.click()}
+                          >
+                            Drag n drop or click to upload image
+                          </h4>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className='d-flex justify-content-center my-3'>
+                            <Button
+                              onClick={() => inputRef.current.click()}
+                              variant='none'
+                              className='position-relative p-0 border-0'
+                            >
+                              <img
+                                src={createObjectURL}
+                                className='rounded w-100'
+                              />
+                              {/* <input
+                            placeholder='masood'
+                            type='file'
+                            name='myImage'
+                            onChange={uploadToClient}
+                          /> */}
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                      {/* <button
+                      className='btn btn-primary'
+                      type='submit'
+                      onClick={uploadToServer}
+											>
+                      {' '}
+                      Send to server
+                    </button>{' '} */}
+                    </div>
+                  </div>
+                </Card>
+              </Form>
+
               <Form.Group className='mb-3' controlId='formBasicEmail'>
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
@@ -167,9 +294,7 @@ function SignupPage() {
           <br />
           <Row>
             <Col>
-              <FooterMessage
-              //  authMode={authMode}
-              />
+              <FooterMessage />
             </Col>
           </Row>
           <div>
@@ -413,14 +538,14 @@ export default SignupPage;
 //     checkUsername === "" ? setUsernameAvailable(false) : checkUser();
 //   }, [checkUsername]);
 
-//   const uploadToClient = (event) => {
-//     if (event.target.files && event.target.files[0]) {
-//       const i = event.target.files[0];
+// const uploadToClient = (event) => {
+//   if (event.target.files && event.target.files[0]) {
+//     const i = event.target.files[0];
 
-//       setImage(i);
-//       setCreateObjectURL(URL.createObjectURL(i));
-//     }
-//   };
+//     setImage(i);
+//     setCreateObjectURL(URL.createObjectURL(i));
+//   }
+// };
 //   console.log("this is an image", image);
 
 //   const uploadToServer = async (event) => {
