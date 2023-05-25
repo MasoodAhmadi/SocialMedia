@@ -1,9 +1,23 @@
 // importing libraries
+require('dotenv').config();
 const express = require('express');
 const app = express();
-// initializing services
-require('./start/middleware.start')(app);
-require('./start/routes.start')(app);
+ // importing routes
+app.use(express.json());
+app.use(express.static('build'));
+// const { unknownEndpointHandler, error } = require('./middleware');
+const connectDb = require('./utilsServer/connectDb');
+connectDb();
+
+
+// routes
+app.use(`/api/auth`,  require("./routes/auth.routes"));
+// app.use(`${BASE}/users`, userRoute);
+
+// next handler
+// app.use(error);
+// app.use(unknownEndpointHandler);
+
 
 const PORT = process.env.SERVER_PUBLIC_PORT;
 const server = app.listen(PORT, () => {
