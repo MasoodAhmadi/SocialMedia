@@ -4,4 +4,5 @@ export const routes = {
   identify: '/identify',
   link: '/link',
   signup: '/signup',
+	registration:'/registration'
 };

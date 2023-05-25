@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import authServices from '../services/auth.services';
-import { Footer, ListGroups, WeekofTheDay } from '../components';
+import { Footer  } from '../components';
 
 export default function homePage() {
   const { home } = routes;
@@ -15,12 +15,8 @@ export default function homePage() {
   }, [user]);
   return (
     <div className='m-1 mt-4 pt-5'>
-      <Container>
-        <WeekofTheDay />
-        <br />
-        <ListGroups />
-      </Container>
-      <Footer />
+      <Container>homepage</Container>
+      {/* <Footer /> */}
     </div>
   );
 }
