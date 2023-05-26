@@ -1,16 +1,10 @@
 import styled from 'styled-components';
-import { Form, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 export const LoginFormContainer = styled.div`
   z-index: 99;
-  min-height: 35rem;
-  position: absolute;
-  right: ${({ theme }) => theme.width <= 992 && 0};
   background-color: ${({ theme }) => theme.basic.grey};
-  left: ${({ theme }) => (theme.width > 992 ? '30vw' : 0)};
   margin-left: ${({ theme }) => theme.width <= 992 && 'auto'};
-  top: ${({ theme }) => (theme.width > 992 ? '16vh' : '13vh')};
-  padding: ${({ theme }) => theme.width > 1200 && '0rem 5rem'};
   margin-right: ${({ theme }) => theme.width <= 992 && 'auto'};
   box-shadow: ${({ theme }) => `0.5rem 0.5rem 1rem ${theme.basic.dark}33`};
   width: ${({ theme }) =>

@@ -121,15 +121,10 @@ function SignupPage() {
   };
 
   return (
-    <div>
+    <>
       <LoginFormContainer>
-        <Form
-          loading={formLoading}
-          error={errorMsg !== null}
-
-          // onSubmit={formik.handleSubmit}
-        >
-          <Row className='mt-4'>
+        <Form loading={formLoading} error={errorMsg !== null}>
+          <Row className='mt-1'>
             <Col>
               <HeaderMessage />
               <Alert
@@ -144,15 +139,6 @@ function SignupPage() {
                 </div>
               </Alert>
               <Form>
-                {/* <ImageDropDiv
-                  setMedia={setMedia}
-                  handleChange={uploadToClient}
-                  highlighted={highlighted}
-                  setHighlighted={setHighlighted}
-                  inputRef={inputRef}
-                  createObjectURL={createObjectURL}
-                  setCreateObjectURL={setCreateObjectURL}
-                /> */}
                 <Card>
                   <div>
                     <input
@@ -195,9 +181,6 @@ function SignupPage() {
                               name='file image outline'
                               style={{
                                 cursor: 'pointer',
-                                // display: 'flex',
-                                // justifyItems: 'center',
-                                // justifyContent: 'center',
                               }}
                               onClick={() => inputRef.current.click()}
                             />
@@ -244,8 +227,26 @@ function SignupPage() {
                 </Card>
               </Form>
 
-              <Form.Group className='mb-3' controlId='formBasicEmail'>
-                <Form.Label>Email address</Form.Label>
+              <Form.Group className='mb-1' controlId='formBasicEmail'>
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  name='email'
+                  type='email'
+                  placeholder='Enter email'
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                />
+                <Form.Text className='text-muted'>
+                  We'll never share your email with anyone.
+                </Form.Text>
+                {formik.errors.email && formik.touched.email && (
+                  <p className='mt-2' style={{ color: basic.dark }}>
+                    {formik.errors.email}
+                  </p>
+                )}
+              </Form.Group>
+              <Form.Group className='mb-1' controlId='formBasicEmail'>
+                <Form.Label>Email</Form.Label>
                 <Form.Control
                   name='email'
                   type='email'
@@ -278,24 +279,52 @@ function SignupPage() {
                   </p>
                 )}
               </Form.Group>
+              <Form.Group className='mb-3' controlId='formBasicPassword'>
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  name='username'
+                  type='text'
+                  placeholder='username'
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  aria-label='user for access admin'
+                />
+                {formik.errors.password && formik.touched.password && (
+                  <p className='' style={{ color: 'black' }}>
+                    {formik.errors.password}
+                  </p>
+                )}
+              </Form.Group>
+              <Form.Group className='mb-3' controlId='formBasicPassword'>
+                <Form.Label>Bio</Form.Label>
+                <Form.Control
+                  name='username'
+                  type='text'
+                  placeholder='username'
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  aria-label='user for access admin'
+                />
+                {formik.errors.password && formik.touched.password && (
+                  <p className='' style={{ color: 'black' }}>
+                    {formik.errors.password}
+                  </p>
+                )}
+              </Form.Group>
             </Col>
           </Row>
 
           <Row>
             <Col xs={6} sm={6} md={6} lg={6} xl={6}>
-              {' '}
               <LoginButton type='submit'>login</LoginButton>
             </Col>
             <Col xs={6} sm={6} md={6} lg={6} xl={6}>
-              {' '}
               <ForgotPasswordButton>forgot password</ForgotPasswordButton>
             </Col>
+            <FooterMessage />
           </Row>
-          <br />
           <Row>
-            <Col>
-              <FooterMessage />
-            </Col>
+            <Col></Col>
           </Row>
           <div>
             <FacebookButton>
@@ -324,7 +353,7 @@ function SignupPage() {
           <br />
         </Form>
       </LoginFormContainer>
-    </div>
+    </>
 
     /* <HeaderMessage /> 
         {/* <Divider hidden />
