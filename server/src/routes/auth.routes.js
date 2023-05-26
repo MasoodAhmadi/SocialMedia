@@ -3,18 +3,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 const { default: isEmail } = require('validator/lib/isEmail');
-const followerModel = require('../models/followerModel');
-const { auth } = require('../middleware/auth.middleware');
+const { auth } = require('../middleware');
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 //get all user
-
 router.get('/', auth, async (req, res) => {
   const user = await userModel.findOne(req.user._id);
   if (!user) return res.status(404).json({ message: "User doesn't exist" });
   res.status(200).send({ id: user._id, email: user.email });
 });
 
+//get by username
 router.get('/:username', async (req, res) => {
   const { username } = req.params;
   try {
@@ -29,6 +28,7 @@ router.get('/:username', async (req, res) => {
   }
 });
 
+//login
 router.post('/', async (req, res) => {
   const { email, password } = req.body;
   if (!isEmail(email)) return res.status(401).send('Invalid Email');
@@ -46,7 +46,6 @@ router.post('/', async (req, res) => {
     if (!isPassword) {
       return res.status(401).send('invalid credential');
     }
-    // const payload = { userId: user._id };
     const token = jwt.sign(
       {
         id: user._id,

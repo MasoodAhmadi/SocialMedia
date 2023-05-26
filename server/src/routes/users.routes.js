@@ -1,9 +1,9 @@
 require('dotenv').config();
-const router = require('express').Router();
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const router = require('express').Router();
 const UserModel = require('../models/userModel');
 const isEmail = require('validator/lib/isEmail');
-const jwt = require('jsonwebtoken');
 const profileModel = require('../models/profileModel');
 const followerModel = require('../models/followerModel');
 const { auth } = require('../middleware/auth.middleware');
@@ -21,6 +21,7 @@ router.get('/', auth, async (req, res) => {
   res.status(200).json(users);
 });
 
+//getting by username
 router.get('/:username', async (req, res) => {
   const { username } = req.params;
   try {
@@ -35,6 +36,7 @@ router.get('/:username', async (req, res) => {
   }
 });
 
+//signing up
 router.post('/', async (req, res) => {
   const {
     name,
@@ -66,7 +68,6 @@ router.post('/', async (req, res) => {
       password,
       profilePicUrl: req.body.profilePicUrl || userPng,
     });
-
     user.password = await bcrypt.hash(password, 10);
     await user.save();
 
