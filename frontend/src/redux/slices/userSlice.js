@@ -71,6 +71,7 @@ export const signInUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(api.userSignIn, data);
+      console.log('response', response);
       localStorage.setItem('token', response.data.token);
       return jwt_decode(response.data.token);
     } catch (error) {

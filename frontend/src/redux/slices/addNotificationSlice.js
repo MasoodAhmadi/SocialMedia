@@ -35,7 +35,7 @@ const notificationSlice = createSlice({
       //Error /failure
       .addMatcher(isRejectedAction, (state, action) => {
         console.log('action', action);
-        const actionLabel = action.type?.splite('/')?.[0] || null;
+        const actionLabel = action?.type.splite('/')?.[0] || null;
         const message =
           action.payload.message ||
           action.payload.error.message ||

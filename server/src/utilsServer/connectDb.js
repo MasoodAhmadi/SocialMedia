@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const pw_db = process.env.MONGO_DB_PW;
-const db = `mongodb+srv://masood:${pw_db}@cluster0.auyob.mongodb.net/nestjs`;
+const db = `mongodb+srv://masood:${pw_db}@cluster0.auyob.mongodb.net/nextjs`;
 function connectDB() {
   try {
     mongoose.connect(`${db}`, {
