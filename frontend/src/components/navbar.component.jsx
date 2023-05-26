@@ -23,7 +23,7 @@ export default function Navbars() {
 
     try {
       unwrapResult(dispatch(logout()));
-      history.push(home);
+      history.push(identify);
       dispatch(
         addNotification({
           timeout: 5,

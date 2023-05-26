@@ -1,12 +1,13 @@
 // import { useRouter } from "next/router";
-import React, { useRef, useState } from 'react';
-// import { Divider, Form } from "semantic-ui-react";
+import React, { useEffect, useRef, useState } from 'react';
 // import { Header, Icon, Image, Message, Segment } from "semantic-ui-react";
 import ImageDropDiv from '../components/common/imageDropDrag';
 // import CommonInputs from "../components/common/inputs";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { Alert, Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { Alert, Card, Col, Form, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
+
 import {
   FacebookButton,
   ForgotPasswordButton,
@@ -18,6 +19,15 @@ import {
   HeaderMessage,
 } from '../components/common/WelcomeMessage';
 import { CardImage, Facebook } from 'react-bootstrap-icons';
+import styled from 'styled-components';
+import { Link, useHistory } from 'react-router-dom';
+import Input from '../components/common/Input.component';
+import Button from '../components/common/button';
+import Icon from '../components/common/Icon.component';
+import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
+import { loadUser } from '../redux/slices/userSlice';
+import { useDispatch } from 'react-redux';
+import { routes } from '../config';
 
 function SignupPage() {
   const inputRef = useRef();
@@ -41,6 +51,10 @@ function SignupPage() {
     instagram: '',
     twitter: '',
   });
+  const dispatch = useDispatch();
+  const { link } = routes;
+
+  const [authMode, setAuthMode] = useState('identify');
 
   // const handleChange = (e) => {
   //   const { name, value } = e.target;
@@ -84,7 +98,9 @@ function SignupPage() {
       setCreateObjectURL(URL.createObjectURL(file));
     }
   };
-
+  useEffect(() => {
+    dispatch(loadUser());
+  }, []);
   const uploadToServer = async (event) => {
     try {
       const formData = new FormData();
@@ -119,10 +135,74 @@ function SignupPage() {
       alert('Please gives all the input properly');
     }
   };
-
+  const FacebookBackground =
+    'linear-gradient(to right, #0546A0 0%, #0546A0 40%, #663FB6 100%)';
+  const InstagramBackground =
+    'linear-gradient(to right, #A12AC4 0%, #ED586C 40%, #F0A853 100%)';
+  const TwitterBackground =
+    'linear-gradient(to right, #56C1E1 0%, #35A9CE 50%)';
   return (
     <>
-      <LoginFormContainer>
+      <Container className='p-5'>
+        <Row className=''>
+          <Col></Col>
+          <Col>Variable width content</Col>
+          <Col>
+            <MainContainer>
+              <HeaderMessage />
+              <Form onSubmit={formik.handleSubmit}>
+                <InputContainer>
+                  <Input
+                    type='email'
+                    name='email'
+                    placeholder='Email'
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                  />
+                  <TextInput className='text-muted'>
+                    We'll never share your email with anyone.
+                  </TextInput>
+                  {formik.errors.email && formik.touched.email && (
+                    <p className='mt-2' style={{ color: basic.danger }}>
+                      {formik.errors.email}
+                    </p>
+                  )}
+                  <Input
+                    type='password'
+                    placeholder='Password'
+                    name='password'
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.password && formik.touched.password && (
+                    <p className='mt-2' style={{ color: basic.danger }}>
+                      {formik.errors.password}
+                    </p>
+                  )}
+                </InputContainer>
+                <ButtonContainer>
+                  <Button type='submit' content='Sign in' />
+                </ButtonContainer>
+                <HorizontalRule />
+                <IconsContainer>
+                  <Icon color={FacebookBackground}>
+                    <FaFacebookF />
+                  </Icon>
+                  <Icon color={InstagramBackground}>
+                    <FaInstagram />
+                  </Icon>
+                  <Icon color={TwitterBackground}>
+                    <FaTwitter />
+                  </Icon>
+                </IconsContainer>
+                <ForgotPassword>Forgot Password ?</ForgotPassword>
+              </Form>
+              <FooterMessage authMode={authMode} />
+            </MainContainer>
+          </Col>
+        </Row>
+      </Container>
+      {/* <LoginFormContainer>
         <Form loading={formLoading} error={errorMsg !== null}>
           <Row className='mt-1'>
             <Col>
@@ -204,24 +284,10 @@ function SignupPage() {
                                 src={createObjectURL}
                                 className='rounded w-100'
                               />
-                              {/* <input
-                            placeholder='masood'
-                            type='file'
-                            name='myImage'
-                            onChange={uploadToClient}
-                          /> */}
                             </Button>
                           </div>
                         </div>
                       )}
-                      {/* <button
-                      className='btn btn-primary'
-                      type='submit'
-                      onClick={uploadToServer}
-											>
-                      {' '}
-                      Send to server
-                    </button>{' '} */}
                     </div>
                   </div>
                 </Card>
@@ -352,126 +418,124 @@ function SignupPage() {
           </div>
           <br />
         </Form>
-      </LoginFormContainer>
+      </LoginFormContainer> */}
     </>
-
-    /* <HeaderMessage /> 
-        {/* <Divider hidden />
-      <Form
-        loading={formLoading}
-        error={errorMsg !== null}
-        onSubmit={async () => {
-          await onSubmit();
-          await router.push("/home");
-        }}
-      >
-        <Message
-          error
-          header="Oops!"
-          content={errorMsg}
-          onDismiss={() => setErrorMsg(null)}
-        />
-
-        <ImageDropDiv
-          setMedia={setMedia}
-          handleChange={uploadToClient}
-          highlighted={highlighted}
-          setHighlighted={setHighlighted}
-          inputRef={inputRef}
-          createObjectURL={createObjectURL}
-          setCreateObjectURL={setCreateObjectURL}
-        />
-
-        <Segment>
-          <Form.Input
-            label="name"
-            placeholder="type your name"
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            fluid
-            icon="user"
-            iconPosition="left"
-            required
-          />
-          <Form.Input
-            label="Email"
-            name="email"
-            placeholder="type you email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            fluid
-            icon="envelope"
-            iconPosition="left"
-            type="email"
-            required
-          />
-          <Form.Input
-            label="Password"
-            name="password"
-            placeholder="type you password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            fluid
-            icon={{
-              name: "eye",
-              circular: true,
-              link: true,
-              onClick: () => setShowPassword(!showPassword),
-            }}
-            iconPosition="left"
-            type={showPassword ? `text` : "password"}
-            required
-          />
-          <Form.Input
-            // loading={usernameLoading}
-            // error={!usernameAvailable}
-            label="username"
-            name="username"
-            placeholder="type your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            // onChange={(e) => {
-            //   setCheckUsername(e.target.value);
-            //   if (resgexUserName.test(e.target.value)) {
-            //     setUsernameAvailable(true);
-            //   } else {
-            //     setUsernameAvailable(false);
-            //   }
-            // }}
-            fluid
-            // icon={usernameAvailable ? "check" : "close"}
-            icon={"check"}
-            iconPosition="left"
-            required
-          />
-
-          <CommonInputs
-            showSocialLinks={showSocialLinks}
-            setShowSocialLinks={setShowSocialLinks}
-            handleChange={handleChange}
-            setAllSocialState={setAllSocialState}
-            bio={bio}
-            setBio={setBio}
-            allsocialState={allsocialState}
-          />
-          <Divider hidden />
-
-          <Divider hidden />
-          <Button
-            // content="Signup here "
-            type="submit"
-            color="orange"
-            // disabled={submitDisabled || !usernameAvailable}
-          >
-            {intl.formatMessage({ id: "identify.signIn" })}
-          </Button>
-        </Segment>
-      </Form> 
-         <FooterMessage /> */
   );
 }
 export default SignupPage;
+
+const TextInput = styled.p`
+  color: black;
+  text-transform: lowercase;
+  display: flex;
+  align-items: center;
+`;
+const MainContainer = styled.div`
+  // display: flex;
+  align-items: center;
+  // justify-content: center;
+  flex-direction: column;
+  height: 80vh;
+  width: 20vw;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8.5px);
+  -webkit-backdrop-filter: blur(8.5px);
+  border-radius: 10px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  @media only screen and (max-width: 320px) {
+    width: 80vw;
+    height: 60vh;
+    hr {
+      margin-bottom: 0.3rem;
+    }
+    h4 {
+      font-size: small;
+    }
+  }
+  @media only screen and (min-width: 360px) {
+    width: 80vw;
+    height: 87vh;
+    h4 {
+      font-size: small;
+    }
+  }
+  @media only screen and (min-width: 411px) {
+    width: 80vw;
+    height: 60vh;
+  }
+
+  @media only screen and (min-width: 768px) {
+    width: 80vw;
+    height: 60vh;
+  }
+  @media only screen and (min-width: 1024px) {
+    width: 60vw;
+    height: 60vh;
+  }
+  @media only screen and (min-width: 1280px) {
+    width: 30vw;
+    height: 61vh;
+  }
+`;
+
+const WelcomeText = styled.h2`
+  margin: 3rem 0 2rem 0;
+  color: black;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  // margin: 10px;
+  padding-top: 5rem;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+`;
+
+const ButtonContainer = styled.div`
+  margin: 1rem 0 2rem 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoginWith = styled.p`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+`;
+
+const HorizontalRule = styled.hr`
+  width: 100%;
+  height: 0.3rem;
+  border-radius: 0.8rem;
+  border: none;
+  background: linear-gradient(to right, #14163c 0%, #03217b 79%);
+  background-color: #ebd0d0;
+  margin: 1.5rem 0 1rem 0;
+  backdrop-filter: blur(25px);
+`;
+
+const IconsContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  margin: 2rem 0 3rem 0;
+  width: 100%;
+`;
+
+const ForgotPassword = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+`;
 
 // import React, { useEffect, useRef, useState } from "react";
 // import { Segment, TextArea, Divider } from "semantic-ui-react";
