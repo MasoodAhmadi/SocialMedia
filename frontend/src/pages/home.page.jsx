@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import authServices from '../services/auth.services';
-import { Footer  } from '../components';
+import { Footer, Navbars } from '../components';
 
 export default function homePage() {
   const { home } = routes;
@@ -14,9 +14,12 @@ export default function homePage() {
     if (authServices.getCurrentUser()) history.push(home);
   }, [user]);
   return (
-    <div className='m-1 mt-4 pt-5'>
-      <Container>homepage</Container>
-      {/* <Footer /> */}
-    </div>
+    <>
+      {/* <Navbars /> */}
+      <div className='m-1 mt-4 pt-5'>
+        <Container>homepage</Container>
+        {/* <Footer /> */}
+      </div>
+    </>
   );
 }

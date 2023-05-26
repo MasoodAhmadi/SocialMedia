@@ -17,26 +17,20 @@ function App() {
   const [theme] = useState('defaultTheme');
   const size = useWindowDimensions();
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
+  const location = useLocation();
   const { home, identify, link, signup, registration } = routes;
 
   useEffect(async () => {
     unwrapResult(await dispatch(loadUser()));
   }, []);
-
   return (
     <ThemeProvider
       theme={{ ...themes[theme], width: size.width, height: size.height }}
     >
       <div>
-        {pathname !== identify && <Navbars />}
-
-        {/* <Container
-        // fluid
-        // style={{
-        //   minHeight: 'calc(100vh - 11rem)',
-        // }}
-        > */}
+        {location.pathname !== identify && location.pathname !== signup && (
+          <Navbars />
+        )}
         <NotificationManager />
         <Switch>
           <Route exact path={link} component={Links} />
@@ -46,8 +40,6 @@ function App() {
           <Route exact path={signup} component={SignupPage} />
           <Route component={NotFoundPage} />
         </Switch>
-        {/* </Container> */}
-        {/* <Footer /> */}
       </div>
     </ThemeProvider>
   );

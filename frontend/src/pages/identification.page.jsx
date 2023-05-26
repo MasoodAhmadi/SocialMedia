@@ -4,8 +4,8 @@ import { routes } from '../config';
 import { useTheme } from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { Facebook, Google, UnlockFill } from 'react-bootstrap-icons';
-import { Form, Row, Col, Container, Card } from 'react-bootstrap';
+import { UnlockFill } from 'react-bootstrap-icons';
+import { Form, Row, Col, Container } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import authServices from '../services/auth.services';
 import { loadUser, signInUser } from '../redux/slices/userSlice';
@@ -17,13 +17,7 @@ import {
   FooterMessage,
   HeaderMessage,
 } from '../components/common/WelcomeMessage';
-import {
-  FacebookButton,
-  ForgotPasswordButton,
-  GoogleButton,
-  LoginButton,
-  LoginFormContainer,
-} from '../styles/identify.styles';
+
 import { addNotification } from '../redux/slices/addNotificationSlice';
 import { useTranslation } from 'react-i18next';
 import Button from '../components/common/button';
@@ -35,7 +29,7 @@ export default function Identification() {
   const dispatch = useDispatch();
   const { t: localize, i18n } = useTranslation();
 
-  const { link } = routes;
+  const { home } = routes;
   const { basic } = useTheme();
   const [authMode, setAuthMode] = useState('identify');
   const { user } = useSelector(({ user }) => user);
@@ -45,7 +39,7 @@ export default function Identification() {
   }, []);
 
   useEffect(() => {
-    if (authServices.getCurrentUser()) history.push(link);
+    if (authServices.getCurrentUser()) history.push(home);
   }, [user]);
 
   const userSchema = Yup.object({
@@ -62,7 +56,7 @@ export default function Identification() {
     onSubmit: async (values) => {
       try {
         const response = unwrapResult(await dispatch(signInUser(values)));
-        history.push(link);
+        history.push(home);
         dispatch(
           addNotification({
             identifier: 'user',
