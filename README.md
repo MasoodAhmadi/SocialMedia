@@ -24,6 +24,12 @@ API_KEY=
 API_SECRET=
 
 
+### MongooDB
+DB_USERNAME=
+DB_PASSWORD=
+DB_DATABASE=
+
+
 
 ```
 
