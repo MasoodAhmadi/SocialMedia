@@ -16,7 +16,7 @@ export default function Navbars() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { identify } = routes;
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
 
   const localLogout = (event) => {
     event.preventDefault();

@@ -89,16 +89,6 @@ router.post('/', async (req, res) => {
       following: [],
     }).save();
 
-    // const payload = { userId: user._id };
-    // jwt.sign(
-    //   payload,
-    //   process.env.JWT_SECRET_KEY,
-    //   { expiresIn: '10hr' },
-    //   (err, token) => {
-    //     if (err) throw err;
-    //     res.status(200).json({ token });
-    //   }
-    // );
     const token = jwt.sign(
       {
         email: user.email,
