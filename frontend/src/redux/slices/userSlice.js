@@ -22,8 +22,15 @@ export const loadUsers = createAsyncThunk(
   'user/loadUsers',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getUsers();
-      return response.data;
+      const token = localStorage.getItem('access-token');
+      if (token) {
+        const response = await axios.get(`/api/users`, {
+          headers: {
+            'x-auth-token': localStorage.token,
+          },
+        });
+        return response.data;
+      }
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -35,24 +42,26 @@ export const addUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await saveUser(data);
-      return response.data;
+      localStorage.setItem('token', response.data.token);
+      return { data: response.data };
+      // return { data: response.data };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
 
-export const editUser = createAsyncThunk(
-  'video/editUser',
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await saveUser(data);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+// export const editUser = createAsyncThunk(
+//   'video/editUser',
+//   async (data, { rejectWithValue }) => {
+//     try {
+//       const response = await saveUser(data);
+//       return response.data;
+//     } catch (error) {
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 
 export const deleteUser = createAsyncThunk(
   'video/deleteUser',
@@ -127,13 +136,13 @@ const userSlice = createSlice({
         state.user = null;
       })
       // EDIT
-      .addCase(editUser.fulfilled, (state, { payload }) => {
-        state.users = state.users.map((user) => {
-          if (user.id === payload.id) user = payload;
-          return user;
-        });
-        state.loading = false;
-      })
+      // .addCase(editUser.fulfilled, (state, { payload }) => {
+      //   state.users = state.users.map((user) => {
+      //     if (user.id === payload.id) user = payload;
+      //     return user;
+      //   });
+      //   state.loading = false;
+      // })
       // DELETE
       .addCase(deleteUser.fulfilled, (state, { payload }) => {
         state.users = state.users.filter((user) => user.id !== payload.id);

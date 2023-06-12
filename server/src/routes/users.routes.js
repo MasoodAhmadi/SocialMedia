@@ -89,16 +89,30 @@ router.post('/', async (req, res) => {
       following: [],
     }).save();
 
-    const payload = { userId: user._id };
-    jwt.sign(
-      payload,
+    // const payload = { userId: user._id };
+    // jwt.sign(
+    //   payload,
+    //   process.env.JWT_SECRET_KEY,
+    //   { expiresIn: '10hr' },
+    //   (err, token) => {
+    //     if (err) throw err;
+    //     res.status(200).json({ token });
+    //   }
+    // );
+    const token = jwt.sign(
+      {
+        email: user.email,
+        name: user.name,
+        username: user.username,
+        password: user.password,
+        profilePicUrl: user.profilePicUrl || userPng,
+      },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: '10hr' },
-      (err, token) => {
-        if (err) throw err;
-        res.status(200).json(token);
+      {
+        expiresIn: '10h',
       }
     );
+    res.status(200).json({ token });
   } catch (error) {
     console.error(error);
     return res.status(500).send(`Server error`);
