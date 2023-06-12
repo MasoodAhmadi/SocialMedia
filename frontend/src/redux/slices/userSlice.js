@@ -43,7 +43,7 @@ export const addUser = createAsyncThunk(
     try {
       const response = await saveUser(data);
       localStorage.setItem('token', response.data.token);
-      return { data: response.data };
+      return response.data;
       // return { data: response.data };
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -125,7 +125,7 @@ const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(addUser.fulfilled, (state, { payload }) => {
-        state.users = [...state.users, payload];
+        state.users = [state.users, payload];
         state.loading = false;
       })
 
