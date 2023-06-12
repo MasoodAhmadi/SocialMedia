@@ -73,6 +73,18 @@ function SignupPage() {
       );
     } catch (error) {
       console.error('error: ', error);
+      // dispatch(
+      //   addNotification({
+      //     identifier: 'user',
+      //     timeout: 5,
+      //     icon: <CheckCircle className='me-2 text-success' />,
+      //     content: (
+      //       <span className='d-flex'>
+      //         user <h4>{form.name} </h4>already exists
+      //       </span>
+      //     ),
+      //   })
+      // );
     }
   };
 

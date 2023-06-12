@@ -53,11 +53,11 @@ export default function Navbars() {
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='me-auto'>
-            {user && (
-              <Nav.Link onClick={() => history.push('/link')}>
-                {localize('Link')}
-              </Nav.Link>
-            )}
+            {/* {!!user && ( */}
+            <Nav.Link onClick={() => history.push('/link')}>
+              {localize('Link')}
+            </Nav.Link>
+            {/* )} */}
 
             <Nav.Link onClick={() => history.push('/registration')}>
               {localize('Register')}
@@ -102,16 +102,16 @@ export default function Navbars() {
             </NavDropdown>
           </Nav>
           <Nav>
-            {user ? (
+            {!!user ? (
               <Nav.Link variant='' onClick={localLogout}>
                 {localize('Logout')}
               </Nav.Link>
             ) : (
               <Nav.Link
                 variant=''
-                onClick={() => {
-                  history.push(identify);
-                }}
+                // onClick={() => {
+                //   history.push(identify);
+                // }}
               >
                 {localize('Login')}
               </Nav.Link>
