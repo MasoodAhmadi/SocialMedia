@@ -68,23 +68,19 @@ function SignupPage() {
           identifier: 'user',
           timeout: 5,
           icon: <CheckCircle className='me-2 text-success' />,
-          content: `${form.name} successfully`,
+          content: `${form.name} welcome`,
         })
       );
     } catch (error) {
       console.error('error: ', error);
-      // dispatch(
-      //   addNotification({
-      //     identifier: 'user',
-      //     timeout: 5,
-      //     icon: <CheckCircle className='me-2 text-success' />,
-      //     content: (
-      //       <span className='d-flex'>
-      //         user <h4>{form.name} </h4>already exists
-      //       </span>
-      //     ),
-      //   })
-      // );
+      dispatch(
+        addNotification({
+          identifier: 'user',
+          timeout: 5,
+          icon: <CheckCircle className='me-2 text-success' />,
+          content: `user ${form.email} already exists`,
+        })
+      );
     }
   };
 
