@@ -15,7 +15,7 @@ export default function Navbars() {
   const { t: localize, i18n } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { identify, home } = routes;
+  const { identify } = routes;
   const { user } = useSelector((state) => state.user);
 
   const localLogout = (event) => {
@@ -36,6 +36,7 @@ export default function Navbars() {
       console.log('error: ', error);
     }
   };
+  console.log('user', user);
 
   return (
     <Navbar

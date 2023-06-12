@@ -9,7 +9,7 @@ import { NotFoundPage, Identification } from './pages';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { Footer, Loader, Navbars, NotificationManager } from './components';
 import './styles/base.scss';
-import { loadUser } from './redux/slices/userSlice';
+import { loadUsers } from './redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 
@@ -21,7 +21,7 @@ function App() {
   const { home, identify, link, signup, registration } = routes;
 
   useEffect(async () => {
-    unwrapResult(await dispatch(loadUser()));
+    unwrapResult(await dispatch(loadUsers()));
   }, []);
   return (
     <ThemeProvider

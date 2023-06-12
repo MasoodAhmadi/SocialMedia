@@ -1,145 +1,81 @@
-// import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from 'react';
-// import { Header, Icon, Image, Message, Segment } from "semantic-ui-react";
-import ImageDropDiv from '../components/common/imageDropDrag';
-// import CommonInputs from "../components/common/inputs";
+// import ImageDropDiv from '../components/common/imageDropDrag';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { Alert, Card, Col, Form, Row } from 'react-bootstrap';
+// import Button from '../components/common/button';
+import { routes } from '../config';
+import { useDispatch } from 'react-redux';
 import { Container } from 'react-bootstrap';
-
+import { useHistory } from 'react-router-dom';
+import { unwrapResult } from '@reduxjs/toolkit';
+import React, { useEffect, useState } from 'react';
+import { CheckCircle } from 'react-bootstrap-icons';
+import Icon from '../components/common/Icon.component';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+import Input from '../components/common/Input.component';
+import { addUser, loadUser } from '../redux/slices/userSlice';
+import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
+import { addNotification } from '../redux/slices/addNotificationSlice';
+import { TextInput, ButtonContainer } from '../styles/identify.styles';
+import { InputContainer, MainContainer } from '../styles/identify.styles';
 import {
-  ButtonContainer,
   ForgotPassword,
   HorizontalRule,
   IconsContainer,
-  InputContainer,
-  MainContainer,
-  TextInput,
 } from '../styles/identify.styles';
 import {
   FooterMessage,
   HeaderMessage,
 } from '../components/common/WelcomeMessage';
-import Input from '../components/common/Input.component';
-import Button from '../components/common/button';
-import Icon from '../components/common/Icon.component';
-import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
-import { loadUser } from '../redux/slices/userSlice';
-import { useDispatch } from 'react-redux';
-import { routes } from '../config';
+
+const INITIAL_FORM = {
+  id: '',
+  name: '',
+  email: '',
+  password: '',
+  username: '',
+  bio: '',
+  showPassword: false,
+};
 
 function SignupPage() {
-  const { link } = routes;
-  const inputRef = useRef();
   const dispatch = useDispatch();
-
-  const [bio, setBio] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [image, setImage] = useState(null);
-  const [media, setMedia] = useState(null);
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [formLoading, setFormLoading] = useState(false);
-  const [highlighted, setHighlighed] = useState(false);
-  const [loading, setLoading] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showSocialLinks, setShowSocialLinks] = useState(false);
-  const [createObjectURL, setCreateObjectURL] = useState(null);
-  const [allsocialState, setAllSocialState] = useState({
-    facebook: '',
-    youtube: '',
-    instagram: '',
-    twitter: '',
-  });
+  const [form, setForm] = useState(INITIAL_FORM);
+  const { link } = routes;
   const [authMode, setAuthMode] = useState('identify');
-
-  const userSchema = Yup.object({
-    name: Yup.string().required('Required!'),
-    latname: Yup.string().required('Required!'),
-    username: Yup.string().required('Required!'),
-    bio: Yup.string().min(255, 'Maximum 255 characters').required('Required!'),
-    email: Yup.string().email('Invalid email format').required('Required!'),
-    password: Yup.string().min(5, 'Minimum 5 characters').required('Required!'),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      latname: '',
-      username: '',
-      email: '',
-      password: '',
-      bio: '',
-    },
-    validationSchema: userSchema,
-    onSubmit: async ({ name, latname, username, email, password, bio }) => {
-      try {
-        unwrapResult(
-          await dispatch(
-            addUser({ name, latname, username, email, password, bio })
-          )
-        );
-        // dispatch(closeModal());
-        dispatch(
-          addNotification({
-            icon: <ClipboardCheck size={25} className='me-2' />,
-            content: 'user created sucessfully',
-            timeout: 3,
-          })
-        );
-      } catch (error) {
-        // dispatch(closeModal());
-        console.error(error.message);
-      }
-    },
-  });
-  const uploadToClient = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      setImage(file);
-      setCreateObjectURL(URL.createObjectURL(file));
-    }
+  const history = useHistory();
+  const onChangeHandler = (prop, value) => {
+    setForm({ ...form, [prop]: value });
   };
+
   useEffect(() => {
     dispatch(loadUser());
   }, []);
-  const uploadToServer = async (event) => {
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append('photo', data.file);
-      await fetch('http://localhost:8000/api/users/signup', {
-        method: 'POST',
-        body: JSON.stringify(user),
-        headers: { 'Content-Type': 'application/json' },
-      }).then((res) => res.json());
-    } catch (error) {}
-  };
-  const onSubmit = async (event) => {
-    // event.preventDefault();
-    if (
-      name.length > 3 &&
-      username.length > 3 &&
-      email.length > 3 &&
-      password.length > 3
-    ) {
-      const body = new FormData();
-      body.append('photo', image);
-      body.append('name', name);
-      body.append('password', password);
-      body.append('email', email);
-      body.append('username', username);
-      body.append('bio', bio);
-      await fetch('http://localhost:8000/api/users/signup', {
-        method: 'POST',
-        body,
-      });
-    } else {
-      alert('Please gives all the input properly');
+      let data = {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        username: form.username,
+        bio: form.bio,
+      };
+      unwrapResult(await dispatch(addUser(data)));
+      history.push(link);
+      dispatch(
+        addNotification({
+          identifier: 'user',
+          timeout: 5,
+          icon: <CheckCircle className='me-2 text-success' />,
+          content: `${form.name} successfully`,
+        })
+      );
+    } catch (error) {
+      console.error('error: ', error);
     }
   };
+
   const FacebookBackground =
     'linear-gradient(to right, #0546A0 0%, #0546A0 40%, #663FB6 100%)';
   const InstagramBackground =
@@ -155,59 +91,55 @@ function SignupPage() {
           <Col>
             <MainContainer>
               <HeaderMessage />
-              <Form onSubmit={formik.handleSubmit}>
+              <Form onSubmit={handleSubmit}>
                 <InputContainer>
                   <Input
-                    type='name'
+                    type='text'
                     name='name'
                     placeholder='Name'
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
+                    value={form.name}
+                    onChange={(e) => onChangeHandler('name', e.target.value)}
                   />
                   <Input
                     type='email'
                     name='email'
                     placeholder='Email'
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
+                    value={form.email}
+                    onChange={(e) => onChangeHandler('email', e.target.value)}
                   />
                   <TextInput className='text-muted'>
                     We'll never share your email with anyone.
                   </TextInput>
-                  {formik.errors.email && formik.touched.email && (
-                    <p className='mt-2' style={{ color: basic.danger }}>
-                      {formik.errors.email}
-                    </p>
-                  )}
                   <Input
-                    type='password'
                     placeholder='Password'
                     name='password'
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
+                    autoComplete='new-password'
+                    type={form.showPassword ? 'text' : 'password'}
+                    value={form.password}
+                    onChange={(e) =>
+                      onChangeHandler('password', e.target.value)
+                    }
                   />
-                  {formik.errors.password && formik.touched.password && (
-                    <p className='mt-2' style={{ color: basic.danger }}>
-                      {formik.errors.password}
-                    </p>
-                  )}
+
                   <Input
                     type='text'
                     placeholder='Username'
                     name='username'
-                    value={formik.values.username}
-                    onChange={formik.handleChange}
+                    value={form.username}
+                    onChange={(e) =>
+                      onChangeHandler('username', e.target.value)
+                    }
                   />
                   <Input
                     type='text'
                     placeholder='Bio'
                     name='bio'
-                    value={formik.values.bio}
-                    onChange={formik.handleChange}
+                    value={form.bio}
+                    onChange={(e) => onChangeHandler('bio', e.target.value)}
                   />
                 </InputContainer>
                 <ButtonContainer>
-                  <Button type='submit' content='Sign in' />
+                  <Button type='submit'>sign up</Button>
                 </ButtonContainer>
                 <HorizontalRule />
                 <IconsContainer>
