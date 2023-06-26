@@ -1,1 +1,1 @@
-export { default as useWindowDimensions } from './use-window-dimentions.hook';
+export { default as useWindowSize } from './use-window-dimentions.hook';
