@@ -10,8 +10,8 @@ export const TextInput = styled.p`
 export const MainContainer = styled.div`
   align-items: center;
   flex-direction: column;
-  height: 100vh;
-  width: 100%;
+  // height: 100vh;
+  width: ${({ theme }) => (theme.width < 400 ? '80vw' : '30vw')};
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(8.5px);
@@ -27,16 +27,14 @@ export const WelcomeText = styled.h2`
 `;
 
 export const InputContainer = styled.div`
-  display: flex;
+  // display: flex;
   gap: 10px;
-  margin-left: 10px;
-  padding-top: 1rem;
-  flex-direction: column;
-  // justify-content: space-around;
-  // align-items: start;
-  // height: 20%;
-  width: 100%;
+  padding-top: 2rem;
+  // flex-direction: column;
   position: relative;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
 `;
 
 export const ButtonContainer = styled.div`
@@ -76,6 +74,15 @@ export const ForgotPassword = styled(Link)`
   display: flex;
   flex-direction: column;
   margin-left: 10px;
-  align-items: start;
+  margin-top: 10px;
+  padding-bottom: 15px;
+  color: black;
+`;
+export const SignUpText = styled.span`
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-top: 10px;
+  padding-bottom: 15px;
   color: black;
 `;

@@ -30,8 +30,10 @@ import {
   InputContainer,
   LoginWith,
   MainContainer,
+  SignUpText,
   TextInput,
 } from '../styles/identify.styles';
+import { StyledLabel } from '../styles/label.styles';
 
 export default function Identification({ changeAuthMode, authMode }) {
   const history = useHistory();
@@ -93,71 +95,81 @@ export default function Identification({ changeAuthMode, authMode }) {
           Variable width content
         </Col>
         <Col xs={{ span: 12, order: 1 }} md={{ span: 4, order: 1 }}>
-          <MainContainer>
-            <HeaderMessage />
-            <Form onSubmit={formik.handleSubmit}>
-              <InputContainer>
-                <Form.Label style={{ color: '#000' }}>
-                  Email address:
-                </Form.Label>
-                <Input
-                  type='email'
-                  name='email'
-                  placeholder='Email'
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                />
-                {/*   <TextInput className='text-muted'>
+          <div className='d-flex position-relative'>
+            <Card>
+              <MainContainer>
+                <HeaderMessage />
+                <Form onSubmit={formik.handleSubmit}>
+                  <InputContainer className=''>
+                    <div
+                      className='mb-3 pb-3 ml-5 top-0 start-0'
+                      style={{ marginLeft: '25px' }}
+                    >
+                      <StyledLabel>Email address:</StyledLabel>
+                      <Input
+                        type='email'
+                        name='email'
+                        placeholder='Email'
+                        className='mb-5'
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                      />
+                      {/*   <TextInput className='text-muted'>
                   We'll never share your email with anyone.
                 </TextInput> */}
-                {formik.errors.email && formik.touched.email && (
-                  <p className='mt-2' style={{ color: basic.danger }}>
-                    {formik.errors.email}
-                  </p>
-                )}
-                <Form.Label className='mt-2' style={{ color: '#000' }}>
-                  Password:
-                </Form.Label>
-                <Input
-                  type='password'
-                  placeholder='Password'
-                  name='password'
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                />
-                {formik.errors.password && formik.touched.password && (
-                  <p className='mt-2' style={{ color: basic.danger }}>
-                    {formik.errors.password}
-                  </p>
-                )}
-              </InputContainer>
-              <ButtonContainer>
-                <Button type='submit' content='Sign in' />
-              </ButtonContainer>
-              <LoginWith>OR LOGIN WITH</LoginWith>
-              <HorizontalRule />
-              <IconsContainer>
-                <Icon color={FacebookBackground}>
-                  <FaFacebookF />
-                </Icon>
-                <Icon color={InstagramBackground}>
-                  <FaInstagram />
-                </Icon>
-                <Icon color={TwitterBackground}>
-                  <FaTwitter />
-                </Icon>
-              </IconsContainer>
-              <div className='d-flex flex-direction-column'>
-                <ForgotPassword>Forgot Password ?</ForgotPassword>
-                <div className='text-center'>
-                  Not registered yet?
-                  <span className='link-primary' onClick={changeAuthMode}>
-                    Sign Up
-                  </span>
-                </div>
-              </div>
-            </Form>
-          </MainContainer>
+                      {formik.errors.email && formik.touched.email && (
+                        <p className='mt-2' style={{ color: basic.danger }}>
+                          {formik.errors.email}
+                        </p>
+                      )}
+
+                      <StyledLabel className='mt-4'>Password:</StyledLabel>
+
+                      <Input
+                        type='password'
+                        placeholder='Password'
+                        name='password'
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                      />
+                      {formik.errors.password && formik.touched.password && (
+                        <p className='mt-2' style={{ color: basic.danger }}>
+                          {formik.errors.password}
+                        </p>
+                      )}
+                    </div>
+                  </InputContainer>
+                  <ButtonContainer>
+                    <Button type='submit' content='Sign in' />
+                  </ButtonContainer>
+                  <LoginWith>OR LOGIN WITH</LoginWith>
+                  <HorizontalRule />
+                  <IconsContainer>
+                    <Icon color={FacebookBackground}>
+                      <FaFacebookF />
+                    </Icon>
+                    <Icon color={InstagramBackground}>
+                      <FaInstagram />
+                    </Icon>
+                    <Icon color={TwitterBackground}>
+                      <FaTwitter />
+                    </Icon>
+                  </IconsContainer>
+                  <div className=''>
+                    <ForgotPassword className='text-center'>
+                      Forgot Password ?
+                    </ForgotPassword>
+                    <SignUpText className='text-center'>
+                      Not registered yet?
+                      <span className='link-primary' onClick={changeAuthMode}>
+                        Sign Up
+                      </span>
+                    </SignUpText>
+                  </div>
+                </Form>
+              </MainContainer>
+            </Card>
+          </div>
         </Col>
       </Row>
     </Container>

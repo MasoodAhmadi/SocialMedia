@@ -4,29 +4,28 @@ import { useFormik } from 'formik';
 // import Button from '../components/common/button';
 import { routes } from '../config';
 import { useDispatch } from 'react-redux';
-import { Card, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { unwrapResult } from '@reduxjs/toolkit';
 import React, { useEffect } from 'react';
 import { CheckCircle } from 'react-bootstrap-icons';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import Input from '../components/common/Input.component';
 import { addUser, loadUser } from '../redux/slices/userSlice';
-import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
 import { addNotification } from '../redux/slices/addNotificationSlice';
 import {
   TextInput,
   ButtonContainer,
   MainContainer,
   InputContainer,
-  LoginWith,
 } from '../styles/identify.styles';
-import { ForgotPassword, HorizontalRule } from '../styles/identify.styles';
+import { ForgotPassword } from '../styles/identify.styles';
 import {
   FooterMessage,
   HeaderMessage,
 } from '../components/common/WelcomeMessage';
 import { useTheme } from 'styled-components';
+import Button from '../components/common/button';
 
 function SignupPage({ changeAuthMode }) {
   const dispatch = useDispatch();
@@ -89,12 +88,6 @@ function SignupPage({ changeAuthMode }) {
     },
   });
 
-  const FacebookBackground =
-    'linear-gradient(to right, #0546A0 0%, #0546A0 40%, #663FB6 100%)';
-  const InstagramBackground =
-    'linear-gradient(to right, #A12AC4 0%, #ED586C 40%, #F0A853 100%)';
-  const TwitterBackground =
-    'linear-gradient(to right, #56C1E1 0%, #35A9CE 50%)';
   return (
     <Container className='p-5'>
       <Row>
@@ -103,84 +96,86 @@ function SignupPage({ changeAuthMode }) {
         </Col>
         <Col xs={{ span: 12, order: 1 }} md={{ span: 4, order: 1 }}>
           <MainContainer>
-            <HeaderMessage />
-            <Form onSubmit={formik.handleSubmit}>
-              <InputContainer>
-                <Input
-                  type='text'
-                  name='name'
-                  placeholder='Name'
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                />
-                {formik.errors.name && formik.touched.name && (
-                  <p className='' style={{ color: basic.danger }}>
-                    {formik.errors.name}
-                  </p>
-                )}
-                <Input
-                  type='email'
-                  name='email'
-                  placeholder='Email'
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                />
-                {formik.errors.email && formik.touched.email && (
-                  <p style={{ color: basic.danger }}>{formik.errors.email}</p>
-                )}
-                {/*  <TextInput className='text-muted'>
+            <Row>
+              <HeaderMessage />
+              <Form onSubmit={formik.handleSubmit}>
+                <InputContainer>
+                  <Input
+                    type='text'
+                    name='name'
+                    placeholder='Name'
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.name && formik.touched.name && (
+                    <p className='' style={{ color: basic.danger }}>
+                      {formik.errors.name}
+                    </p>
+                  )}
+                  <Input
+                    type='email'
+                    name='email'
+                    placeholder='Email'
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.email && formik.touched.email && (
+                    <p style={{ color: basic.danger }}>{formik.errors.email}</p>
+                  )}
+                  {/*  <TextInput className='text-muted'>
                     We'll never share your email with anyone.
                   </TextInput> */}
-                <Input
-                  placeholder='Password'
-                  name='password'
-                  autoComplete='new-password'
-                  type='password'
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                />
-                {formik.errors.password && formik.touched.password && (
-                  <p className='' style={{ color: basic.danger }}>
-                    {formik.errors.password}
-                  </p>
-                )}
-                <Input
-                  type='text'
-                  placeholder='Username'
-                  name='username'
-                  value={formik.values.username}
-                  onChange={formik.handleChange}
-                />
-                {formik.errors.username && formik.touched.username && (
-                  <p style={{ color: basic.danger }}>
-                    {formik.errors.username}
-                  </p>
-                )}
-                <Input
-                  type='text'
-                  placeholder='Bio'
-                  name='bio'
-                  value={formik.values.bio}
-                  onChange={formik.handleChange}
-                />
-                {formik.errors.name && formik.touched.name && (
-                  <p style={{ color: basic.danger }}>{formik.errors.name}</p>
-                )}
-                <ButtonContainer>
-                  <Button type='submit'>sign up</Button>
-                </ButtonContainer>
+                  <Input
+                    placeholder='Password'
+                    name='password'
+                    autoComplete='new-password'
+                    type='password'
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.password && formik.touched.password && (
+                    <p className='' style={{ color: basic.danger }}>
+                      {formik.errors.password}
+                    </p>
+                  )}
+                  <Input
+                    type='text'
+                    placeholder='Username'
+                    name='username'
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.username && formik.touched.username && (
+                    <p style={{ color: basic.danger }}>
+                      {formik.errors.username}
+                    </p>
+                  )}
+                  <Input
+                    type='text'
+                    placeholder='Bio'
+                    name='bio'
+                    value={formik.values.bio}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.errors.name && formik.touched.name && (
+                    <p style={{ color: basic.danger }}>{formik.errors.name}</p>
+                  )}
+                  <ButtonContainer>
+                    <Button type='submit' content='Sign up' />
+                  </ButtonContainer>
 
-                <div className='d-flex flex-direction-column'>
-                  <ForgotPassword>Forgot Password ?</ForgotPassword>
-                  <div className='text-center'>
-                    Already registered?
-                    <span className='link-primary' onClick={changeAuthMode}>
-                      Sign In
-                    </span>
-                  </div>{' '}
-                </div>
-              </InputContainer>
-            </Form>
+                  <div className='d-flex flex-direction-column'>
+                    <ForgotPassword>Forgot Password ?</ForgotPassword>
+                    <div className='text-center'>
+                      Already registered?
+                      <span className='link-primary' onClick={changeAuthMode}>
+                        Sign In
+                      </span>
+                    </div>{' '}
+                  </div>
+                </InputContainer>
+              </Form>
+            </Row>
           </MainContainer>
         </Col>
       </Row>
