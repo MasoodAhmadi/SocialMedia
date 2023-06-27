@@ -40,7 +40,7 @@ function App() {
           <Route exact path={identify} component={Layout} />
           <ProtectedRoute exact path={registration} component={Registration} />
           <ProtectedRoute exact path={signup} component={SignupPage} />
-          <Route component={NotFoundPage} />
+          <ProtectedRoute component={NotFoundPage} />
         </Switch>
       </div>
     </ThemeProvider>
