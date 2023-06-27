@@ -13,6 +13,7 @@ import { loadUsers } from './redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import Layout from './pages/layout.page';
+import ProtectedRoute from './components/protected-route.component';
 
 function App() {
   const [theme] = useState('defaultTheme');
@@ -34,11 +35,11 @@ function App() {
         )}
         <NotificationManager />
         <Switch>
-          <Route exact path={link} component={Links} />
-          <Route exact path={home} component={homePage} />
+          <ProtectedRoute exact path={link} component={Links} />
+          <ProtectedRoute exact path={home} component={homePage} />
           <Route exact path={identify} component={Layout} />
-          <Route exact path={registration} component={Registration} />
-          <Route exact path={signup} component={SignupPage} />
+          <ProtectedRoute exact path={registration} component={Registration} />
+          <ProtectedRoute exact path={signup} component={SignupPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </div>
