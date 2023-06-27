@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { FormLabel } from 'react-bootstrap';
 
 export const TextInput = styled.p`
   color: black;
@@ -85,4 +86,65 @@ export const SignUpText = styled.span`
   margin-top: 10px;
   padding-bottom: 15px;
   color: black;
+`;
+export const StyledLabel = styled(FormLabel)`
+  // background: rgba(255, 255, 255, 0.15);
+  // box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+  border: none;
+  outline: none;
+  color: #656565;
+  font-size: 1rem;
+`;
+export const StyledInput = styled.input`
+  display: flex;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border-radius: 0.5rem;
+  width: 90%;
+  height: 3rem;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  color: #3c354e;
+  font-size: 1rem;
+  &:focus {
+    display: inline-block;
+    box-shadow: 0 0 0 0.2rem #b9abe0;
+    backdrop-filter: blur(12rem);
+    border-radius: 0.5rem;
+  }
+  &::placeholder {
+    color: #b9abe099;
+    font-weight: 100;
+    font-size: 1rem;
+  }
+`;
+
+export const StyledIcon = styled.div`
+  height: 3.5rem;
+  width: 3.5rem;
+  background: ${(props) => props.background};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4rem;
+  color: white;
+  cursor: pointer;
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+
+export const StyledButton = styled.button`
+  background: linear-gradient(to right, #14163c 0%, #03217b 79%);
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  width: 65%;
+  height: 3rem;
+  border: none;
+  color: white;
+  border-radius: 2rem;
+  cursor: pointer;
 `;

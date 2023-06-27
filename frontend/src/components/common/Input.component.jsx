@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-import { StyledInput } from '../../styles/input.style';
+import { StyledInput } from '../../styles';
 export default function Input({ type, name, placeholder, onChange, value }) {
   return (
     <StyledInput

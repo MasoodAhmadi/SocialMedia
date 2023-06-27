@@ -16,12 +16,12 @@ import {
   FooterMessage,
   HeaderMessage,
 } from '../components/common/WelcomeMessage';
-
 import { addNotification } from '../redux/slices/addNotificationSlice';
 import { useTranslation } from 'react-i18next';
 import Button from '../components/common/button';
 import Input from '../components/common/Input.component';
 import Icon from '../components/common/Icon.component';
+
 import {
   ButtonContainer,
   ForgotPassword,
@@ -31,9 +31,9 @@ import {
   LoginWith,
   MainContainer,
   SignUpText,
+  StyledLabel,
   TextInput,
-} from '../styles/identify.styles';
-import { StyledLabel } from '../styles/label.styles';
+} from '../styles';
 
 export default function Identification({ changeAuthMode, authMode }) {
   const history = useHistory();
@@ -114,9 +114,9 @@ export default function Identification({ changeAuthMode, authMode }) {
                         value={formik.values.email}
                         onChange={formik.handleChange}
                       />
-                      {/*   <TextInput className='text-muted'>
-                  We'll never share your email with anyone.
-                </TextInput> */}
+                      <TextInput className='text-muted'>
+                        We'll never share your email with anyone.
+                      </TextInput>
                       {formik.errors.email && formik.touched.email && (
                         <p className='mt-2' style={{ color: basic.danger }}>
                           {formik.errors.email}
