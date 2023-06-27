@@ -110,7 +110,7 @@ export default function Identification({ changeAuthMode, authMode }) {
                         type='email'
                         name='email'
                         placeholder='Email'
-                        className='mb-5'
+                        className='mb-0'
                         value={formik.values.email}
                         onChange={formik.handleChange}
                       />
@@ -123,7 +123,7 @@ export default function Identification({ changeAuthMode, authMode }) {
                         </p>
                       )}
 
-                      <StyledLabel className='mt-4'>Password:</StyledLabel>
+                      <StyledLabel className='mt-0'>Password:</StyledLabel>
 
                       <Input
                         type='password'
