@@ -16,8 +16,7 @@ export default function Navbars() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { identify } = routes;
-  const user = useSelector((state) => state.user);
-
+  const { user } = useSelector((state) => state.user);
   const localLogout = (event) => {
     event.preventDefault();
 
@@ -36,7 +35,6 @@ export default function Navbars() {
       console.log('error: ', error);
     }
   };
-  console.log('user', user);
 
   return (
     <Navbar
@@ -100,13 +98,21 @@ export default function Navbars() {
             </NavDropdown>
           </Nav>
           <Nav>
-            {!!user ? (
-              <Nav.Link variant='' onClick={localLogout}>
-                {localize('Logout')}
-              </Nav.Link>
-            ) : (
-              <Nav.Link variant=''>{localize('Login')}</Nav.Link>
-            )}
+            <div>
+              <NavDropdown
+                id='nav-dropdown-secondary-example'
+                title={user.name}
+                menuVariant='secondary'
+              >
+                {!!user ? (
+                  <Nav.Link variant='' onClick={localLogout}>
+                    {localize('Logout')}
+                  </Nav.Link>
+                ) : (
+                  <Nav.Link variant=''>{localize('Login')}</Nav.Link>
+                )}
+              </NavDropdown>
+            </div>
           </Nav>
         </Navbar.Collapse>
       </Container>
