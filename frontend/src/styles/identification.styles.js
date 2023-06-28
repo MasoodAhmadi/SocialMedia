@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { FormLabel } from 'react-bootstrap';
 
 export const TextInput = styled.p`
@@ -71,7 +70,7 @@ export const IconsContainer = styled.div`
   width: 100%;
 `;
 
-export const ForgotPassword = styled(Link)`
+export const ForgotPassword = styled.span`
   display: flex;
   flex-direction: column;
   margin-left: 10px;

@@ -47,9 +47,7 @@ export default function Navbars() {
       expand='md'
     >
       <Container>
-        <Navbar.Brand as={Link} to={'/'}>
-          Mini Chat
-        </Navbar.Brand>
+        <Navbar.Brand onClick={() => history.push('/')}>Mini Chat</Navbar.Brand>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='me-auto'>
@@ -107,14 +105,7 @@ export default function Navbars() {
                 {localize('Logout')}
               </Nav.Link>
             ) : (
-              <Nav.Link
-                variant=''
-                // onClick={() => {
-                //   history.push(identify);
-                // }}
-              >
-                {localize('Login')}
-              </Nav.Link>
+              <Nav.Link variant=''>{localize('Login')}</Nav.Link>
             )}
           </Nav>
         </Navbar.Collapse>

@@ -1,0 +1,22 @@
+{
+  "learn": "سلام خوب هسشسیبشسسب است'",
+  "learn2": "'سلام خوب هستی ییییشیب",
+  "Register": "سلام خوب هستی",
+  "Logout": "خروج",
+  "Login": " دخول",
+  "Link": "لینگ",
+  "Started": "شروع کنید",
+  "WelcomeBack": "خوش برگشتی",
+  "LoginWithEmail": "با ایمیل و رمز عبور وارد شوید",
+  "CreateNewAccount": "با ایمیل و رمز عبور وارد شوید",
+  "NewUser": "کاربر جدید",
+  "SignupHere": "اینجا ثبت نام کنید",
+  "Instead": "بجای",
+  "ExistingUser": "کاربر موجود",
+  "LoginHereInstead": "به جای اینجا وارد شوید",
+  "LoginHere": "دخول",
+  "Welcome": "خوش امدید",
+  "description": {
+    "part1": "'سلام خوب هستی همه خوب است."
+  }
+}

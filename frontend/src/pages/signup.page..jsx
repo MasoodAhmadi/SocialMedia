@@ -200,8 +200,7 @@ function SignupPage({ changeAuthMode }) {
 
                       <div className=''>
                         <ForgotPassword className='text-center'>
-                          Forgot Password ?
-                        </ForgotPassword>
+												<a href=''>Forgot Password ?</a>                        </ForgotPassword>
                         <SignUpText className='text-center'>
                           Already register!
                           <span

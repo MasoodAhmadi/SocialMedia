@@ -124,7 +124,6 @@ export default function Identification({ changeAuthMode, authMode }) {
                       )}
 
                       <StyledLabel className='mt-0'>Password:</StyledLabel>
-
                       <Input
                         type='password'
                         placeholder='Password'
@@ -157,7 +156,7 @@ export default function Identification({ changeAuthMode, authMode }) {
                   </IconsContainer>
                   <div className=''>
                     <ForgotPassword className='text-center'>
-                      Forgot Password ?
+                      <a href=''>Forgot Password ?</a>
                     </ForgotPassword>
                     <SignUpText className='text-center'>
                       Not registered yet?
