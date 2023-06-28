@@ -7,29 +7,34 @@ const { auth } = require('../middleware');
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 //get all user
-router.get('/', auth, async (req, res) => {
+router.get('/token', auth, async (req, res) => {
   const user = await userModel.findOne(req.user._id);
   if (!user) return res.status(404).json({ message: "User doesn't exist" });
-  res.status(200).send({ id: user._id, email: user.email });
+  res.status(200).send({
+    id: user._id,
+    email: user.email,
+    username: user.username,
+    profileImage: user.profilePicUrl,
+  });
 });
 
 //get by username
-router.get('/:username', async (req, res) => {
-  const { username } = req.params;
-  try {
-    if (username.length < 1) return res.status(401).send('Invalid');
-    if (!regexUserName.test(username)) return res.status(401).send('Invalid');
-    const user = await userModel.findOne({ username: username.toLowerCase() });
-    if (user) return res.status(401).send('Username already taken');
-    return res.status(200).send('Available');
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send(`Server error`);
-  }
-});
+// router.get('/:username', async (req, res) => {
+//   const { username } = req.params;
+//   try {
+//     if (username.length < 1) return res.status(401).send('Invalid');
+//     if (!regexUserName.test(username)) return res.status(401).send('Invalid');
+//     const user = await userModel.findOne({ username: username.toLowerCase() });
+//     if (user) return res.status(401).send('Username already taken');
+//     return res.status(200).send('Available');
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).send(`Server error`);
+//   }
+// });
 
 //login
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   if (!isEmail(email)) return res.status(401).send('Invalid Email');
   if (password.length < 6) {
@@ -40,17 +45,17 @@ router.post('/', async (req, res) => {
       .findOne({ email: email.toLowerCase() })
       .select('+password');
     if (!user) {
-      return res.status(401).send('invalid credential');
+      return res.status(401).send('invalid credentialssssssssss');
     }
     const isPassword = await bcrypt.hash(password, 10);
     if (!isPassword) {
-      return res.status(401).send('invalid credential');
+      return res.status(401).send('invalid credentialddddddd');
     }
     const token = jwt.sign(
       {
         id: user._id,
         email: user.email,
-        name: user.name,
+        username: user.username,
       },
       process.env.JWT_SECRET_KEY,
       {

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { api } from '../../config';
 import jwt_decode from 'jwt-decode';
 import { getUser, getUsers, saveUser, removeUser } from '../../services';
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
@@ -10,6 +9,7 @@ export const loadUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await getUser();
+      console.log('loadUser', response);
       return response.data;
     } catch (error) {
       localStorage.removeItem('token');
@@ -22,20 +22,33 @@ export const loadUsers = createAsyncThunk(
   'user/loadUsers',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('access-token');
-      if (token) {
-        const response = await axios.get(`/api/users`, {
-          headers: {
-            'x-auth-token': localStorage.token,
-          },
-        });
-        return response.data;
-      }
+      const response = await getUsers();
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
+
+// export const loadUsers = createAsyncThunk(
+//   'user/loadUsers',
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const token = localStorage.getItem('access-token');
+//       if (token) {
+//         const response = await axios.get(`/api/users`, {
+//           headers: {
+//             'x-auth-token': localStorage.token,
+//           },
+//         });
+//         console.log('respoonse data', response);
+//         return response.data;
+//       }
+//     } catch (error) {
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 
 export const addUser = createAsyncThunk(
   'user/addUser',
@@ -79,8 +92,8 @@ export const signInUser = createAsyncThunk(
   'user/login',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(api.userSignIn, data);
-      console.log('response', response);
+      const response = await axios.post('/api/auth/login', data);
+      // console.log('response', response);
       localStorage.setItem('token', response.data.token);
       return jwt_decode(response.data.token);
     } catch (error) {
@@ -113,7 +126,7 @@ const userSlice = createSlice({
       // LOAD
       .addCase(loadUser.fulfilled, (state, { payload }) => {
         state.user = payload;
-        state.loadinloadUsersg = false;
+        state.loading = false;
       })
       .addCase(loadUsers.fulfilled, (state, { payload }) => {
         state.users = payload;

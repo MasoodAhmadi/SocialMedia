@@ -10,9 +10,9 @@ export default function homePage() {
   const { home } = routes;
   const { user } = useSelector(({ user }) => user);
   const history = useHistory();
-  useEffect(() => {
-    if (authServices.getCurrentUser()) history.push(home);
-  }, [user]);
+  // useEffect(() => {
+  //   if (authServices.getCurrentUser()) history.push(home);
+  // }, [user]);
   return (
     <>
       {/* <Navbars /> */}

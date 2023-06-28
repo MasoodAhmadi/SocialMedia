@@ -43,9 +43,9 @@ export default function Identification({ changeAuthMode, authMode }) {
   const { basic } = useTheme();
   const { user } = useSelector(({ user }) => user);
 
-  useEffect(() => {
-    dispatch(loadUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(loadUser());
+  // }, []);
 
   useEffect(() => {
     if (authServices.getCurrentUser()) history.push(home);
@@ -72,7 +72,7 @@ export default function Identification({ changeAuthMode, authMode }) {
             timeout: 5,
             icon: <UnlockFill className='text-success' />,
             content: response?.name
-              ? `${localize('Welcome')} ${response?.name}`
+              ? `${localize('Welcome')} ${response?.username}`
               : localize('Welcome'),
           })
         );

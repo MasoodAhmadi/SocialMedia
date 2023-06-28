@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import { logout } from '../redux/slices/userSlice';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Dropdown, Button } from 'react-bootstrap';
 import { LockFill, Translate } from 'react-bootstrap-icons';
 import { addNotification } from '../redux/slices/addNotificationSlice';
 import { lang } from '../data/constants';
@@ -16,10 +16,12 @@ export default function Navbars() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { identify } = routes;
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
+  // const username = user.user.username;
+  // const profile_image = user.user.profileImage;
+  console.log('navbar', user);
   const localLogout = (event) => {
     event.preventDefault();
-
     try {
       unwrapResult(dispatch(logout()));
       history.push(identify);
@@ -37,36 +39,36 @@ export default function Navbars() {
   };
 
   return (
-    <Navbar
-      bg='light'
-      variant='light'
-      fixed='top'
-      className='px-4 py-3'
-      expand='md'
-    >
-      <Container>
+    <>
+      <Navbar
+        bg='light'
+        variant='light'
+        fixed='top'
+        className='ps-5'
+        // expand='md'
+      >
         <Navbar.Brand onClick={() => history.push('/')}>Mini Chat</Navbar.Brand>
-        <Navbar.Toggle aria-controls='basic-navbar-nav' />
-        <Navbar.Collapse id='basic-navbar-nav'>
-          <Nav className='me-auto'>
-            {/* {!!user && ( */}
-            <Nav.Link onClick={() => history.push('/link')}>
-              {localize('Link')}
-            </Nav.Link>
-            {/* )} */}
+        <Nav className='ps-4'>
+          {/* {!!user && ( */}
+          <Nav.Link onClick={() => history.push('/link')}>
+            {localize('Link')}
+          </Nav.Link>
+          {/* )} */}
 
-            <Nav.Link onClick={() => history.push('/registration')}>
-              {localize('Register')}
-            </Nav.Link>
-          </Nav>
-          <Nav>
+          <Nav.Link onClick={() => history.push('/registration')}>
+            {localize('Register')}
+          </Nav.Link>
+        </Nav>
+        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+        <Navbar.Collapse id='basic-navbar-nav' className='justify-content-end'>
+          <Nav className='pe-2'>
             <NavDropdown
               align='end'
-              className='d-flex'
+              className='d-flex pe-4'
               title={
                 <>
-                  <Translate />
                   language
+                  <Translate />
                 </>
               }
               id='basic-nav-dropdown'
@@ -97,17 +99,43 @@ export default function Navbars() {
               })}
             </NavDropdown>
           </Nav>
-          <Nav>
-            <div>
+          <Nav className='pe-5'>
+            <div className='pe-2'>
               <NavDropdown
-                id='nav-dropdown-secondary-example'
-                title={user.name}
-                menuVariant='secondary'
+                align='end'
+                id='basic-nav-dropdown'
+                className='d-flex justify-content-between'
+                // title={user.name}
+                title={
+                  <>
+                    <Button variant='bg-body'>
+                      asdfsd
+                      {/* {username} */}
+                      {/* {profile_image && ( */}
+                      <img
+                        className='rounded-circle article-img'
+                        // src={profile_image}
+                        width={25}
+                        height={25}
+                        id='img'
+                      />
+                      {/* )} */}
+                    </Button>
+                  </>
+                }
+                variant='primary'
               >
                 {!!user ? (
-                  <Nav.Link variant='' onClick={localLogout}>
-                    {localize('Logout')}
-                  </Nav.Link>
+                  <>
+                    <NavDropdown.Item variant='' onClick={localLogout}>
+                      {localize('Logout')}
+                    </NavDropdown.Item>
+                    <Dropdown.Divider />
+
+                    <NavDropdown.Item variant='' onClick={''}>
+                      {localize('EditProfile')}
+                    </NavDropdown.Item>
+                  </>
                 ) : (
                   <Nav.Link variant=''>{localize('Login')}</Nav.Link>
                 )}
@@ -115,7 +143,7 @@ export default function Navbars() {
             </div>
           </Nav>
         </Navbar.Collapse>
-      </Container>
-    </Navbar>
+      </Navbar>
+    </>
   );
 }

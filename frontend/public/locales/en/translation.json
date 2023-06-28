@@ -17,6 +17,7 @@
   "LoginHereInstead": "Login here Instead",
   "LoginHere": "Login",
   "Welcome": "Welcome",
+  "EditProfile": "Edit Profile",
   "description": {
     "part1": "Edit <1>src/App.js</1> and save to reload.",
     "part2": "Learn React"

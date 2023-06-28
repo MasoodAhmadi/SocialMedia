@@ -37,7 +37,7 @@ router.get('/:username', async (req, res) => {
 });
 
 //signing up
-router.post('/', async (req, res) => {
+router.post('/signup', async (req, res) => {
   const {
     name,
     email,

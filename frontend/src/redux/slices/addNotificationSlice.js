@@ -36,9 +36,9 @@ const notificationSlice = createSlice({
       .addMatcher(isRejectedAction, (state, action) => {
         const actionLabel = action?.type?.split('/')?.[0] || null;
         const message =
-          action.payload.message ||
-          action.payload.error.message ||
-          action.payload;
+          action?.payload?.message ||
+          action?.payload?.error?.message ||
+          action?.payload;
 
         if (
           message &&

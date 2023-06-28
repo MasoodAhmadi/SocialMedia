@@ -30,7 +30,7 @@ import {
 
 function SignupPage({ changeAuthMode }) {
   const dispatch = useDispatch();
-  const { link } = routes;
+  const { link, home } = routes;
   const { basic } = useTheme();
   const history = useHistory();
   useEffect(() => {
@@ -66,13 +66,13 @@ function SignupPage({ changeAuthMode }) {
     onSubmit: async (values) => {
       try {
         unwrapResult(await dispatch(addUser(values)));
-        history.push(link);
+        history.push(home);
         dispatch(
           addNotification({
             identifier: 'user',
             timeout: 5,
             icon: <CheckCircle className='me-2 text-success' />,
-            content: `${values.name} welcome`,
+            content: `${values.username} welcome`,
           })
         );
       } catch (error) {

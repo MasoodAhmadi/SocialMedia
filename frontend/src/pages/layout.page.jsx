@@ -11,9 +11,9 @@ function Layout() {
   const changeAuthMode = () => {
     setAuthMode(authMode === 'identify' ? 'signup' : 'identify');
   };
-  useEffect(() => {
-    dispatch(loadUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(loadUser());
+  // }, []);
 
   if (authMode === 'identify') {
     return (

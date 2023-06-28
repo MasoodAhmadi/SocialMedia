@@ -10,9 +10,9 @@ const connectDb = require('./utilsServer/connectDb');
 connectDb();
 
 // routes
-app.use(`/api/users/signup`, require('./routes/users.routes'));
-app.use(`/api/auth/token`, require('./routes/auth.routes'));
-app.use(`/api/auth/login`, require('./routes/auth.routes'));
+app.use('/api/users', require('./routes/users.routes'));
+app.use(`/api/auth`, require('./routes/auth.routes'));
+// app.use(`/api/auth/login`, require('./routes/auth.routes'));
 
 // next handler
 // app.use(error);
