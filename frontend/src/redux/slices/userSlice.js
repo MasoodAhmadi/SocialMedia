@@ -30,26 +30,6 @@ export const loadUsers = createAsyncThunk(
   }
 );
 
-// export const loadUsers = createAsyncThunk(
-//   'user/loadUsers',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const token = localStorage.getItem('access-token');
-//       if (token) {
-//         const response = await axios.get(`/api/users`, {
-//           headers: {
-//             'x-auth-token': localStorage.token,
-//           },
-//         });
-//         console.log('respoonse data', response);
-//         return response.data;
-//       }
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-
 export const addUser = createAsyncThunk(
   'user/addUser',
   async (data, { rejectWithValue }) => {
@@ -57,7 +37,6 @@ export const addUser = createAsyncThunk(
       const response = await saveUser(data);
       localStorage.setItem('token', response.data.token);
       return response.data;
-      // return { data: response.data };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -93,8 +72,9 @@ export const signInUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/auth/login', data);
-      // console.log('response', response);
+      console.log('response', response);
       localStorage.setItem('token', response.data.token);
+      console.log('jwt', jwt_decode(response.data.token));
       return jwt_decode(response.data.token);
     } catch (error) {
       localStorage.removeItem('token');

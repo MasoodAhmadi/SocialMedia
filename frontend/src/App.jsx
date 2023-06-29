@@ -21,7 +21,7 @@ function App() {
   const location = useLocation();
   const { home, identify, link, signup, registration } = routes;
 
-  const user = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   console.log('user', user);
 
@@ -38,7 +38,7 @@ function App() {
         )}
         <NotificationManager />
         <Switch>
-          <Route exact path={home} component={homePage} />
+          {/* <Route exact path={home} component={homePage} /> */}
           <Route exact path={link} component={Links} />
           <Route exact path={identify} component={Layout} />
           <ProtectedRoute exact path={registration} component={Registration} />
