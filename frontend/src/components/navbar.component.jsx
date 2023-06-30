@@ -108,8 +108,7 @@ export default function Navbars() {
                 title={
                   <>
                     <Button variant='bg-body'>
-                      asdfsd
-                      {/* {username} */}
+                      {user?.user.username}
                       {/* {profile_image && ( */}
                       <img
                         className='rounded-circle article-img'
