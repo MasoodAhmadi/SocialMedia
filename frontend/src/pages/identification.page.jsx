@@ -71,7 +71,7 @@ export default function Identification({ changeAuthMode, authMode }) {
             identifier: 'user',
             timeout: 5,
             icon: <UnlockFill className='text-success' />,
-            content: response?.name
+            content: response?.username
               ? `${localize('Welcome')} ${response?.username}`
               : localize('Welcome'),
           })
