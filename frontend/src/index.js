@@ -8,11 +8,11 @@ import './i18n';
 import { HashRouter } from 'react-router-dom';
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 ReactDOM.render(
-  <HashRouter>
+  <BrowserRouter>
     <ReduxProvider store={store}>
       <WrappedApp />
     </ReduxProvider>
-  </HashRouter>,
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

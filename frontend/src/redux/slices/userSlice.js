@@ -7,24 +7,17 @@ import { loginInfo } from '../../services/auth.services';
 export const loadUser = createAsyncThunk(
   'user/loadUser',
   async (_, { rejectWithValue }) => {
+    // const l = localStorage.token;
     try {
-      const response = await getUser();
-      console.log('loadUser', response);
+      const response = await axios.get('/api/auth/token', {
+        headers: {
+          'x-auth-token': localStorage.token,
+        },
+      });
+      console.log('repos', response);
       return response.data;
     } catch (error) {
       localStorage.removeItem('token');
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const loadUsers = createAsyncThunk(
-  'user/loadUsers',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await getUsers();
-      return response.data;
-    } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
@@ -43,20 +36,8 @@ export const addUser = createAsyncThunk(
   }
 );
 
-// export const editUser = createAsyncThunk(
-//   'video/editUser',
-//   async (data, { rejectWithValue }) => {
-//     try {
-//       const response = await saveUser(data);
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-
 export const deleteUser = createAsyncThunk(
-  'video/deleteUser',
+  'user/deleteUser',
   async (id, { rejectWithValue }) => {
     try {
       const response = await removeUser(id);
@@ -72,10 +53,9 @@ export const signInUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/auth/login', data);
-      console.log('response', response);
-      localStorage.setItem('token', response.data.token);
-      console.log('jwt', jwt_decode(response.data.token));
-      return jwt_decode(response.data.token);
+      console.log('response', jwt_decode(response.data));
+      localStorage.setItem('token', response.data);
+      return jwt_decode(response.data);
     } catch (error) {
       localStorage.removeItem('token');
       return rejectWithValue(error.response.data);
@@ -106,10 +86,6 @@ const userSlice = createSlice({
       // LOAD
       .addCase(loadUser.fulfilled, (state, { payload }) => {
         state.user = payload;
-        state.loading = false;
-      })
-      .addCase(loadUsers.fulfilled, (state, { payload }) => {
-        state.users = payload;
         state.loading = false;
       })
       // ADD / ACCESS

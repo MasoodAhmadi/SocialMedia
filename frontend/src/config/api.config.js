@@ -1,6 +1,7 @@
 const BASE = '/api';
 export const api = {
-  users: '/api/users/signup',
+  signUp: '/api/users/signup',
+  users: '/api/users',
   registration: `${BASE}/registration`,
   userSignIn: '/api/auth/login',
   userByToken: '/api/auth/token',

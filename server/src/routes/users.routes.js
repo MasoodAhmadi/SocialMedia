@@ -1,297 +1,134 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const router = require('express').Router();
-const UserModel = require('../models/userModel');
-const isEmail = require('validator/lib/isEmail');
-const profileModel = require('../models/profileModel');
-const followerModel = require('../models/followerModel');
-const { auth } = require('../middleware/auth.middleware');
+const bcrypt = require('bcrypt');
 
-const userPng =
-  'https://res.cloudinary.com/indersingh/image/upload/v1593464618/App/user_mklcpl.png';
+const User = require('../models/user.modal');
+const { user_schema: schema } = require('../validation');
+const { auth, asyncErrorHandler } = require('../middlewares');
 
-const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+router.get('/create_demo', async (req, res, next) => {
+  try {
+    const hashedPassword = await bcrypt.hash('asdf123', 12);
+    const user = await User.create({
+      email: 'masood@eduix.it',
+      password: hashedPassword,
+      username: 'masoodahmadllli',
+      name: 'masood',
+			bio:'sw'
+    });
+    res.status(201).json(user);
+  } catch (error) {
+    console.error(error);
+    next({
+      clientStatusCode: 500,
+      trace: error?.errors || error?.response?.data,
+      statusCode: error.status || error?.response?.status || error.statusCode,
+      message: error?.response?.message || error.message,
+    });
+  }
+});
 
 //Getting all data
-router.get('/', auth, async (req, res) => {
-  const users = await UserModel.findAll({
-    attributes: ['id', 'email', 'username'],
-  });
-  res.status(200).json(users);
-});
+router.get(
+  '/',
+  auth,
+  asyncErrorHandler(async (req, res) => {
+    const users = await User.findAll({ attributes: ['id', 'email'] });
+    res.status(200).json(users);
+  })
+);
+// Getting data by id
+router.get(
+  '/:id',
+  auth,
+  asyncErrorHandler(async (req, res) => {
+    const { id } = req.params;
+    const query = await User.findAll({ where: { id } });
+    if (!query[0])
+      return res.status(404).send({ message: `user of id ${id} not found` });
+    res.status(200).send(query[0]);
+  })
+);
 
-//getting by username
-router.get('/:username', async (req, res) => {
-  const { username } = req.params;
-  try {
-    if (username.length < 1) return res.status(401).send('Invalid');
-    if (!regexUserName.test(username)) return res.status(401).send('Invalid');
-    const user = await UserModel.findOne({ username: username.toLowerCase() });
-    if (user) return res.status(401).send('Username already taken');
-    return res.status(200).send('Available');
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send(`Server error`);
-  }
-});
-
-//signing up
-router.post('/signup', async (req, res) => {
-  const {
-    name,
-    email,
-    username,
-    password,
-    bio,
-    facebook,
-    youtube,
-    twitter,
-    instagram,
-  } = req.body;
-
-  if (!isEmail(email)) return res.status(401).send('Invalid Email');
-  if (password?.length < 6) {
-    return res.status(401).send('Password must be atleast 6 characters');
-  }
-  try {
-    let user;
-    user = await UserModel.findOne({ email: email.toLowerCase() });
-    if (user) {
-      return res.status(401).send('User already registered');
-    }
-
-    user = new UserModel({
-      name,
-      email: email.toLowerCase(),
-      username: username?.toLowerCase(),
-      password,
-      profilePicUrl: req.body.profilePicUrl || userPng,
+// Editing data
+router.post(
+  '/',
+  asyncErrorHandler(async (req, res) => {
+    const { value, error } = schema.validate(req.body);
+    if (error)
+      return res.status(400).send({ message: error.details[0].message });
+    const emailAlreadyExists = await User.findOne({
+      where: { email: value.email },
+      paranoid: false,
     });
-    user.password = await bcrypt.hash(password, 10);
-    await user.save();
 
-    let profileFields = {};
-    profileFields.user = user._id;
+    if (emailAlreadyExists) {
+      return res.status(400).json({ message: 'email aready taken' });
+    }
+    const hashedPassword = await bcrypt.hash(value.password, 12);
+    const user = await User.create({
+      ...value,
+      password: hashedPassword,
+    });
+    res.status(201).json(user);
+  })
+);
 
-    profileFields.bio = bio;
-
-    profileFields.social = {};
-    if (facebook) profileFields.social.facebook = facebook;
-    if (youtube) profileFields.social.youtube = youtube;
-    if (instagram) profileFields.social.instagram = instagram;
-    if (twitter) profileFields.social.twitter = twitter;
-
-    await new profileModel(profileFields).save();
-    await new followerModel({
-      user: user._id,
-      followers: [],
-      following: [],
-    }).save();
-
-    const token = jwt.sign(
-      {
-        email: user.email,
-        name: user.name,
-        username: user.username,
-        password: user.password,
-        profilePicUrl: user.profilePicUrl || userPng,
-      },
-      process.env.JWT_SECRET_KEY,
-      {
-        expiresIn: '10h',
-      }
+// Editing data
+router.put(
+  '/:id',
+  auth,
+  asyncErrorHandler(async (req, res) => {
+    const { id } = req.params;
+    const { value, error } = schema.validate(req.body);
+    if (error)
+      return res.status(400).send({ message: error.details[0].message });
+    const queryExist = await User.findAll({ where: { id } });
+    let hashedPassword = queryExist[0].password;
+    if (!queryExist[0])
+      return res.status(404).send({ message: `user of id ${id} not found` });
+    if (value?.password !== 'default_password')
+      hashedPassword = await bcrypt.hash(value.password, 12);
+    await User.update(
+      { email: value.email, password: hashedPassword },
+      { where: { id } }
     );
-    res.status(200).json({ token });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send(`Server error`);
-  }
-});
+    const query = await User.findAll({ where: { id } });
+    res.status(200).send(query[0]);
+  })
+);
+// Deleting data
+router.delete(
+  '/:id',
+  auth,
+  asyncErrorHandler(async (req, res) => {
+    const { id } = req.params;
+    const query = await User.findAll({
+      where: { id },
+    });
+    if (!query[0])
+      return res.status(404).send({ message: `user of id ${id} not found` });
+    await User.destroy({ where: { id } });
+    return res.status(200).send(query[0]);
+  })
+);
 
-// router.put('/updateuser/:id', async (req, res, next) => {
-//   console.log('req.body', req.body);
-
+// router.get('/create_demo', async (req, res, next) => {
 //   try {
-//     await User.update(req.body, {
-//       where: { id: req.params.id },
+//     const hashedPassword = await bcrypt.hash('asdf123', 12);
+//     const user = await User.create({
+//       email: 'jannaten@eduix.it',
+//       password: hashedPassword,
 //     });
-//     const user = await user.findOne({ where: { id: req.params.id } });
-
-//     res.status(200).json(user);
+//     res.status(201).json(user);
 //   } catch (error) {
-//     console.log('error: ', error);
-//   }
-// });
-
-// router.post('/signup', async (req, res, next) => {
-//   try {
-//     const { username, name, email, password, bio } = req.body;
-//     if (!isEmail(email)) return res.status(401).send('invalid email');
-//     if (password.length < 6)
-//       return res.status(400).send('password must be 8 charactor');
-//     const userFound = await User.findAll({
-//       where: { email },
+//     console.error(error);
+//     next({
+//       clientStatusCode: 500,
+//       trace: error?.errors || error?.response?.data,
+//       statusCode: error.status || error?.response?.status || error.statusCode,
+//       message: error?.response?.message || error.message,
 //     });
-//     if (userFound[0]) {
-//       return res.status(401).send('email already exists');
-//     }
-//     let product = {
-//       username,
-//       name,
-//       email,
-//       password,
-//       bio,
-//     };
-//     product.password = await bcrypt.hash(password, 10);
-//     if (req.files !== null) {
-//       const file = req.files.photo;
-//       cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
-//         if (!err) {
-//           const myUser = new User({
-//             username: product.username,
-//             name: product.name,
-//             created_at: new Date(),
-//             email: product.email,
-//             password: product.password,
-//             bio: product.bio,
-//             profilePicUrl: result.url,
-//           });
-//           myUser.save(function (err, res) {
-//             if (err) {
-//               res.send(err);
-//             }
-//             return res.status(200).json(myUser);
-//           });
-//         }
-//       });
-//     } else {
-//       await User.create(product);
-//       return res.status(200).json(product);
-//     }
-//   } catch ({ message }) {
-//     console.log(message);
-//     res.status(500).send({ message });
 //   }
 // });
 
 module.exports = router;
-// router.post('/signin', async (req, res) => {
-//   const { email } = req.body;
-//   const { value, error } = auth_schema.validate(req.body);
-//   if (error) return res.status(400).send({ message: error.details[0].message });
-//   const userFound = await user.findAll({
-//     where: { email },
-//   });
-//   // const passwordIsValid = bcrypt.compareSync(password, user.password);
-
-//   // if (!passwordIsValid) {
-//   //   return res.status(401).send({
-//   //     accessToken: null,
-//   //     message: "Invalid Password!",
-//   //   });
-//   // }
-//   // const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-//   //   expiresIn: 86400, // 24 hours
-//   // });
-//   if (!userFound[0])
-//     return res.status(400).send({ error: 'Invalid email or password' });
-//   const validPassword = await bcrypt.compare(
-//     value.password,
-//     userFound[0].password
-//   );
-//   if (!validPassword)
-//     return res.status(400).send({ error: 'Invalid email or password' });
-//   const token = user.generateAuthToken(userFound[0].id);
-//   res.status(200).send({ token });
-
-//   // return res.status(200).send({
-//   //   // id: user.id,
-//   //   // username: user.username,
-//   //   email: email,
-//   //   password: password,
-//   //   // accessToken: token,
-//   // });
-// });
-
-// router.post("/signin", async (req, res) => {
-//   const { email } = req.body;
-//   const userFound = await User.findAll({
-//     where: { email },
-//   });
-//   if (!userFound[0])
-//     return res.status(400).send({ error: "Invalid email or password" });
-//   const validedPassword = await bcrypt.compare(userFound[0].password);
-//   if (!validedPassword)
-//     return res.status(400).send({ error: "Invalid email or password" });
-//   const token = User.generateAuthToken(userFound[0].id);
-//   res.status(200).send({ token });
-// });
-
-//image posting
-// router.post("/addprofile", async (req, res, next) => {
-//   console.log("/addprofile");
-//   try {
-//     const { username, name, email, password, bio } = req.body;
-//     if (!isEmail(email)) return res.status(401).send("invalid email");
-//     if (password.length < 6)
-//       return res.status(400).send("password must be 8 charactor");
-//     const userFound = await User.findAll({
-//       where: { email },
-//     });
-//     if (userFound[0]) {
-//       console.log("i am here");
-//       console.log(userFound[0]);
-//       return res.status(401).send("user exists");
-//     }
-//     let product = {
-//       username,
-//       name,
-//       email,
-//       password,
-//       bio,
-//     };
-//     product.password = await bcrypt.hash(password, 10);
-//     if (req.files !== null) {
-//       const file = req.files.photo;
-//       cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
-//         product.profilePicUrl = result.url;
-//         console.log(result);
-//         await User.create(product);
-//         return res.status(200).json(product);
-//       });
-//     } else {
-//       await User.create(product);
-//       return res.status(200).json(product);
-//     }
-//   } catch ({ message }) {
-//     console.log("/addprofile failed " + message);
-//     res.status(500).send({ message });
-//   }
-// });
-
-//image posting jannaten method
-/* router.post("/upload_jannaten", async (req, res, next) => {
-  try {
-    const { username, firstname, email, password, bio } = req.body;
-    if (!isEmail(email)) return res.status(400).send("invalid email");
-    if (password.length < 6)
-      return res.status(400).send("password must be 8 charactor");
-    let product = {
-      username,
-      firstname,
-      email,
-      password,
-      bio,
-    };
-    product.password = await bcrypt.hash(password, 10);
-    const file = req.files.photo;
-    cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
-      product.profilePicUrl = result.url;
-      await User.create(product);
-      return res.status(200).json(product);
-    });
-  } catch ({ message }) {
-    res.status(500).send({ message });
-  }
-}); */

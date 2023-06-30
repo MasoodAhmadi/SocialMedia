@@ -21,13 +21,15 @@ function App() {
   const location = useLocation();
   const { home, identify, link, signup, registration } = routes;
 
-  const { user } = useSelector((state) => state.user);
+  // const user = useSelector((state) => state.user);
 
-  console.log('user', user);
+  // console.log('user', user);
 
   useEffect(async () => {
+    console.log('app component');
     unwrapResult(await dispatch(loadUser()));
   }, []);
+
   return (
     <ThemeProvider
       theme={{ ...themes[theme], width: size.width, height: size.height }}
@@ -38,12 +40,12 @@ function App() {
         )}
         <NotificationManager />
         <Switch>
-          {/* <Route exact path={home} component={homePage} /> */}
+          <ProtectedRoute exact path={home} component={homePage} />
           <Route exact path={link} component={Links} />
           <Route exact path={identify} component={Layout} />
           <ProtectedRoute exact path={registration} component={Registration} />
-          <ProtectedRoute exact path={signup} component={SignupPage} />
-          <ProtectedRoute component={NotFoundPage} />
+          {/* <ProtectedRoute exact path={signup} component={SignupPage} /> */}
+          {/* <ProtectedRoute component={NotFoundPage} /> */}
         </Switch>
       </>
     </ThemeProvider>
