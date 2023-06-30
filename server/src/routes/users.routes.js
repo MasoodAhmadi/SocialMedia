@@ -1,31 +1,30 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-
 const User = require('../models/user.modal');
 const { user_schema: schema } = require('../validation');
 const { auth, asyncErrorHandler } = require('../middlewares');
 
-router.get('/create_demo', async (req, res, next) => {
-  try {
-    const hashedPassword = await bcrypt.hash('asdf123', 12);
-    const user = await User.create({
-      email: 'masood@eduix.it',
-      password: hashedPassword,
-      username: 'masoodahmadllli',
-      name: 'masood',
-			bio:'sw'
-    });
-    res.status(201).json(user);
-  } catch (error) {
-    console.error(error);
-    next({
-      clientStatusCode: 500,
-      trace: error?.errors || error?.response?.data,
-      statusCode: error.status || error?.response?.status || error.statusCode,
-      message: error?.response?.message || error.message,
-    });
-  }
-});
+// router.get('/create_demo', async (req, res, next) => {
+//   try {
+//     const hashedPassword = await bcrypt.hash('asdf123', 12);
+//     const user = await User.create({
+//       email: 'masood@eduix.it',
+//       password: hashedPassword,
+//       username: 'masoodahmadllli',
+//       name: 'masood',
+//       bio: 'sw',
+//     });
+//     res.status(201).json(user);
+//   } catch (error) {
+//     console.error(error);
+//     next({
+//       clientStatusCode: 500,
+//       trace: error?.errors || error?.response?.data,
+//       statusCode: error.status || error?.response?.status || error.statusCode,
+//       message: error?.response?.message || error.message,
+//     });
+//   }
+// });
 
 //Getting all data
 router.get(
@@ -111,24 +110,5 @@ router.delete(
     return res.status(200).send(query[0]);
   })
 );
-
-// router.get('/create_demo', async (req, res, next) => {
-//   try {
-//     const hashedPassword = await bcrypt.hash('asdf123', 12);
-//     const user = await User.create({
-//       email: 'jannaten@eduix.it',
-//       password: hashedPassword,
-//     });
-//     res.status(201).json(user);
-//   } catch (error) {
-//     console.error(error);
-//     next({
-//       clientStatusCode: 500,
-//       trace: error?.errors || error?.response?.data,
-//       statusCode: error.status || error?.response?.status || error.statusCode,
-//       message: error?.response?.message || error.message,
-//     });
-//   }
-// });
 
 module.exports = router;

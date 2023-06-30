@@ -2,35 +2,27 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.modal');
-const FollowerSchema = require('../models/followerModel');
+// const FollowerSchema = require('../models/followerModel');
 const { user_schema: schema } = require('../validation');
 const { auth, asyncErrorHandler } = require('../middlewares');
 
 router.get('/', auth, async (req, res) => {
   const { userId } = req;
-  // console.log(userId);
   try {
     const user = await User.findById(userId);
     // const userFollowStats = await FollowerSchema.findOne({ user: userId });
-
-    return res.status(200).send({
-      user,
-    });
+    return res
+      .status(200)
+      .send({ email: user.email, id: user.id, username: user.username });
   } catch (error) {
     console.error(error);
     return res.status(500).send(`Server error`);
   }
-
-  // return res.status(200).send(user);
 });
 
 router.post('/', async (req, res) => {
-  // console.log(req.body);
-  // const { value, error } = schema.validate(req.body);
   const { email, password } = req.body;
 
-  // if (error)
-  //   return res.status(400).send({ message: error.details[0].message });
   try {
     const user = await User.findOne({ email: email.toLowerCase() }).select(
       '+password'

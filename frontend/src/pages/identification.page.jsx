@@ -41,8 +41,8 @@ export default function Identification({ changeAuthMode, authMode }) {
   const { t: localize, i18n } = useTranslation();
   const { home } = routes;
   const { basic } = useTheme();
-  const user = useSelector((state) => state.user);
-
+  const { user } = useSelector((state) => state.user);
+  console.log('user', user);
   // useEffect(() => {
   //   dispatch(loadUser());
   // }, []);

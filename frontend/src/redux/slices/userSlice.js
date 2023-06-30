@@ -7,7 +7,6 @@ import { loginInfo } from '../../services/auth.services';
 export const loadUser = createAsyncThunk(
   'user/loadUser',
   async (_, { rejectWithValue }) => {
-    // const l = localStorage.token;
     try {
       const response = await axios.get('/api/auth/token', {
         headers: {
@@ -53,7 +52,7 @@ export const signInUser = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/auth/login', data);
-      console.log('response', jwt_decode(response.data));
+      // console.log('response', jwt_decode(response.data));
       localStorage.setItem('token', response.data);
       return jwt_decode(response.data);
     } catch (error) {

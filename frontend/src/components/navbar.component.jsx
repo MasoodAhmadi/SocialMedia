@@ -18,6 +18,8 @@ export default function Navbars() {
   const { identify } = routes;
   const { user } = useSelector((state) => state.user);
   // const username = user.user.username;
+	console.log('userdsgfsd: ', user);
+
   // const profile_image = user.user.profileImage;
   const localLogout = (event) => {
     event.preventDefault();
@@ -108,7 +110,7 @@ export default function Navbars() {
                 title={
                   <>
                     <Button variant='bg-body'>
-                      {user?.user.username}
+                      {user?.username}
                       {/* {profile_image && ( */}
                       <img
                         className='rounded-circle article-img'
