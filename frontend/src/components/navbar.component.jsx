@@ -17,8 +17,6 @@ export default function Navbars() {
   const dispatch = useDispatch();
   const { identify } = routes;
   const { user } = useSelector((state) => state.user);
-  // const username = user.user.username;
-	console.log('userdsgfsd: ', user);
 
   // const profile_image = user.user.profileImage;
   const localLogout = (event) => {
